@@ -1,26 +1,20 @@
 import { motion } from "framer-motion";
 
-const imageModules = import.meta.glob("../../assets/PressImages/*.png", {
-  eager: true,
-  as: "url",
-});
+// Simply define how many images you have in your public/PressImages folder.
+// For example, if you have 1.png through 104.png, set this to 104.
+const NUMBER_OF_LOGOS = 104; 
 
-const pressLogos = Object.entries(imageModules)
-  .map(([path, src]) => {
-    const match = path.match(/\/(\d+)\.png$/);
-    const id = match ? Number(match[1]) : path;
-
-    return {
-      id,
-      src,
-      alt: `Press coverage ${id}`,
-    };
-  })
-  .sort((a, b) => a.id - b.id);
+// Generate the array dynamically without relying on Vite's bundler
+const pressLogos = Array.from({ length: NUMBER_OF_LOGOS }, (_, i) => ({
+  id: i + 1,
+  // This points directly to the public folder!
+  src: `/PressImages/${i + 1}.png`, 
+  alt: `Press coverage ${i + 1}`,
+}));
 
 export default function PressCarousel() {
   return (
-    <section className="relative overflow-hidden bg-[#02040a] py-16 lg:py-24">
+    <section className="relative overflow-hidden bg-[#02040a] py-16 lg:py-24 border-t border-white/5">
       {/* Heading */}
       <div className="mb-14 text-center">
         <motion.p
@@ -41,22 +35,24 @@ export default function PressCarousel() {
           {pressLogos.map((logo) => (
             <div
               key={`track1-${logo.id}`}
-              className="group/card relative mx-5 flex h-44 w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/3 p-6 backdrop-blur-md transition-all duration-500 hover:border-[#4f7cff]/40 hover:bg-white/6"
+              // Updated to charcoal/silver hover effects
+              className="group/card relative mx-5 flex h-32 md:h-44 w-72 md:w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md transition-all duration-500 hover:border-white/40 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
             >
               <img
                 src={logo.src}
                 alt={logo.alt}
                 loading="lazy"
-                className="h-full w-full object-contain p-2 transition-all duration-500 group-hover/card:scale-110"
+                // Added grayscale that turns to full color on hover for a premium feel
+                className="h-full w-full object-contain p-2 filter grayscale opacity-60 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-110"
               />
 
-              {/* Glow */}
-              <div className="absolute inset-0 rounded-3xl bg-[#4f7cff]/0 transition-all duration-500 group-hover/card:bg-[#4f7cff]/5" />
+              {/* Subtle White Glow */}
+              <div className="absolute inset-0 rounded-3xl bg-white/0 transition-all duration-500 group-hover/card:bg-white/5 pointer-events-none" />
             </div>
           ))}
         </div>
 
-        {/* Track 2 */}
+        {/* Track 2 (Duplicate for seamless loop) */}
         <div
           className="marquee-track flex whitespace-nowrap"
           aria-hidden="true"
@@ -64,16 +60,16 @@ export default function PressCarousel() {
           {pressLogos.map((logo) => (
             <div
               key={`track2-${logo.id}`}
-              className="group/card relative mx-5 flex h-28 w-72 shrink-0 items-center justify-center rounded-3xl border border-white/8 bg-white/3 p-7 backdrop-blur-md transition-all duration-500 hover:border-[#4f7cff]/40 hover:bg-white/6"
+              className="group/card relative mx-5 flex h-32 md:h-44 w-72 md:w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md transition-all duration-500 hover:border-white/40 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
             >
               <img
                 src={logo.src}
                 alt={logo.alt}
                 loading="lazy"
-                className="max-h-full max-w-full object-contain opacity-90 transition-all duration-500 group-hover/card:scale-110"
+                className="h-full w-full object-contain p-2 filter grayscale opacity-60 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-110"
               />
 
-              <div className="absolute inset-0 rounded-3xl bg-[#4f7cff]/0 transition-all duration-500 group-hover/card:bg-[#4f7cff]/5" />
+              <div className="absolute inset-0 rounded-3xl bg-white/0 transition-all duration-500 group-hover/card:bg-white/5 pointer-events-none" />
             </div>
           ))}
         </div>
