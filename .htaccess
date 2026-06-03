@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+# don touch this file
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Send all other routes to React
+RewriteRule ^ index.html [L]
