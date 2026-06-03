@@ -17,8 +17,6 @@ const socials = [
 export default function Hero() {
   const videoRef = useRef(null);
 
-  // FIX 1: Initialize state instantly based on window size to prevent the "Double Download" bug.
-  // We check if window exists to prevent SSR errors (just in case).
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth <= 768;
@@ -35,19 +33,15 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  // FIX 2: Physically force the video to play using JavaScript. 
-  // This bypasses stubborn iOS restrictions that ignore the autoPlay attribute.
   useEffect(() => {
+    // Only force play to bypass iOS restrictions. 
+    // DO NOT call .load() here anymore, it causes severe lag!
     if (videoRef.current) {
-      // Force load the new source
-      videoRef.current.load();
-      // Force play
       const playPromise = videoRef.current.play();
       
-      // Catch any autoplay blocking errors (like Low Power Mode) so the app doesn't crash
       if (playPromise !== undefined) {
         playPromise.catch((error) => {
-          console.warn("Autoplay was prevented by the browser. Low Power Mode may be active.", error);
+          console.warn("Autoplay was prevented by the browser.", error);
         });
       }
     }
@@ -64,17 +58,11 @@ export default function Hero() {
         loop
         muted
         playsInline
-        preload="auto" /* FIX 3: Tells the browser this is a high-priority download */
         className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
         poster="/hero1.png"
-        aria-hidden="true"
-      >
-        <source 
-          src={isMobile ? "/videos/banner-mobile.mp4" : "/videos/banner.mp4"} 
-          type="video/mp4" 
-        />
-        <img src="/hero1.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
-      </video>
+        // Putting the src directly on the video tag is faster for React rendering
+        src={isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4"}
+      />
 
       {/* Overlays */}
       <div
