@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { 
   FaInstagram, 
   FaFacebookF, 
@@ -15,51 +15,68 @@ const socials = [
 ];
 
 export default function Hero() {
-  // 1. Create a state to track if the user is on mobile
-  const [isMobile, setIsMobile] = useState(false);
+  const videoRef = useRef(null);
 
-  // 2. Safely check the window size when the component mounts
+  // FIX 1: Initialize state instantly based on window size to prevent the "Double Download" bug.
+  // We check if window exists to prevent SSR errors (just in case).
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.innerWidth <= 768;
+    }
+    return false;
+  });
+
   useEffect(() => {
     const checkIfMobile = () => {
-      // 768px is the standard tablet/mobile breakpoint
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // Run it once immediately
-    checkIfMobile();
-
-    // Update if the user resizes their browser
     window.addEventListener("resize", checkIfMobile);
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
+
+  // FIX 2: Physically force the video to play using JavaScript. 
+  // This bypasses stubborn iOS restrictions that ignore the autoPlay attribute.
+  useEffect(() => {
+    if (videoRef.current) {
+      // Force load the new source
+      videoRef.current.load();
+      // Force play
+      const playPromise = videoRef.current.play();
+      
+      // Catch any autoplay blocking errors (like Low Power Mode) so the app doesn't crash
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.warn("Autoplay was prevented by the browser. Low Power Mode may be active.", error);
+        });
+      }
+    }
+  }, [isMobile]);
 
   return (
     <section className="relative h-[100dvh] w-full overflow-hidden bg-[#02040a]">
       
       {/* Background Video */}
       <video
-        // THE MAGIC KEY: When isMobile changes, React completely destroys 
-        // the old video player and builds a fresh one, forcing the new video to load!
+        ref={videoRef}
         key={isMobile ? "mobile-video" : "desktop-video"}
         autoPlay
         loop
-        muted /* CRITICAL: Must be muted for autoPlay to work on mobile/desktop */
+        muted
         playsInline
+        preload="auto" /* FIX 3: Tells the browser this is a high-priority download */
         className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
-        poster="/hero1.png" // Fallback image while loading
+        poster="/hero1.png"
         aria-hidden="true"
       >
-        {/* We dynamically inject the correct path based on the React state */}
         <source 
-          src={isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4"} 
+          src={isMobile ? "/videos/banner-mobile.mp4" : "/videos/banner.mp4"} 
           type="video/mp4" 
         />
-        
-        {/* Fallback image if video fails to load entirely */}
         <img src="/hero1.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
       </video>
 
-      {/* Overlays - Strictly grayscale, charcoal, and black tones */}
+      {/* Overlays */}
       <div
         className="absolute inset-0 z-10 bg-[linear-gradient(to_bottom,rgba(2,4,10,0.1),rgba(2,4,10,0.2)_38%,rgba(2,4,10,0.6)_100%)] pointer-events-none"
         aria-hidden="true"
