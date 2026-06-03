@@ -1,7 +1,4 @@
-// import bannerVideo from "../../assets/Home/banner.mp4";
-// 1. IMPORT YOUR NEW MOBILE VIDEO HERE
-// import bannerVideoMobile from "../../assets/Home/mobile-banner.mp4"; 
-
+import { useState, useEffect } from "react";
 import { 
   FaInstagram, 
   FaFacebookF, 
@@ -18,24 +15,45 @@ const socials = [
 ];
 
 export default function Hero() {
+  // 1. Create a state to track if the user is on mobile
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 2. Safely check the window size when the component mounts
+  useEffect(() => {
+    const checkIfMobile = () => {
+      // 768px is the standard tablet/mobile breakpoint
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Run it once immediately
+    checkIfMobile();
+
+    // Update if the user resizes their browser
+    window.addEventListener("resize", checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
+  }, []);
+
   return (
     <section className="relative h-[100dvh] w-full overflow-hidden bg-[#02040a]">
       
       {/* Background Video */}
       <video
+        // THE MAGIC KEY: When isMobile changes, React completely destroys 
+        // the old video player and builds a fresh one, forcing the new video to load!
+        key={isMobile ? "mobile-video" : "desktop-video"}
         autoPlay
         loop
         muted /* CRITICAL: Must be muted for autoPlay to work on mobile/desktop */
         playsInline
-        className="absolute inset-0 h-full w-full object-cover object-center z-0"
+        className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
         poster="/hero1.png" // Fallback image while loading
         aria-hidden="true"
       >
-        {/* Desktop & Landscape Tablets (768px and up) */}
-        <source src="/videos/banner.mp4" media="(min-width: 768px)" type="video/mp4" />
-        
-        {/* Mobile & Portrait Screens (767px and below) */}
-        <source src="/videos/mobile-banner.mp4" media="(max-width: 767px)" type="video/mp4" />
+        {/* We dynamically inject the correct path based on the React state */}
+        <source 
+          src={isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4"} 
+          type="video/mp4" 
+        />
         
         {/* Fallback image if video fails to load entirely */}
         <img src="/hero1.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
