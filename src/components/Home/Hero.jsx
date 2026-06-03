@@ -1,6 +1,6 @@
-import bannerVideo from "../../assets/Home/banner.mp4";
+// import bannerVideo from "../../assets/Home/banner.mp4";
 // 1. IMPORT YOUR NEW MOBILE VIDEO HERE
-import bannerVideoMobile from "../../assets/Home/mobile-banner.mp4"; 
+// import bannerVideoMobile from "../../assets/Home/mobile-banner.mp4"; 
 
 import { 
   FaInstagram, 
@@ -32,10 +32,10 @@ export default function Hero() {
         aria-hidden="true"
       >
         {/* Desktop & Landscape Tablets (768px and up) */}
-        <source src={bannerVideo} media="(min-width: 768px)" type="video/mp4" />
+        <source src="/videos/banner.mp4" media="(min-width: 768px)" type="video/mp4" />
         
         {/* Mobile & Portrait Screens (767px and below) */}
-        <source src={bannerVideoMobile} media="(max-width: 767px)" type="video/mp4" />
+        <source src="/videos/mobile-banner.mp4" media="(max-width: 767px)" type="video/mp4" />
         
         {/* Fallback image if video fails to load entirely */}
         <img src="/hero1.png" alt="" className="absolute inset-0 h-full w-full object-cover" />
