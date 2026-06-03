@@ -8,7 +8,7 @@ export const AuthProvider = ({children}) => {
 
     const getSessionData = async () => {
         try {
-            const res = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/Session", {
+            const res = await fetch("https://thrmbackend.in/api/admin/Session", {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include"
@@ -38,7 +38,7 @@ export const AuthProvider = ({children}) => {
     const logout = async () => {
         try {
             // Ensure this matches your backend! (Sometimes logout is POST)
-            const res = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/logout", {
+            const res = await fetch("https://thrmbackend.in/api/admin/logout", {
                 method: "POST", 
                 credentials: "include",
                 headers: { "Content-Type": "application/json" }

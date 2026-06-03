@@ -21,7 +21,7 @@ export default function AdminClients() {
     formData.append("logo", logo);
 
     try {
-      const response = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/c", {
+      const response = await fetch("https://thrmbackend.in/api/admin/c", {
         method: "POST",
         credentials: "include",
         body: formData, 

@@ -52,7 +52,7 @@ export const AdminDashboard = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/blogs");
+        const response = await fetch("https://thrmbackend.in/api/blogs");
         const result = await response.json();
         if (result.success) setBlogs(result.data);
       } catch (err) {
@@ -80,7 +80,7 @@ export const AdminDashboard = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/clients");
+        const response = await fetch("https://thrmbackend.in/api/clients");
         const result = await response.json();
 
         if (result.success) {
@@ -103,7 +103,7 @@ export const AdminDashboard = () => {
     if (!window.confirm("Are you sure you want to delete this client?")) return;
 
     try {
-      const res = await fetch(`https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/deleteClients/${id}`, {
+      const res = await fetch(`https://thrmbackend.in/api/admin/deleteClients/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include"
@@ -123,7 +123,7 @@ export const AdminDashboard = () => {
     if (!window.confirm("Are you sure you want to delete this blog?")) return;
 
     try {
-      const res = await fetch(`https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/deleteBlogs/${id}`, {
+      const res = await fetch(`https://thrmbackend.in/api/admin/deleteBlogs/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include"
@@ -178,7 +178,7 @@ export const AdminDashboard = () => {
       }
 
       const res = await fetch(
-        `https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/edit/editClients/${editingClient._id}`,
+        `https://thrmbackend.in/api/admin/edit/editClients/${editingClient._id}`,
         {
           method: "POST",
           credentials: "include",
@@ -217,7 +217,7 @@ export const AdminDashboard = () => {
       }
 
       const res = await fetch(
-        `https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/edit/editBlogs/${editingBlog._id}`,
+        `https://thrmbackend.in/api/admin/edit/editBlogs/${editingBlog._id}`,
         {
           method: "POST",
           credentials: "include",

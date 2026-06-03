@@ -20,7 +20,7 @@ export default function AdminLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/login", {
+      const response = await fetch("https://thrmbackend.in/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, password }),
