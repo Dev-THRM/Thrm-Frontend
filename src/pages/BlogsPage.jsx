@@ -10,7 +10,7 @@ export default function BlogsPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/blogs");
+        const response = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/blogs");
         const result = await response.json();
         if (result.success) setBlogs(result.data);
       } catch (err) {

@@ -15,7 +15,7 @@ export default function SingleBlogPage() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/blogs/${id}`);
+        const response = await fetch(`https://mediumturquoise-turtle-309545.hostingersite.com/api/blogs/${id}`);
         const result = await response.json();
         if (result.success) setBlog(result.data);
       } catch (err) {

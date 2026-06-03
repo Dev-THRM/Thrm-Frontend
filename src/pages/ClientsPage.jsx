@@ -10,7 +10,7 @@ export default function ClientsPage() {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/clients");
+        const response = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/clients");
         const result = await response.json();
 
         if (result.success) {

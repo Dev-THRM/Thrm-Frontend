@@ -23,7 +23,7 @@ export default function AdminBlogs() {
     formData.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:5000/api/admin/b", {
+      const response = await fetch("https://mediumturquoise-turtle-309545.hostingersite.com/api/admin/b", {
         method: "POST",
         credentials: "include",
         body: formData,
