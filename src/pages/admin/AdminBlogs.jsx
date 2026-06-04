@@ -4,6 +4,26 @@ import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css"; 
 import { CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
 
+// --- FIX: Strict Quill Configuration ---
+// Defines the toolbar options
+const quillModules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, false] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    ['link'],
+    ['clean'] // Adds a "Remove Formatting" button
+  ],
+};
+
+// Explicitly defines allowed formats (Omitting 'color' and 'background' forces clean pasting)
+const quillFormats = [
+  'header',
+  'bold', 'italic', 'underline', 'strike',
+  'list', 'bullet',
+  'link'
+];
+
 export default function AdminBlogs() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -91,6 +111,8 @@ export default function AdminBlogs() {
                 theme="snow" 
                 value={content} 
                 onChange={setContent} 
+                modules={quillModules} // Apply modules
+                formats={quillFormats} // Apply strict formats
                 className="h-64 mb-12"
               />
             </div>
