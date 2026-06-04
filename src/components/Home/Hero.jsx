@@ -56,9 +56,8 @@ export default function Hero() {
         key={isMobile ? "mobile-video" : "desktop-video"}
         autoPlay
         loop
-        muted
         playsInline
-        className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
+        className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-5"
         poster="/hero1.png"
         // Putting the src directly on the video tag is faster for React rendering
         src={isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4"}
