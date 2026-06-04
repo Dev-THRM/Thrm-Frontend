@@ -61,7 +61,7 @@ export default function SingleBlogPage() {
         <div className="star-drift star-drift-2 opacity-20" />
       </div>
 
-      {/* 3. Main Content Container (wrapped in relative z-10 so it sits above the stars) */}
+      {/* 3. Main Content Container */}
       <article className="relative z-10 pt-32 pb-32 px-6 max-w-[800px] mx-auto">
         
         <Link to="/blogs" className="inline-flex items-center gap-2 text-white/50 hover:text-white transition-colors mb-10 group">
@@ -81,8 +81,8 @@ export default function SingleBlogPage() {
           </div>
         </div>
 
-        {/* Blog Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-10 leading-[1.1] break-words">
+        {/* Blog Title - FIX: Removed break-words, replaced with break-normal */}
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-10 leading-[1.1] break-normal">
           {blog.title}
         </h1>
 
@@ -96,9 +96,9 @@ export default function SingleBlogPage() {
           />
         </div>
 
-        {/* RICH TEXT CONTENT - Colors updated to monochrome aesthetic */}
+        {/* RICH TEXT CONTENT - FIX: Removed break-words from wrapper, changed [&>a]:break-all to break-words, explicitly set break-normal */}
         <div 
-          className="text-lg text-white/80 leading-relaxed space-y-6 break-words w-full
+          className="text-lg text-white/80 leading-relaxed space-y-6 w-full break-normal
             [&>p]:mb-6 
             [&>h1]:text-4xl [&>h1]:font-bold [&>h1]:mt-12 [&>h1]:mb-6 [&>h1]:text-white [&>h1]:tracking-tight
             [&>h2]:text-3xl [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-6 [&>h2]:text-white [&>h2]:tracking-tight
@@ -106,7 +106,7 @@ export default function SingleBlogPage() {
             [&>ul]:list-none [&>ul]:pl-0 [&>ul]:mb-6 [&>ul>li]:mb-3 [&>ul>li]:relative [&>ul>li]:pl-6
             before:[&>ul>li]:absolute before:[&>ul>li]:left-0 before:[&>ul>li]:top-[0.6em] before:[&>ul>li]:w-2 before:[&>ul>li]:h-2 before:[&>ul>li]:bg-white/40 before:[&>ul>li]:rounded-full
             [&>ol]:list-decimal [&>ol]:pl-6 [&>ol]:mb-6 [&>ol>li]:mb-2 [&>ol]:marker:text-white/50 [&>ol]:marker:font-bold
-            [&>a]:text-white [&>a]:underline [&>a]:underline-offset-4 [&>a]:decoration-white/30 hover:[&>a]:decoration-white [&>a]:transition-all [&>a]:break-all
+            [&>a]:text-white [&>a]:underline [&>a]:underline-offset-4 [&>a]:decoration-white/30 hover:[&>a]:decoration-white [&>a]:transition-all [&>a]:break-words
             [&>blockquote]:border-l-4 [&>blockquote]:border-white/30 [&>blockquote]:bg-white/[0.02] [&>blockquote]:p-6 [&>blockquote]:rounded-r-2xl [&>blockquote]:italic [&>blockquote]:text-white/70 [&>blockquote]:my-8
             [&>strong]:text-white [&>strong]:font-bold"
           dangerouslySetInnerHTML={{ __html: blog.content }} 
