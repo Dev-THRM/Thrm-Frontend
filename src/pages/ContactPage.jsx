@@ -85,7 +85,7 @@ export default function ContactPage() {
       const navigate = useNavigation();
       const result = await response.json();
 
-      if (result.success) {
+      if (result.success.true) {
         setStatus({ type: "success", message: "Message sent successfully! We will contact you shortly." });
         setFormData({ name: "", phone: "", email: "", service: "", message: "" }); // Reset form
         navigate("/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you");
