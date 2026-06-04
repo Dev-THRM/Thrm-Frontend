@@ -56,6 +56,7 @@ export default function Hero() {
         key={isMobile ? "mobile-video" : "desktop-video"}
         autoPlay
         loop
+        muted
         playsInline
         className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
         poster="/hero1.png"
