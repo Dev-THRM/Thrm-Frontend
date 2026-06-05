@@ -1,28 +1,44 @@
-import { useState, useEffect, useRef } from "react";
-import { 
-  FaInstagram, 
-  FaFacebookF, 
-  FaWhatsapp, 
-  FaLinkedinIn 
+import { useState, useEffect } from "react";
+import {
+  FaInstagram,
+  FaFacebookF,
+  FaWhatsapp,
+  FaLinkedinIn,
 } from "react-icons/fa6";
 
 // Social links
 const socials = [
-  { icon: FaInstagram, label: "Instagram", href: "https://www.instagram.com/thrm.digitalmarketing_agency/" },
-  { icon: FaFacebookF, label: "Facebook", href: "https://www.facebook.com/people/THRM-Digital-Marketing-Agency/61554950021351/" },
-  { icon: FaWhatsapp, label: "WhatsApp", href: "https://api.whatsapp.com/send/?phone=919004500657&text&type=phone_number&app_absent=0" },
-  { icon: FaLinkedinIn, label: "LinkedIn", href: "https://www.linkedin.com/company/thrmdigitalmarketingagency/" },
+  {
+    icon: FaInstagram,
+    label: "Instagram",
+    href: "https://www.instagram.com/thrm.digitalmarketing_agency/",
+  },
+  {
+    icon: FaFacebookF,
+    label: "Facebook",
+    href: "https://www.facebook.com/people/THRM-Digital-Marketing-Agency/61554950021351/",
+  },
+  {
+    icon: FaWhatsapp,
+    label: "WhatsApp",
+    href: "https://api.whatsapp.com/send/?phone=919004500657&text&type=phone_number&app_absent=0",
+  },
+  {
+    icon: FaLinkedinIn,
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/thrmdigitalmarketingagency/",
+  },
 ];
 
 export default function Hero() {
-  const videoRef = useRef(null);
-
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== "undefined") {
       return window.innerWidth <= 768;
     }
     return false;
   });
+
+  const [videoReady, setVideoReady] = useState(false);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -34,35 +50,61 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    // Only force play to bypass iOS restrictions. 
-    // DO NOT call .load() here anymore, it causes severe lag!
-    if (videoRef.current) {
-      const playPromise = videoRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.warn("Autoplay was prevented by the browser.", error);
-        });
-      }
-    }
+    setVideoReady(false);
   }, [isMobile]);
+
+  const videoSrc = isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4";
+  const fallbackImage = isMobile
+    ? "/home/mobile-banner.png"
+    : "/home/desktop-banner.png";
 
   return (
     <section className="relative h-[100dvh] w-full overflow-hidden bg-[#02040a]">
-      
-      {/* Background Video */}
-      <video
-        ref={videoRef}
-        key={isMobile ? "mobile-video" : "desktop-video"}
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
-        poster="/hero1.png"
-        // Putting the src directly on the video tag is faster for React rendering
-        src={isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4"}
+      {/* Fallback image */}
+      <img
+        src={fallbackImage}
+        alt="THRM Digital Marketing Agency hero banner"
+        className={`absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0 transition-opacity duration-700 ${
+          videoReady ? "opacity-0" : "opacity-100"
+        }`}
+        loading="eager"
+        fetchPriority="high"
       />
+
+      {/* Render only one media type at a time */}
+      {isMobile ? (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster={fallbackImage}
+          onCanPlay={() => setVideoReady(true)}
+          onLoadedData={() => setVideoReady(true)}
+          className={`absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0 transition-opacity duration-700 ${
+            videoReady ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      ) : (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster={fallbackImage}
+          onCanPlay={() => setVideoReady(true)}
+          onLoadedData={() => setVideoReady(true)}
+          className={`absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0 transition-opacity duration-700 ${
+            videoReady ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      )}
 
       {/* Overlays */}
       <div
@@ -94,7 +136,6 @@ export default function Hero() {
           ))}
         </div>
       </div>
-
     </section>
   );
 }
