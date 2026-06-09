@@ -203,12 +203,21 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <div className="flex items-center gap-3 text-white/60 text-sm">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 border border-white/10 shrink-0">
-                    <MapPin className="h-3.5 w-3.5" />
+                <a
+                  href="https://maps.google.com/?q=1st+Floor+Office+No+04+Seasons+Harmony+Commercial+Building+Near+Ayush+NX+Kalyan+West+421301"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <div className="flex items-center gap-3 text-white/60 text-sm hover:text-white transition-colors">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/5 border border-white/10 shrink-0">
+                      <MapPin className="h-3.5 w-3.5" />
+                    </div>
+                    <span>
+                      1st FLOOR, OFFICE NO-04 SEASONS HARMONY, COMMERCIAL BUILDING NR AYUSH NX KALYAN WEST, 421301
+                    </span>
                   </div>
-                  1st FLOOR, OFFICE NO-04 SEASONS HARMONY, COMMERCIAL BUILDING NR AYUSH NX KALYAN WEST, 421301
-                </div>
+                </a>
               </li>
             </ul>
           </div>
