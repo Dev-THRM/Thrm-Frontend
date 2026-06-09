@@ -33,9 +33,16 @@ const footerServices = [
 const footerLocations = [
   { name: "Services in Mumbai", path: "/services" },
   { name: "Services in Delhi", path: "/services" },
-  { name: "Services in Pune", path: "/services" },
   { name: "Services in Bangalore", path: "/services" },
   { name: "Services in Hyderabad", path: "/services" },
+  { name: "Services in Pune", path: "/services" },
+  { name: "Services in Chennai", path: "/services" },
+  { name: "Services in Kolkata", path: "/services" },
+  { name: "Services in Ahmedabad", path: "/services" },
+  { name: "Services in Jaipur", path: "/services" },
+  { name: "Services in Gurugram", path: "/services" },
+  { name: "Services in Noida", path: "/services" },
+  { name: "Services in Thane", path: "/services" }
 ];
 
 const socialLinks = [
