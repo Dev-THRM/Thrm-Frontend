@@ -185,9 +185,11 @@ return (
                 <div className="h-1 w-12 bg-white rounded-full" />
                 <div className="h-1 w-8 bg-white/40 rounded-full" />
               </div>
-              <div className="bg-white/5 p-3 rounded-2xl border border-white/10 transition-colors hover:bg-white/10">
-                <FiArrowUpRight className="text-white text-xl" />
-              </div>
+              <Link to="/services">
+                <div className="bg-white/5 p-3 rounded-2xl border border-white/10 transition-colors hover:bg-white/10">
+                  <FiArrowUpRight className="text-white text-xl" />
+                </div>
+              </Link>
             </div>
 
             {/* Progress items */}
