@@ -2,6 +2,7 @@ import { useRef } from "react";
 import abouta from "../assets/aboutsection/about-about.png";
 import heroBg from "../assets/aboutsection/about-hero.png"
 import { motion, useScroll, useSpring } from "framer-motion";
+import {Link} from "react-router-dom";
 import { 
   ShieldCheck, 
   Lightbulb, 
@@ -322,9 +323,12 @@ export default function AboutPage() {
             Most importantly, we measure our success by the success of our clients. When your brand grows, we grow too — and that philosophy has made us one of the top digital marketing companies in India.
           </p>
 
-          <button className="relative z-10 group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-black transition-all hover:bg-gray-200 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+          <Link 
+            to="/contact" 
+            className="relative z-10 group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-black transition-all hover:bg-gray-200 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+          >
             Partner with THRM <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </button>
+          </Link>
         </motion.div>
       </section>
 
