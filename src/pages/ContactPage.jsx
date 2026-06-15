@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
   MapPin, 
@@ -16,7 +16,7 @@ import {
 import InstagramFeed from "../components/InstagramFeed.jsx"; 
 
 export default function ContactPage() {
-
+  const navigate = useNavigate();
   const containerRef = useRef(null);
   
   // Form State
@@ -82,10 +82,9 @@ export default function ContactPage() {
         }),
       });
 
-      const navigate = useNavigation();
       const result = await response.json();
 
-      if (result.success.true) {
+      if (result.success) {
         setStatus({ type: "success", message: "Message sent successfully! We will contact you shortly." });
         setFormData({ name: "", phone: "", email: "", service: "", message: "" }); // Reset form
         navigate("/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you");
@@ -93,7 +92,7 @@ export default function ContactPage() {
         setStatus({ type: "error", message: "Something went wrong. Please try again." });
       }
     } catch (error) {
-      setStatus({ type: "error", message: "Failed to send message. Please check your connection." });
+      setStatus({ type: "error", message: "Failed to send message. Please check your connection."});
     } finally {
       setIsSubmitting(false);
     }
