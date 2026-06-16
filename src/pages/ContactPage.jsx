@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { 
   MapPin, 
@@ -17,6 +17,12 @@ import InstagramFeed from "../components/InstagramFeed.jsx";
 
 export default function ContactPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const getInitialService = () => {
+    const params = new URLSearchParams(location.search);
+    return params.get("service") || location.state?.service || "";
+  }
   const containerRef = useRef(null);
   
   // Form State
@@ -24,9 +30,16 @@ export default function ContactPage() {
     name: "",
     phone: "",
     email: "",
-    service: "",
+    service: getInitialService(),
     message: ""
   });
+
+  useEffect(() => {
+    const selectedService = getInitialService();
+    if (selectedService) {
+      setFormData((prev) => ({ ...prev, service: selectedService }));
+    }
+  }, [location]);
 
   // UI State
   const [isSubmitting, setIsSubmitting] = useState(false);
