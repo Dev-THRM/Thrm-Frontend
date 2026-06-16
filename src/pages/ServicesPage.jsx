@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
+import { useNavigate } from "react-router-dom"; 
 import { 
   Search, 
   Share2, 
@@ -135,8 +136,18 @@ const detailedServices = [
   }
 ];
 
+const serviceRouteMap = {
+  "seo": "seo",
+  "social-media": "social",
+  "web-dev": "web",
+  "influencer": "influencer",
+  "branding": "branding",
+  "content": "branding" // You can change this if you add a specific Content option to your contact form later!
+};
+
 export default function ServicesPage() {
   const containerRef = useRef(null);
+  const navigate = useNavigate();
 
   // Top Progress Bar for long reading pages
   const { scrollYProgress } = useScroll();
@@ -297,7 +308,10 @@ export default function ServicesPage() {
 
                   {/* CTA Button */}
                   <div className="pt-4">
-                    <button className="group flex items-center gap-3 rounded-xl bg-white/5 border border-white/10 px-6 py-4 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/30">
+                    <button onClick={() => {
+                      const targetKey = serviceRouteMap[service.id] || "";
+                      navigate(`/contact?service=${targetKey}`, {state: {service: targetKey}});
+                    }} className="group flex items-center gap-3 rounded-xl bg-white/5 border border-white/10 px-6 py-4 text-sm font-bold text-white transition hover:bg-white/10 hover:border-white/30">
                       Discuss this service
                       <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${service.color}`} />
                     </button>
