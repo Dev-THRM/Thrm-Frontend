@@ -51,10 +51,9 @@ export default function Hero() {
   const fallbackImage = isMobile
     ? "/home/mobile-banner.png"
     : "/home/desktop-banner.png";
-
   return (
     <section className="relative h-[100dvh] w-full overflow-hidden bg-[#02040a]">
-      {/* Video Banner (loaded eagerly with native poster as a fallback) */}
+      {/* Video Banner (loaded eagerly without fallback image delay) */}
       <video
         key={videoSrc}
         autoPlay
@@ -62,7 +61,6 @@ export default function Hero() {
         muted
         playsInline
         preload="auto"
-        poster={fallbackImage}
         className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
       >
         <source src={videoSrc} type="video/mp4" />
