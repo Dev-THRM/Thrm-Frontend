@@ -40,13 +40,14 @@ export default function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => setIsPreloading(false), 2500);
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     // Wrap everything in AuthProvider!
     <AuthProvider>
-      
+      {/* <CustomCursor /> */}
+
       <AnimatePresence>
         {isPreloading && <Preloader />}
       </AnimatePresence>
@@ -68,8 +69,8 @@ export default function App() {
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blogs/:id" element={<SingleBlogPage />} />
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you" element={<TYP/>}/>
-          
+          <Route path="/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you" element={<TYP />} />
+
           <Route path="/services/social" element={<SocialMediaPage />} />
           <Route path="/services/seo" element={<SeoPage />} />
           <Route path="/services/web" element={<WebDevPage />} />
@@ -90,13 +91,13 @@ export default function App() {
               <h1 className="text-6xl font-black mb-4">404</h1>
               <p className="text-xl text-white/60">Page not found</p>
             </div>
-          }/>
+          } />
         </Routes>
         <TaraChatbot />
       </main>
 
       {/* === ADD THE FLOATING BUTTONS HERE === */}
-        <FloatingButtons />
+      <FloatingButtons />
 
       <Footer />
     </AuthProvider>
