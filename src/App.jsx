@@ -26,6 +26,8 @@ import InfluencerPage from "./pages/InfluencerPage.jsx";
 import BrandingPage from "./pages/BrandingPage.jsx";
 import ContentPage from "./pages/ContentPage.jsx";
 import OurBrandingPage from "./pages/OurBrandingPage.jsx";
+import FoundersPage from "./pages/FoundersPage.jsx";
+import SingleFounderPage from "./pages/SingleFounderPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
@@ -41,14 +43,14 @@ export default function App() {
 
   useEffect(() => {
     const timer = setTimeout(() => setIsPreloading(false), 2500);
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     // Wrap everything in AuthProvider!
     <AuthProvider>
       <CustomCursor />
-      
+
       <AnimatePresence>
         {isPreloading && <Preloader />}
       </AnimatePresence>
@@ -70,14 +72,17 @@ export default function App() {
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blogs/:id" element={<SingleBlogPage />} />
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you" element={<TYP/>}/>
-          
+          <Route path="/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you" element={<TYP />} />
+
           <Route path="/services/social" element={<SocialMediaPage />} />
           <Route path="/services/seo" element={<SeoPage />} />
           <Route path="/services/web" element={<WebDevPage />} />
           <Route path="/services/influencer" element={<InfluencerPage />} />
           <Route path="/services/branding" element={<BrandingPage />} />
           <Route path="/services/content" element={<ContentPage />} />
+
+          <Route path="/founders" element={<FoundersPage />} />
+          <Route path="/founders/:slug" element={<SingleFounderPage />} />
 
           {/* --- SECURE ADMIN ROUTES --- */}
           <Route element={<ProtectedRoute />}>
@@ -92,13 +97,13 @@ export default function App() {
               <h1 className="text-6xl font-black mb-4">404</h1>
               <p className="text-xl text-white/60">Page not found</p>
             </div>
-          }/>
+          } />
         </Routes>
         <TaraChatbot />
       </main>
 
       {/* === ADD THE FLOATING BUTTONS HERE === */}
-        <FloatingButtons />
+      <FloatingButtons />
 
       <Footer />
     </AuthProvider>
