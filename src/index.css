@@ -2,16 +2,6 @@
 @import "tailwindcss";
 
 
-/* Hides default cursor across the entire app */
-* {
-  cursor: none !important;
-}
-
-/* Ensure links and buttons don't switch back to the default 'pointer' hand */
-a, button, input, select, textarea {
-  cursor: none !important;
-}
-
 html,
 body,
 #root {

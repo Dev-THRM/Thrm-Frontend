@@ -32,7 +32,6 @@ import AdminLogin from "./pages/admin/AdminLogin.jsx";
 import Preloader from "./components/Common/Preloader.jsx";
 
 import TaraChatbot from "./components/Home/TaraChatbot.jsx";
-import CustomCursor from "./components/CustomCursor.jsx";
 import FloatingButtons from "./components/Common/FloatingButtons.jsx";
 import { TYP } from "./pages/ThankYouPage.jsx";
 
@@ -47,7 +46,6 @@ export default function App() {
   return (
     // Wrap everything in AuthProvider!
     <AuthProvider>
-      <CustomCursor />
       
       <AnimatePresence>
         {isPreloading && <Preloader />}
