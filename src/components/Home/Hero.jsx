@@ -38,6 +38,8 @@ export default function Hero() {
     return false;
   });
 
+  const [videoReady, setVideoReady] = useState(false);
+
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -47,24 +49,59 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
+  useEffect(() => {
+    setVideoReady(false);
+  }, [isMobile]);
+
   const videoSrc = isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4";
   const fallbackImage = isMobile
     ? "/home/mobile-banner.png"
     : "/home/desktop-banner.png";
+
   return (
     <section className="relative h-[100dvh] w-full overflow-hidden bg-[#02040a]">
-      {/* Video Banner (loaded eagerly without fallback image delay) */}
-      <video
-        key={videoSrc}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        className="absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0"
-      >
-        <source src={videoSrc} type="video/mp4" />
-      </video>
+      {/* Fallback image */}
+      <img
+        src={fallbackImage}
+        alt="THRM Digital Marketing Agency hero banner"
+        className={`absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0 transition-opacity duration-700 ${videoReady ? "opacity-0" : "opacity-100"
+          }`}
+        loading="eager"
+        fetchPriority="high"
+      />
+
+      {/* Render only one media type at a time */}
+      {isMobile ? (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster={fallbackImage}
+          onCanPlay={() => setVideoReady(true)}
+          onLoadedData={() => setVideoReady(true)}
+          className={`absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0 transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"
+            }`}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      ) : (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          poster={fallbackImage}
+          onCanPlay={() => setVideoReady(true)}
+          onLoadedData={() => setVideoReady(true)}
+          className={`absolute inset-0 h-full w-full object-cover object-[60%_center] md:object-center z-0 transition-opacity duration-700 ${videoReady ? "opacity-100" : "opacity-0"
+            }`}
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      )}
 
       {/* Overlays */}
       <div
