@@ -51,13 +51,13 @@ export default function CustomCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[10000] overflow-hidden">
-      
+
       {/* Exhaust Particle 3 (Furthest Behind) */}
       <motion.div
         style={{ x: trail3X, y: trail3Y }}
         className="absolute top-0 left-0 h-1.5 w-1.5 -ml-[3px] -mt-[3px] rounded-full bg-white/20 blur-[1px]"
       />
-      
+
       {/* Exhaust Particle 2 */}
       <motion.div
         style={{ x: trail2X, y: trail2Y }}
