@@ -1,10 +1,10 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowLeft, ArrowRight, Mic2, Quote, Tag, ExternalLink, Play } from "lucide-react";
-import { founders } from "./FoundersPage";
+import { API_BASE_URL } from "../config";
 
-// ── Inline brand SVGs (lucide-react dropped brand icons) ─────────────────────
+// ── Inline brand SVGs ────────────────────────────────────────────────────────
 const InstagramIcon = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -94,7 +94,36 @@ export default function SingleFounderPage() {
     restDelta: 0.001,
   });
 
+  const [founders, setFounders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFounders = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/founders`);
+        const result = await response.json();
+        if (result.success) {
+          setFounders(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching founders list:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFounders();
+  }, []);
+
   const founder = founders.find((f) => f.slug === slug);
+
+  // ── Loading state UI ───────────────────────────────────────────────────────
+  if (loading) {
+    return (
+      <main className="bg-[#02040a] text-white min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+      </main>
+    );
+  }
 
   // ── 404 ────────────────────────────────────────────────────────────────────
   if (!founder) {
@@ -115,7 +144,7 @@ export default function SingleFounderPage() {
   const currentIndex = founders.findIndex((f) => f.slug === slug);
   const prevFounder = founders[currentIndex - 1] || null;
   const nextFounder = founders[currentIndex + 1] || null;
-  const embedUrl = getInstagramEmbed(founder.instagramVideoUrl);
+  const embedUrl = getInstagramEmbed(founder.instaUrl);
 
   return (
     <main
@@ -167,7 +196,7 @@ export default function SingleFounderPage() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
               <Mic2 className="w-4 h-4 text-white" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
-                {founder.episode} · Founders Series
+                EP {String(founder.episode).padStart(2, '0')} · Founders Series
               </span>
             </div>
 
@@ -188,7 +217,7 @@ export default function SingleFounderPage() {
 
             {/* Topics */}
             <div className="flex flex-wrap gap-2 mb-10">
-              {founder.topics.map((t) => (
+              {founder.topics?.map((t) => (
                 <span
                   key={t}
                   className="flex items-center gap-1.5 text-[0.7rem] font-semibold tracking-widest uppercase px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/50"
@@ -217,7 +246,7 @@ export default function SingleFounderPage() {
           >
             <div className="relative aspect-[3/4] w-full max-w-[480px] mx-auto overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 shadow-2xl">
               <img
-                src={founder.image}
+                src={founder.imageUrl}
                 alt={founder.name}
                 className="w-full h-full object-cover object-top"
               />
@@ -234,7 +263,7 @@ export default function SingleFounderPage() {
               <p className="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-white/40 mb-1">
                 Featured Interview
               </p>
-              <p className="text-sm font-bold text-white">{founder.episode}</p>
+              <p className="text-sm font-bold text-white">EP {String(founder.episode).padStart(2, '0')}</p>
             </motion.div>
           </motion.div>
         </div>
@@ -315,7 +344,7 @@ export default function SingleFounderPage() {
                     </p>
                   </div>
                   <a
-                    href={founder.instagramVideoUrl}
+                    href={founder.instaUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-bold text-sm transition-all hover:shadow-[0_0_30px_rgba(253,29,29,0.3)] hover:scale-105"
@@ -340,7 +369,7 @@ export default function SingleFounderPage() {
                 Watch the original reel directly on our Instagram profile.
               </p>
               <a
-                href={founder.instagramVideoUrl}
+                href={founder.instaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center justify-between w-full px-5 py-3.5 rounded-2xl bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-bold text-sm transition-all hover:shadow-[0_0_24px_rgba(253,29,29,0.3)] hover:scale-[1.02]"
@@ -359,6 +388,17 @@ export default function SingleFounderPage() {
                 <SocialHandles social={founder.social} />
               </div>
             )}
+
+            <div className="p-7 rounded-3xl bg-white/[0.02] border border-white/10">
+              <p className="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-white/30 mb-3">
+                Follow THRM
+              </p>
+              <SocialHandles social={{
+                instagram: "https://www.instagram.com/thrm.digitalmarketing_agency/",
+                linkedin: "https://www.linkedin.com/company/thrmdigitalmarketingagency/",
+                twitter: "https://x.com/thrm_social"
+              }} />
+            </div>
           </div>
         </motion.div>
       </section>
@@ -385,7 +425,7 @@ export default function SingleFounderPage() {
                     <p className="font-bold text-white/80 group-hover:text-white transition-colors">
                       {prevFounder.name}
                     </p>
-                    <p className="text-sm text-white/40">{prevFounder.episode}</p>
+                    <p className="text-sm text-white/40">EP {String(prevFounder.episode).padStart(2, '0')}</p>
                   </div>
                 </div>
               </Link>
@@ -400,7 +440,7 @@ export default function SingleFounderPage() {
                     <p className="font-bold text-white/80 group-hover:text-white transition-colors">
                       {nextFounder.name}
                     </p>
-                    <p className="text-sm text-white/40">{nextFounder.episode}</p>
+                    <p className="text-sm text-white/40">EP {String(nextFounder.episode).padStart(2, '0')}</p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-white/30 group-hover:text-white transition-colors shrink-0" />
                 </div>

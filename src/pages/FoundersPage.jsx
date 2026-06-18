@@ -1,75 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Mic2, ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import Gunjan from "../assets/TeamImages/Founder.jpeg";
-import Sunny from "../assets/TeamImages/sunny.png";
-import Manas from "../assets/TeamImages/manas.jpeg";
-
-// ── FOUNDERS DATA ─────────────────────────────────────────────────────────────
-// Add / edit founders here. Each slug must match the route in App.jsx.
-// instagramVideoUrl  → the full URL of the Instagram reel / post
-// social             → social handles (leave null if not applicable)
-export const founders = [
-  {
-    id: 1,
-    slug: "gunjan-shidame",
-    name: "Gunjan Shidame",
-    title: "Co-Founder & CMO",
-    company: "THRM Digital",
-    image: Gunjan,
-    tagline: "Youngest CMO in the game.",
-    episode: "EP 01",
-    topics: ["Brand Strategy", "Gen-Z Marketing", "Entrepreneurship"],
-    bio: `Gunjan Shidame is the Co-Founder and Chief Marketing Officer of THRM Digital Marketing Agency. At just 20 years old, she is one of the youngest leaders in the industry, bringing a fresh and fearless perspective to the digital marketing world. Her journey is driven by a relentless passion for innovation, creativity, and delivering results that actually matter. Gunjan leads the THRM team with a vision to empower businesses through social media, web, and impactful ad campaigns. Under her leadership, the agency continues to set new benchmarks in the digital space.`,
-    quote: "You don't need decades of experience — you need the audacity to try.",
-    // Replace with the actual Instagram reel/post URL
-    instagramVideoUrl: "https://www.instagram.com/p/PLACEHOLDER_GUNJAN/",
-    social: {
-      instagram: "https://www.instagram.com/thrm.digital/",
-      linkedin: null,
-      twitter: null,
-    },
-  },
-  {
-    id: 2,
-    slug: "sunny-sharma",
-    name: "Sunny Sharma",
-    title: "Co-Founder & CEO",
-    company: "THRM Digital",
-    image: Sunny,
-    tagline: "The vision that built THRM.",
-    episode: "EP 02",
-    topics: ["Growth Hacking", "Performance Marketing", "Leadership"],
-    bio: `Sunny Sharma is the visionary Co-Founder and CEO of THRM Digital Marketing Agency. He has been instrumental in shaping THRM into a 360° digital marketing powerhouse known for delivering impactful results and building lasting client relationships. With a sharp eye for detail and a passion for helping brands thrive, he has spearheaded countless successful campaigns spanning social media management, performance marketing, influencer collaborations, and content creation.`,
-    quote: "Build systems that scale. Build culture that lasts.",
-    instagramVideoUrl: "https://www.instagram.com/p/PLACEHOLDER_SUNNY/",
-    social: {
-      instagram: "https://www.instagram.com/thrm.digital/",
-      linkedin: null,
-      twitter: null,
-    },
-  },
-  {
-    id: 3,
-    slug: "manas-patil",
-    name: "Manas Patil",
-    title: "Director IT",
-    company: "THRM Digital",
-    image: Manas,
-    tagline: "The engineer powering the vision.",
-    episode: "EP 03",
-    topics: ["Full-Stack Dev", "Product Thinking", "Tech Startups"],
-    bio: `Manas Patil is the Director of IT at THRM Digital, responsible for architecting the digital backbone of the agency and its clients. A passionate full-stack developer, he specialises in building high-performance web applications using React.js, Node.js, and MongoDB. His expertise spans both elegant front-end experiences and robust back-end infrastructure, ensuring THRM's digital products are fast, scalable, and future-proof.`,
-    quote: "Great code is invisible. Great design is unforgettable. The best products are both.",
-    instagramVideoUrl: "https://www.instagram.com/p/PLACEHOLDER_MANAS/",
-    social: {
-      instagram: "https://www.instagram.com/thrm.digital/",
-      linkedin: null,
-      twitter: null,
-    },
-  },
-];
+import { API_BASE_URL } from "../config";
 
 // ── FOUNDER CARD ──────────────────────────────────────────────────────────────
 function FounderCard({ founder, index }) {
@@ -86,14 +19,14 @@ function FounderCard({ founder, index }) {
           <div className="absolute top-5 left-5 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
             <Mic2 className="w-3 h-3 text-white/70" />
             <span className="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-white/70">
-              {founder.episode}
+              EP {String(founder.episode).padStart(2, '0')}
             </span>
           </div>
 
           {/* Photo */}
           <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
             <img
-              src={founder.image}
+              src={founder.imageUrl}
               alt={founder.name}
               loading="lazy"
               className="w-full h-full object-cover object-top brightness-90 transition-all duration-700 group-hover:scale-105 group-hover:brightness-100"
@@ -112,22 +45,22 @@ function FounderCard({ founder, index }) {
           {/* Info */}
           <div className="p-6">
             <div className="flex flex-wrap gap-2 mb-4">
-              {founder.topics.slice(0, 2).map((t) => (
+              {/* {founder.topics?.slice(0, 2).map((t) => (
                 <span
                   key={t}
                   className="text-[0.65rem] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50"
                 >
                   {t}
                 </span>
-              ))}
+              ))} */}
             </div>
 
             <h2 className="text-xl font-bold text-white mb-1">{founder.name}</h2>
             <p className="text-sm text-white/50 mb-4">{founder.title}</p>
 
-            <p className="text-sm text-white/70 italic leading-relaxed border-l-2 border-white/20 pl-4 mb-6">
+            {/* <p className="text-sm text-white/70 italic leading-relaxed border-l-2 border-white/20 pl-4 mb-6">
               "{founder.tagline}"
-            </p>
+            </p> */}
 
             <div className="flex items-center gap-2 text-white/40 group-hover:text-white transition-colors duration-300">
               <span className="text-xs font-bold tracking-widest uppercase">Watch Interview</span>
@@ -145,6 +78,26 @@ export default function FoundersPage() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  const [founders, setFounders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFounders = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/founders`);
+        const result = await response.json();
+        if (result.success) {
+          setFounders(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching founders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFounders();
+  }, []);
 
   return (
     <main ref={containerRef} className="bg-[#02040a] text-white min-h-screen relative overflow-hidden">
@@ -199,7 +152,7 @@ export default function FoundersPage() {
             className="flex flex-wrap justify-center gap-px rounded-2xl overflow-hidden border border-white/10"
           >
             {[
-              { value: `${founders.length}+`, label: "Episodes" },
+              { value: loading ? "-" : `${founders.length}+`, label: "Episodes" },
               { value: "100%", label: "Authentic" },
               { value: "∞", label: "Insights" },
             ].map((stat, i) => (
@@ -232,11 +185,19 @@ export default function FoundersPage() {
           <p className="text-white/40 text-sm">Click a card to watch the full interview.</p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {founders.map((founder, i) => (
-            <FounderCard key={founder.id} founder={founder} index={i} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center items-center h-40">
+            <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+          </div>
+        ) : founders.length === 0 ? (
+          <div className="text-center text-white/50 p-8">No founder episodes found.</div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {founders.map((founder, i) => (
+              <FounderCard key={founder._id} founder={founder} index={i} />
+            ))}
+          </div>
+        )}
       </section>
 
     </main>
