@@ -11,7 +11,8 @@ import {
   Edit,
   Trash2,
   X,
-  LogOut
+  LogOut,
+  Mic2
 } from "lucide-react";
 import { useAuth } from "../../context/RouteContext.jsx"; // Assuming this is the correct path from earlier
 import { API_BASE_URL } from "../../config";
@@ -32,6 +33,10 @@ export const AdminDashboard = () => {
   // ------------------ blogs ------------------
   const [blogs, setBlogs] = useState([]);
   const [loadingb, setLoadingb] = useState(true);
+
+  // ------------------ founders ------------------
+  const [founders, setFounders] = useState([]);
+  const [loadingf, setLoadingf] = useState(true);
 
   // n = none, c = client edit, b = blog edit
   const [edittoggle, setEditToggle] = useState("n");
@@ -63,6 +68,21 @@ export const AdminDashboard = () => {
       }
     };
     fetchBlogs();
+  }, []);
+
+  useEffect(() => {
+    const fetchFounders = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/founders`);
+        const result = await response.json();
+        if (result.success) setFounders(result.data);
+      } catch (err) {
+        console.error("Error fetching founders:", err);
+      } finally {
+        setLoadingf(false);
+      }
+    };
+    fetchFounders();
   }, []);
 
   const createExcerpt = (htmlString) => {
@@ -133,6 +153,26 @@ export const AdminDashboard = () => {
       if (!res.ok) throw new Error("Failed to delete blog");
 
       setBlogs((prev) => prev.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
+
+  const deleteFounder = async (id) => {
+    if (!id) return;
+    if (!window.confirm("Are you sure you want to delete this founder episode?")) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/founders/${id}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Failed to delete founder");
+
+      setFounders((prev) => prev.filter((item) => item._id !== id));
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -286,6 +326,12 @@ export const AdminDashboard = () => {
             >
               <Plus className="w-5 h-5" /> Add Blog Post
             </Link>
+            <Link
+              to="/admin/founders"
+              className="flex items-center gap-2 bg-white/5 border border-white/20 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition-all"
+            >
+              <Plus className="w-5 h-5" /> Add Founder Episode
+            </Link>
           </div>
         </div>
 
@@ -429,6 +475,74 @@ export const AdminDashboard = () => {
                       <button
                         className="text-red-400/70 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-semibold"
                         onClick={() => deleteBlog(blog._id)}
+                      >
+                        <Trash2 className="w-4 h-4" /> Delete
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* ================= FOUNDERS SECTION ================= */}
+        <div className="mt-20">
+          <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
+            <Mic2 className="w-6 h-6 text-white" />
+            <h2 className="text-3xl font-bold text-white">Manage Founders Series</h2>
+          </div>
+
+          {loadingf ? (
+            <div className="flex justify-center items-center h-40">
+              <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+            </div>
+          ) : founders.length === 0 ? (
+            <div className="text-center text-white/50 p-8">No founder episodes added yet.</div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {founders.map((founder, idx) => (
+                <motion.div
+                  key={founder._id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] overflow-hidden shadow-xl hover:border-white/30 transition-all duration-300"
+                >
+                  <div className="aspect-[3/4] overflow-hidden relative bg-white/5">
+                    <img
+                      src={founder.imageUrl}
+                      alt={founder.name}
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
+                    />
+                    <div className="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
+                      <span className="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-white/70">
+                        EP {String(founder.episode).padStart(2, '0')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-6 flex flex-col flex-1">
+                    <h3 className="text-xl font-bold mb-1">{founder.name}</h3>
+                    <p className="text-white/50 text-sm mb-3">{founder.title} &mdash; {founder.company}</p>
+                    <p className="text-white/40 text-xs italic line-clamp-2 mb-4">
+                      "{founder.quote}"
+                    </p>
+                  </div>
+
+                  <div className="flex justify-between items-center px-6 py-4 border-t border-white/5 bg-black/40 mt-auto">
+                    <a
+                      href={`/founders/${founder.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-white font-bold hover:text-gray-300 transition-colors flex items-center gap-1"
+                    >
+                      View Page <ArrowRight className="w-4 h-4" />
+                    </a>
+                    <div>
+                      <button
+                        className="text-red-400/70 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-semibold"
+                        onClick={() => deleteFounder(founder._id)}
                       >
                         <Trash2 className="w-4 h-4" /> Delete
                       </button>
