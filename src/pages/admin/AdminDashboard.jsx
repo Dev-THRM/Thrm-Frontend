@@ -12,7 +12,8 @@ import {
   Trash2,
   X,
   LogOut,
-  Mic2
+  Mic2,
+  ChevronDown
 } from "lucide-react";
 import { useAuth } from "../../context/RouteContext.jsx"; // Assuming this is the correct path from earlier
 import { API_BASE_URL } from "../../config";
@@ -42,6 +43,11 @@ export const AdminDashboard = () => {
   const [edittoggle, setEditToggle] = useState("n");
   const [editingClient, setEditingClient] = useState(null);
   const [editingBlog, setEditingBlog] = useState(null);
+
+  // Section collapse states
+  const [isClientsExpanded, setIsClientsExpanded] = useState(false);
+  const [isBlogsExpanded, setIsBlogsExpanded] = useState(false);
+  const [isFoundersExpanded, setIsFoundersExpanded] = useState(false);
 
   const [clientEditForm, setClientEditForm] = useState({
     name: "",
@@ -337,10 +343,29 @@ export const AdminDashboard = () => {
 
         {/* ================= CLIENTS SECTION ================= */}
         <div className="mb-20">
-          <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
-            <Briefcase className="w-6 h-6 text-white" />
-            <h2 className="text-3xl font-bold text-white">Manage Clients</h2>
-          </div>
+          <button
+            onClick={() => setIsClientsExpanded(!isClientsExpanded)}
+            className="w-full flex items-center justify-between border-b border-white/10 pb-4 mb-8 text-left group cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <Briefcase className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+              <h2 className="text-3xl font-bold text-white">Manage Clients</h2>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50">
+                {clients.length}
+              </span>
+            </div>
+            <ChevronDown className={`w-6 h-6 text-white/50 group-hover:text-white transition-transform duration-300 ${isClientsExpanded ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isClientsExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+              >
 
           {loading ? (
             <div className="flex justify-center items-center h-40">
@@ -414,14 +439,36 @@ export const AdminDashboard = () => {
               ))}
             </div>
           )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* ================= BLOGS SECTION ================= */}
-        <div>
-          <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
-            <PenTool className="w-6 h-6 text-white" />
-            <h2 className="text-3xl font-bold text-white">Manage Blogs</h2>
-          </div>
+        <div className="mb-20">
+          <button
+            onClick={() => setIsBlogsExpanded(!isBlogsExpanded)}
+            className="w-full flex items-center justify-between border-b border-white/10 pb-4 mb-8 text-left group cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <PenTool className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+              <h2 className="text-3xl font-bold text-white">Manage Blogs</h2>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50">
+                {blogs.length}
+              </span>
+            </div>
+            <ChevronDown className={`w-6 h-6 text-white/50 group-hover:text-white transition-transform duration-300 ${isBlogsExpanded ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isBlogsExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+              >
 
           {loadingb ? (
             <div className="flex justify-center items-center h-40">
@@ -484,14 +531,36 @@ export const AdminDashboard = () => {
               ))}
             </div>
           )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* ================= FOUNDERS SECTION ================= */}
         <div className="mt-20">
-          <div className="flex items-center gap-4 mb-8 border-b border-white/10 pb-4">
-            <Mic2 className="w-6 h-6 text-white" />
-            <h2 className="text-3xl font-bold text-white">Manage Founders Series</h2>
-          </div>
+          <button
+            onClick={() => setIsFoundersExpanded(!isFoundersExpanded)}
+            className="w-full flex items-center justify-between border-b border-white/10 pb-4 mb-8 text-left group cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <Mic2 className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+              <h2 className="text-3xl font-bold text-white">Manage Founders Series</h2>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50">
+                {founders.length}
+              </span>
+            </div>
+            <ChevronDown className={`w-6 h-6 text-white/50 group-hover:text-white transition-transform duration-300 ${isFoundersExpanded ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isFoundersExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+              >
 
           {loadingf ? (
             <div className="flex justify-center items-center h-40">
@@ -552,6 +621,9 @@ export const AdminDashboard = () => {
               ))}
             </div>
           )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
