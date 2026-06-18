@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { 
   User, 
-  Tag, 
+  Tag,
   Briefcase, 
   Film, 
   Quote as QuoteIcon, 
@@ -42,8 +42,6 @@ export default function AdminFounders() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
-  const [tagline, setTagline] = useState("");
-  const [topicsInput, setTopicsInput] = useState("");
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
   const [episode, setEpisode] = useState("");
@@ -100,8 +98,6 @@ export default function AdminFounders() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("slug", slug);
-    formData.append("tagline", tagline);
-    formData.append("topics", topicsInput);
     formData.append("title", title);
     formData.append("company", company);
     formData.append("episode", episode);
@@ -134,8 +130,6 @@ export default function AdminFounders() {
         // Reset form
         setName("");
         setSlug("");
-        setTagline("");
-        setTopicsInput("");
         setTitle("");
         setCompany("");
         setEpisode("");
@@ -240,29 +234,7 @@ export default function AdminFounders() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-white/70 ml-1 flex items-center gap-2">
-                  <QuoteIcon className="w-4 h-4 text-white" /> Tagline *
-                </label>
-                <input 
-                  type="text" required value={tagline} onChange={(e) => setTagline(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white/50 focus:bg-white/10 transition-all"
-                  placeholder="e.g. Youngest CMO in the game."
-                />
-              </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-white/70 ml-1 flex items-center gap-2">
-                  <Tag className="w-4 h-4 text-white" /> Topics (comma-separated)
-                </label>
-                <input 
-                  type="text" value={topicsInput} onChange={(e) => setTopicsInput(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white/50 focus:bg-white/10 transition-all"
-                  placeholder="e.g. Brand Strategy, Gen-Z Marketing, Entrepreneurship"
-                />
-              </div>
-            </div>
           </div>
 
           {/* Section 2: Show Details & Quote */}

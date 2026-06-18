@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { ArrowLeft, ArrowRight, Mic2, Quote, Tag, ExternalLink, Play } from "lucide-react";
+import { ArrowLeft, ArrowRight, Mic2, Quote, ExternalLink, Play } from "lucide-react";
 import { API_BASE_URL } from "../config";
 
 // ── Inline brand SVGs ────────────────────────────────────────────────────────
@@ -215,17 +215,7 @@ export default function SingleFounderPage() {
               <SocialHandles social={founder.social} />
             </div>
 
-            {/* Topics */}
-            <div className="flex flex-wrap gap-2 mb-10">
-              {founder.topics?.map((t) => (
-                <span
-                  key={t}
-                  className="flex items-center gap-1.5 text-[0.7rem] font-semibold tracking-widest uppercase px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/50"
-                >
-                  <Tag className="w-3 h-3" /> {t}
-                </span>
-              ))}
-            </div>
+
 
             {/* Pull Quote */}
             <div className="relative pl-6 border-l-2 border-white/20">

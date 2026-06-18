@@ -44,23 +44,12 @@ function FounderCard({ founder, index }) {
 
           {/* Info */}
           <div className="p-6">
-            <div className="flex flex-wrap gap-2 mb-4">
-              {/* {founder.topics?.slice(0, 2).map((t) => (
-                <span
-                  key={t}
-                  className="text-[0.65rem] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50"
-                >
-                  {t}
-                </span>
-              ))} */}
-            </div>
+
 
             <h2 className="text-xl font-bold text-white mb-1">{founder.name}</h2>
             <p className="text-sm text-white/50 mb-4">{founder.title}</p>
 
-            {/* <p className="text-sm text-white/70 italic leading-relaxed border-l-2 border-white/20 pl-4 mb-6">
-              "{founder.tagline}"
-            </p> */}
+
 
             <div className="flex items-center gap-2 text-white/40 group-hover:text-white transition-colors duration-300">
               <span className="text-xs font-bold tracking-widest uppercase">Watch Interview</span>
