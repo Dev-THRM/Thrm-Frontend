@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PenTool, ArrowRight, Calendar } from "lucide-react";
+import { API_BASE_URL } from "../config";
 
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState([]);
@@ -10,7 +11,7 @@ export default function BlogsPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch("https://thrmbackend.in/api/blogs");
+        const response = await fetch(`${API_BASE_URL}/api/blogs`);
         const result = await response.json();
         if (result.success) setBlogs(result.data);
       } catch (err) {

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css"; 
 import { CheckCircle2, AlertCircle, ArrowLeft } from "lucide-react";
+import { API_BASE_URL } from "../../config";
 
 // --- FIX: Strict Quill Configuration ---
 // Defines the toolbar options
@@ -43,7 +44,7 @@ export default function AdminBlogs() {
     formData.append("image", image);
 
     try {
-      const response = await fetch("https://thrmbackend.in/api/admin/b", {
+      const response = await fetch(`${API_BASE_URL}/api/admin/b`, {
         method: "POST",
         credentials: "include",
         body: formData,

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Lock, User, ArrowRight, ShieldAlert } from "lucide-react"; 
 import logo from "../../assets/logo.png"; 
 import { useAuth } from "../../context/RouteContext.jsx"; // <-- IMPORTANT: Import your Auth Context
+import { API_BASE_URL } from "../../config";
 
 export default function AdminLogin() {
   const [name, setName] = useState("");
@@ -20,7 +21,7 @@ export default function AdminLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("https://thrmbackend.in/api/admin/login", {
+      const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, password }),

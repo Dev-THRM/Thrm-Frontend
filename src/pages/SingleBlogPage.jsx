@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowLeft, Calendar, User } from "lucide-react";
+import { API_BASE_URL } from "../config";
 
 export default function SingleBlogPage() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ export default function SingleBlogPage() {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`https://thrmbackend.in/api/blogs/${id}`);
+        const response = await fetch(`${API_BASE_URL}/api/blogs/${id}`);
         const result = await response.json();
         if (result.success) setBlog(result.data);
       } catch (err) {
