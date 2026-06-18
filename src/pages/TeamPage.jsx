@@ -15,6 +15,7 @@ import Hanisha from "../../src/assets/TeamImages/hanisha.jpeg"
 import Manmeet from "../../src/assets/TeamImages/manmeet.jpeg"
 import Vedant from "../../src/assets/TeamImages/vedant.jpeg"
 import Mitali from "../../src/assets/TeamImages/mitali.jpeg"
+import Sneha from "../../src/assets/TeamImages/Sneha.jpeg"
 
 // --- TEAM DATA (All descriptions restored) ---
 const teamMembers = [
@@ -44,9 +45,17 @@ const teamMembers = [
       "Manas Patil is a passionate and innovative full stack developer, dedicated to crafting seamless digital experiences. With a strong foundation in both frontend and backend technologies, Manas specializes in building dynamic web applications that combine functionality with aesthetic appeal. His expertise spans JavaScript, React.js, Node.js, Express.js, and MongoDB, enabling him to deliver robust and scalable solutions. Manas’s commitment to continuous learning and his problem-solving mindset empower him to tackle complex challenges with precision and creativity. As a forward-thinking developer, Manas thrives in collaborative environments, ensuring each project exceeds expectations. His dedication to excellence and ability to transform ideas into impactful digital products make him a valuable asset in today’s fast-evolving tech landscape.",
     image: Manas,
   },
-
   {
     id: 4,
+    name: "Ms. Sneha Dewani",
+    designation: "Full Stack Developer",
+    description:
+      "Sneha Dewani is a passionate and driven Full Stack Developer with a strong foundation in modern web technologies and software development. With expertise in both frontend and backend development, she specializes in creating responsive, user-friendly, and scalable web applications that deliver exceptional user experiences. Her technical skill set includes React.js, JavaScript, PHP Laravel, MySQL, HTML, CSS, and Bootstrap, enabling her to develop robust solutions from concept to deployment.Having gained hands-on experience through professional internships and real-world projects, Sneha combines technical proficiency with a problem-solving mindset to build efficient and innovative digital products. She is committed to continuous learning, staying updated with emerging technologies, and applying best practices to every project she undertakes.Known for her dedication, adaptability, and collaborative approach, Sneha thrives in dynamic environments where creativity and technology intersect. Her ability to transform complex requirements into practical, high-quality solutions makes her a valuable contributor to any development team and a promising professional in the ever-evolving technology industry.",
+    image: Sneha,
+  },
+
+  {
+    id: 5,
     name: "Mr. Omkar Jadhav",
     designation: "Deputy Director Creative Department",
     description:
@@ -55,7 +64,7 @@ const teamMembers = [
   },
 
   {
-    id: 5,
+    id: 6,
     name: "Ms. Mahek Bhagwani",
     designation: "Deputy Director Social Department",
     description:
@@ -64,25 +73,25 @@ const teamMembers = [
   },
 
   {
-    id: 6,
+    id: 7,
     name: "Mr. Kaustubh Tambade",
     designation: "Creative Director",
     description:
       "Kaustubh Tambade, our Creative Director at THRM Digital Marketing Agency, is responsible for transforming ideas into compelling visual stories. He plays a key role in planning and executing shoots based on content strategies developed by the content team, ensuring that every project aligns with the client's objectives and brand identity. With a strong eye for detail, creativity, and production planning, Kaustubh oversees the entire creative process from concept development to on-site execution. His ability to coordinate teams, manage shoot schedules, and bring creative concepts to life helps deliver engaging content that captures audience attention. Passionate about innovation and visual excellence, Kaustubh consistently ensures that every campaign reflects the highest standards of quality and creativity, contributing significantly to THRM's success and reputation.",
     image: Kaustubh,
   },
-  
+
   {
-    id: 7,
+    id: 8,
     name: "Mr. Sujal Kanojiya",
     designation: "Creative video editor",
     description:
       "Sujal Kanojiya, our Jr. Creative Video Editor at THRM Digital Marketing Agency, brings fresh creativity, sharp visual instincts, and a passion for storytelling to every project he works on. With a strong understanding of pacing, transitions, and visual flow, Sujal transforms raw clips into engaging videos that capture attention and deliver the message with impact. As an emerging talent, Sujal combines technical skill with youthful innovation—ensuring every reel, short, or campaign video feels modern, energetic, and aligned with brand goals. He constantly experiments with new editing styles, effects, and trends to keep THRM’s content ahead of the curve. Focused, dedicated, and always eager to learn, Sujal contributes to the team with new ideas and a strong commitment to quality. With his growing expertise and passion for visual storytelling, he is on a path to becoming a key creative force in THRM’s video production team.",
     image: Sujal,
   },
-  
+
   {
-    id: 8,
+    id: 9,
     name: "Mr. Sagar Bhuwad",
     designation: "Creative Designer",
     description:
@@ -91,7 +100,7 @@ const teamMembers = [
   },
 
   {
-    id: 9,
+    id: 10,
     name: "Ms. Hanisha Murjani",
     designation: "Social Media Manager",
     description:
@@ -100,7 +109,7 @@ const teamMembers = [
   },
 
   {
-    id: 10,
+    id: 11,
     name: "Ms. Mitali Rupani",
     designation: "Content Manager",
     description:
@@ -109,7 +118,7 @@ const teamMembers = [
   },
 
   {
-    id: 11,
+    id: 12,
     name: "Ms. Manmeet Kaur",
     designation: "Brand Outreach Executive",
     description:
@@ -118,7 +127,7 @@ const teamMembers = [
   },
 
   {
-    id: 12,
+    id: 13,
     name: "Mr. Vedant Patil",
     designation: "Brand Outreach Executive",
     description:
