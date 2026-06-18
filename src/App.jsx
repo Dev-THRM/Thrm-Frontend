@@ -16,6 +16,7 @@ import AwardsPage from "./pages/AwardsPage.jsx";
 import AdminClients from "./pages/admin/AdminClients.jsx";
 import ClientsPage from "./pages/ClientsPage.jsx";
 import AdminBlogs from "./pages/admin/AdminBlogs.jsx";
+import AdminFounders from "./pages/admin/AdminFounders.jsx";
 import BlogsPage from "./pages/BlogsPage.jsx";
 import SingleBlogPage from "./pages/SingleBlogPage.jsx";
 
@@ -89,6 +90,7 @@ export default function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/clients" element={<AdminClients />} />
             <Route path="/admin/blogs" element={<AdminBlogs />} />
+            <Route path="/admin/founders" element={<AdminFounders />} />
           </Route>
 
           {/* 404 Catch-All */}
