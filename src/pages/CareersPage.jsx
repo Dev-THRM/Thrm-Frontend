@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { 
   Briefcase, 
@@ -13,6 +13,7 @@ import {
   X
 } from "lucide-react";
 import { GiClothes, GiPartyPopper } from "react-icons/gi";
+import { API_BASE_URL } from "../config";
 
 export default function CareersPage() {
   const containerRef = useRef(null);
@@ -46,27 +47,25 @@ export default function CareersPage() {
     }
   ];
 
-  // Static Open Positions Data
-  const openPositions = [
-    {
-      title: "Video Editor Intern",
-      location: "Onsite (Kalyan)",
-      type: "Internship",
-      experience: "0-1 Years"
-    },
-    {
-      title: "Content Creator Intern",
-      location: "Onsite (Kalyan)",
-      type: "Internship",
-      experience: "0-1 Years"
-    },
-    {
-      title: "Full Stack Developer",
-      location: "Onsite (Kalyan)",
-      type: "Full-Time",
-      experience: "0-2 Years"
-    },
-  ];
+  const [openings, setOpenings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchOpenings = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/openings`);
+        const result = await response.json();
+        if (result.success) {
+          setOpenings(result.data);
+        }
+      } catch (error) {
+        console.error("Error fetching openings:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchOpenings();
+  }, []);
 
   return (
     <main ref={containerRef} className="bg-[#02040a] text-white min-h-screen relative overflow-hidden">
@@ -166,31 +165,39 @@ export default function CareersPage() {
         </div>
 
         {/* Job Cards Grid */}
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {openPositions.map((job, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.05 }}
-              onClick={() => setSelectedJob(job)}
-              className="p-8 rounded-3xl bg-white/[0.02] border border-white/10 hover:border-white/30 transition-all duration-300 flex flex-col justify-between cursor-pointer group"
-            >
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70">{job.type}</span>
+        {isLoading ? (
+          <div className="flex justify-center items-center py-10">
+            <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+          </div>
+        ) : openings.length === 0 ? (
+          <div className="text-center text-white/40 py-10">No active job openings at the moment.</div>
+        ) : (
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {openings.map((job, idx) => (
+              <motion.div
+                key={job._id || idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                onClick={() => setSelectedJob(job)}
+                className="p-8 rounded-3xl bg-white/[0.02] border border-white/10 hover:border-white/30 transition-all duration-300 flex flex-col justify-between cursor-pointer group"
+              >
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xs font-bold px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70">{job.type}</span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-6 text-white group-hover:text-white/80">{job.title}</h3>
                 </div>
-                <h3 className="text-2xl font-bold mb-6 text-white group-hover:text-white/80">{job.title}</h3>
-              </div>
 
-              <div className="flex flex-wrap items-center gap-y-2 gap-x-6 border-t border-white/5 pt-5 text-sm text-white/50">
-                <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" /> {job.location}</span>
-                <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {job.experience}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                <div className="flex flex-wrap items-center gap-y-2 gap-x-6 border-t border-white/5 pt-5 text-sm text-white/50">
+                  <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" /> {job.location}</span>
+                  <span className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> {job.experience}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* ================= GENERAL APPLICATION FORM ================= */}
