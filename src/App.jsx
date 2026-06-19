@@ -18,6 +18,7 @@ import ClientsPage from "./pages/ClientsPage.jsx";
 import AdminBlogs from "./pages/admin/AdminBlogs.jsx";
 import AdminFounders from "./pages/admin/AdminFounders.jsx";
 import BlogsPage from "./pages/BlogsPage.jsx";
+import CareersPage from "./pages/CareersPage.jsx";
 import SingleBlogPage from "./pages/SingleBlogPage.jsx";
 
 import SocialMediaPage from "./pages/SocialMediaPage.jsx";
@@ -84,6 +85,7 @@ export default function App() {
 
           <Route path="/founders" element={<FoundersPage />} />
           <Route path="/founders/:slug" element={<SingleFounderPage />} />
+          <Route path="/careers" element={<CareersPage />} />
 
           {/* --- SECURE ADMIN ROUTES --- */}
           <Route element={<ProtectedRoute />}>
