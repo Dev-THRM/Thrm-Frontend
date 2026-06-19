@@ -580,7 +580,7 @@ export const AdminDashboard = () => {
                   transition={{ delay: idx * 0.1 }}
                   className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] overflow-hidden shadow-xl hover:border-white/30 transition-all duration-300"
                 >
-                  <div className="aspect-[3/4] overflow-hidden relative bg-white/5">
+                  <div className="aspect-[5/5] overflow-hidden relative bg-white/5">
                     <img
                       src={founder.imageUrl}
                       alt={founder.name}

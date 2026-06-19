@@ -24,7 +24,7 @@ function FounderCard({ founder, index }) {
           </div>
 
           {/* Photo */}
-          <div className="relative aspect-[3/4] w-full overflow-hidden bg-white/5">
+          <div className="relative aspect-[5/5] w-full overflow-hidden bg-white/5">
             <img
               src={founder.imageUrl}
               alt={founder.name}
@@ -175,7 +175,7 @@ export default function FoundersPage() {
         </motion.div>
 
         {loading ? (
-          <div className="flex justify-center items-center h-40">
+          <div className="flex justify-center items-center h-30">
             <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
           </div>
         ) : founders.length === 0 ? (
