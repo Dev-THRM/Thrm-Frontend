@@ -52,7 +52,7 @@ const navData = [
   { name: "Blogs", path: "/blogs" },
   { name: "Founder's Forum", path: "/founders" },
   { name: "Careers", path: "/careers" },
-  { name: "Contact", path: "/contact" },
+  // { name: "Contact", path: "/contact" },
 ];
 
 export default function Navbar() {
@@ -215,14 +215,14 @@ export default function Navbar() {
             </nav>
 
             {/* Desktop CTA Button */}
-            {/* <div>
+            <div>
               <Link to="/contact" className="group flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-[0.98rem] font-medium text-white backdrop-blur-md transition-all hover:border-white hover:bg-white/10">
                 <span>Let&apos;s Talk</span>
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition group-hover:scale-110">
                   <ArrowRight className="h-4 w-4" />
                 </span>
               </Link>
-            </div> */}
+            </div>
 
           </div>
 
