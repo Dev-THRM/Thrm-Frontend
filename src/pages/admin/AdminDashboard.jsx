@@ -13,7 +13,8 @@ import {
   X,
   LogOut,
   Mic2,
-  ChevronDown
+  ChevronDown,
+  PenIcon
 } from "lucide-react";
 import { useAuth } from "../../context/RouteContext.jsx"; // Assuming this is the correct path from earlier
 import { API_BASE_URL } from "../../config";
@@ -21,6 +22,7 @@ import { API_BASE_URL } from "../../config";
 // === FIX 1: Import ReactQuill and its CSS ===
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { ImPencil2 } from "react-icons/im";
 
 export const AdminDashboard = () => {
   const { logout } = useAuth();
@@ -608,12 +610,20 @@ export const AdminDashboard = () => {
                     >
                       View Page <ArrowRight className="w-4 h-4" />
                     </a>
-                    <div>
+                    <div className="flex gap-4">
                       <button
-                        className="text-red-400/70 hover:text-red-400 transition-colors flex items-center gap-1 text-sm font-semibold"
-                        onClick={() => deleteFounder(founder._id)}
+                        onClick={() => navigate(`/admin/founders/edit/${founder._id}`)}
+                        className="text-green-400/70 hover:text-green-400 transition-colors p-1"
+                        title="Edit Founder"
                       >
-                        <Trash2 className="w-4 h-4" /> Delete
+                        <PenIcon className="w-4 h-4" />
+                      </button>
+                      <button
+                        className="text-red-400/70 hover:text-red-400 transition-colors p-1"
+                        onClick={() => deleteFounder(founder._id)}
+                        title="Delete Founder"
+                      >
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
