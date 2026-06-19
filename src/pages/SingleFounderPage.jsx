@@ -210,7 +210,7 @@ export default function SingleFounderPage() {
             {/* Social Handles */}
             <div className="mb-8">
               <p className="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-white/30 mb-3">
-                Find them on
+                Find their brand on
               </p>
               <SocialHandles social={founder.social} />
             </div>
@@ -373,7 +373,7 @@ export default function SingleFounderPage() {
             {founder.social?.instagram && (
               <div className="p-7 rounded-3xl bg-white/[0.02] border border-white/10">
                 <p className="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-white/30 mb-3">
-                  Follow {founder.name.split(" ")[0]}
+                  Follow {founder.company.split(" ")[0]}
                 </p>
                 <SocialHandles social={founder.social} />
               </div>
