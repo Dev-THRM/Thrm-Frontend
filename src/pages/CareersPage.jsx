@@ -50,21 +50,18 @@ export default function CareersPage() {
   const openPositions = [
     {
       title: "Video Editor Intern",
-      department: "Creative & Brand",
       location: "Onsite (Kalyan)",
       type: "Internship",
       experience: "0-1 Years"
     },
     {
       title: "Content Creator Intern",
-      department: "Creative & Brand",
       location: "Onsite (Kalyan)",
       type: "Internship",
       experience: "0-1 Years"
     },
     {
       title: "Full Stack Developer",
-      department: "Engineering",
       location: "Onsite (Kalyan)",
       type: "Full-Time",
       experience: "0-2 Years"
@@ -182,7 +179,6 @@ export default function CareersPage() {
             >
               <div>
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-bold tracking-widest uppercase text-white/40">{job.department}</span>
                   <span className="text-xs font-bold px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/70">{job.type}</span>
                 </div>
                 <h3 className="text-2xl font-bold mb-6 text-white group-hover:text-white/80">{job.title}</h3>
@@ -244,7 +240,6 @@ export default function CareersPage() {
               </button>
 
               <div className="mb-6">
-                <span className="text-xs font-bold tracking-widest uppercase text-white/40">{selectedJob.department}</span>
                 <h3 className="text-2xl md:text-3xl font-black tracking-tight mt-2 text-white">{selectedJob.title}</h3>
               </div>
 
