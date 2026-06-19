@@ -16,6 +16,8 @@ import AwardsPage from "./pages/AwardsPage.jsx";
 import AdminClients from "./pages/admin/AdminClients.jsx";
 import ClientsPage from "./pages/ClientsPage.jsx";
 import AdminBlogs from "./pages/admin/AdminBlogs.jsx";
+import AdminFounders from "./pages/admin/AdminFounders.jsx";
+import AdminEditFounder from "./pages/admin/AdminEditFounder.jsx";
 import BlogsPage from "./pages/BlogsPage.jsx";
 import SingleBlogPage from "./pages/SingleBlogPage.jsx";
 
@@ -26,6 +28,8 @@ import InfluencerPage from "./pages/InfluencerPage.jsx";
 import BrandingPage from "./pages/BrandingPage.jsx";
 import ContentPage from "./pages/ContentPage.jsx";
 import OurBrandingPage from "./pages/OurBrandingPage.jsx";
+import FoundersPage from "./pages/FoundersPage.jsx";
+import SingleFounderPage from "./pages/SingleFounderPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
@@ -78,11 +82,16 @@ export default function App() {
           <Route path="/services/branding" element={<BrandingPage />} />
           <Route path="/services/content" element={<ContentPage />} />
 
+          <Route path="/founders" element={<FoundersPage />} />
+          <Route path="/founders/:slug" element={<SingleFounderPage />} />
+
           {/* --- SECURE ADMIN ROUTES --- */}
           <Route element={<ProtectedRoute />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/clients" element={<AdminClients />} />
             <Route path="/admin/blogs" element={<AdminBlogs />} />
+            <Route path="/admin/founders" element={<AdminFounders />} />
+            <Route path="/admin/founders/edit/:id" element={<AdminEditFounder />} />
           </Route>
 
           {/* 404 Catch-All */}

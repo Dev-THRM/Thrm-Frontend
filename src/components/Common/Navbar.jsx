@@ -50,7 +50,8 @@ const navData = [
     ]
   },
   { name: "Blogs", path: "/blogs" },
-  { name: "Contact Us", path: "/contact" },
+  { name: "Founder's Forum", path: "/founders" },
+  { name: "Contact", path: "/contact" }
 ];
 
 export default function Navbar() {
@@ -95,14 +96,14 @@ export default function Navbar() {
         {/* Notice we changed px to pr (padding-right) and pl (padding-left) */}
         <div className="mx-auto flex h-20 md:h-24 w-full items-center justify-between pr-6 pl-3 lg:pr-14 lg:pl-6">
 
-  {/* Logo - Pulled even further left with a negative margin (-ml-2) */}
-  <Link to="/" className="flex items-center gap-3 relative z-50 mr-auto -ml-2 lg:-ml-4">
-    <img
-      src={logo}
-      alt="THRM"
-      className="h-24 md:h-28 w-auto object-contain"
-    />
-  </Link>
+          {/* Logo - Pulled even further left with a negative margin (-ml-2) */}
+          <Link to="/" className="flex items-center gap-3 relative z-50 mr-auto -ml-2 lg:-ml-4">
+            <img
+              src={logo}
+              alt="THRM"
+              className="h-24 md:h-28 w-auto object-contain"
+            />
+          </Link>
 
           {/* Wrapper for Navigation + Button - Pushed to the Right */}
           <div className="hidden xl:flex items-center gap-10 h-full">

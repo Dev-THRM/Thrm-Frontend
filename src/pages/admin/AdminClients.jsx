@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { UploadCloud, Link as LinkIcon, Building2, AlertCircle, CheckCircle2, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 export default function AdminClients() {
   const [name, setName] = useState("");
@@ -21,7 +22,7 @@ export default function AdminClients() {
     formData.append("logo", logo);
 
     try {
-      const response = await fetch("https://thrmbackend.in/api/admin/c", {
+      const response = await fetch(`${API_BASE_URL}/api/admin/c`, {
         method: "POST",
         credentials: "include",
         body: formData, 

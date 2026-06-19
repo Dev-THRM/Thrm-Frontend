@@ -1,4 +1,5 @@
 import { useContext, createContext, useEffect, useState } from "react";
+import { API_BASE_URL } from "../config";
 
 const AuthContext = createContext();
 
@@ -8,7 +9,7 @@ export const AuthProvider = ({children}) => {
 
     const getSessionData = async () => {
         try {
-            const res = await fetch("https://thrmbackend.in/api/admin/Session", {
+            const res = await fetch(`${API_BASE_URL}/api/admin/Session`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include"
@@ -38,7 +39,7 @@ export const AuthProvider = ({children}) => {
     const logout = async () => {
         try {
             // Ensure this matches your backend! (Sometimes logout is POST)
-            const res = await fetch("https://thrmbackend.in/api/admin/logout", {
+            const res = await fetch(`${API_BASE_URL}/api/admin/logout`, {
                 method: "POST", 
                 credentials: "include",
                 headers: { "Content-Type": "application/json" }

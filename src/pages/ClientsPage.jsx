@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
+import { API_BASE_URL } from "../config";
+
 
 // Inject keyframes once
 const CAROUSEL_STYLE = `
@@ -142,7 +144,7 @@ export default function ClientsPage() {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch("https://thrmbackend.in/api/clients");
+        const response = await fetch(`${API_BASE_URL}/api/clients`);
         const result = await response.json();
         if (result.success) {
           setClients(result.data);
