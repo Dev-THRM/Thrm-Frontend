@@ -63,7 +63,7 @@ export default function CareersPage() {
       experience: "0-1 Years"
     },
     {
-      title: "Full Stack Web Developer",
+      title: "Full Stack Developer",
       department: "Engineering",
       location: "Onsite (Kalyan)",
       type: "Full-Time",
