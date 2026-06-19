@@ -338,6 +338,12 @@ export const AdminDashboard = () => {
             >
               <Plus className="w-5 h-5" /> Add Founder Episode
             </Link>
+            <Link
+              to="/admin/careers"
+              className="flex items-center gap-2 bg-white/5 border border-white/20 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition-all"
+            >
+              <Plus className="w-5 h-5" /> Add Career Opening
+            </Link>
           </div>
         </div>
 
