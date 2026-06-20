@@ -312,11 +312,11 @@ export default function SingleFounderPage() {
               <div className="flex flex-col">
 
                 {/* Cropped iframe container with scale to hide white margins */}
-                <div className="relative w-full aspect-[9/14] overflow-hidden rounded-[2.5rem] border border-white/10 bg-black shadow-2xl">
+                <div className="relative w-full aspect-[5/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-black shadow-2xl">
                   <iframe
                     src={embedUrl}
                     title={`Interview with ${founder.name}`}
-                    className="absolute w-full h-full left-0 origin-top scale-[1.28] -top-[65px]"
+                    className="absolute w-full h-full left-0 top-[-100px] origin-center scale-[1.5]"
                     style={{ border: "none", display: "block" }}
                     scrolling="no"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
