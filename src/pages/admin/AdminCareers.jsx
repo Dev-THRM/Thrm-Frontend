@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Briefcase, MapPin, Clock, Trash2, AlertCircle, CheckCircle2, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
 
 export default function AdminCareers() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("Onsite (Kalyan)");
   const [type, setType] = useState("Full-Time");
@@ -54,7 +55,7 @@ export default function AdminCareers() {
         setLocation("Onsite (Kalyan)");
         setType("Full-Time");
         setExperience("");
-        fetchOpenings(); // Refresh the list
+        navigate(`/careers`)
       } else {
         setStatus({ type: "error", message: result.error || "Failed to add job opening." });
       }
@@ -146,8 +147,8 @@ export default function AdminCareers() {
                 value={type} onChange={(e) => setType(e.target.value)}
                 className="w-full bg-[#0b1020] border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white/50 focus:bg-white/10 transition-all cursor-pointer"
               >
-                <option value="Full-Time">Full-Time</option>
-                <option value="Internship">Internship</option>
+                <option value="Full-Time" className="text-black">Full-Time</option>
+                <option value="Internship" className="text-black">Internship</option>
               </select>
             </div>
 
