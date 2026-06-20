@@ -2,35 +2,6 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import bgImage from "../../assets/Home/home-work.png";
-import {
-  FaInstagram,
-  FaFacebookF,
-  FaWhatsapp,
-  FaLinkedinIn,
-} from "react-icons/fa6";
-
-const socials = [
-  {
-    icon: FaInstagram,
-    label: "Instagram",
-    href: "https://www.instagram.com/thrm.digitalmarketing_agency/",
-  },
-  {
-    icon: FaFacebookF,
-    label: "Facebook",
-    href: "https://www.facebook.com/people/THRM-Digital-Marketing-Agency/61554950021351/",
-  },
-  {
-    icon: FaWhatsapp,
-    label: "WhatsApp",
-    href: "https://api.whatsapp.com/send/?phone=919004500657&text&type=phone_number&app_absent=0",
-  },
-  {
-    icon: FaLinkedinIn,
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/thrmdigitalmarketingagency/",
-  },
-];
 
 // Import Cafe Videos
 import cafe1 from "../../assets/videos/cafe-1.mp4";
@@ -335,27 +306,6 @@ export default function WorkSection() {
       <div className="absolute bottom-0 left-0 w-full h-64 z-20 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/70 to-[#02040a]" />
         <div className="absolute inset-0 backdrop-blur-md opacity-40" />
-      </div>
-
-      {/* Floating Social Icons */}
-      <div
-        className="pointer-events-none absolute right-6 top-1/4 -translate-y-1/2 z-40 hidden xl:block"
-        aria-hidden="true"
-      >
-        <div className="pointer-events-auto flex flex-col items-center gap-4 rounded-2xl border border-white/15 bg-[#1A1A1A]/60 px-3 py-4 backdrop-blur-md">
-          {socials.map(({ icon: Icon, label, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-white/5 text-white/70 transition hover:bg-white hover:text-black"
-            >
-              <Icon className="h-5 w-5" />
-            </a>
-          ))}
-        </div>
       </div>
     </section>
   );
