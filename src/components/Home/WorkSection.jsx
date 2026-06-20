@@ -1,36 +1,7 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import bgImage from "../../assets/Home/home-work.png";
-import {
-  FaInstagram,
-  FaFacebookF,
-  FaWhatsapp,
-  FaLinkedinIn,
-} from "react-icons/fa6";
-
-const socials = [
-  {
-    icon: FaInstagram,
-    label: "Instagram",
-    href: "https://www.instagram.com/thrm.digitalmarketing_agency/",
-  },
-  {
-    icon: FaFacebookF,
-    label: "Facebook",
-    href: "https://www.facebook.com/people/THRM-Digital-Marketing-Agency/61554950021351/",
-  },
-  {
-    icon: FaWhatsapp,
-    label: "WhatsApp",
-    href: "https://api.whatsapp.com/send/?phone=919004500657&text&type=phone_number&app_absent=0",
-  },
-  {
-    icon: FaLinkedinIn,
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/thrmdigitalmarketingagency/",
-  },
-];
 
 // Import Cafe Videos
 import cafe1 from "../../assets/videos/cafe-1.mp4";
@@ -230,24 +201,45 @@ const workData = {
 };
 
 const VideoCard = ({ videoUrl }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Only control play/pause based on visibility — src is always set
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      layout
+    <div
       className="relative w-full aspect-9/16 bg-[#1a1c23] rounded-2xl overflow-hidden border border-white/10 snap-center shrink-0 md:w-70"
     >
       <video
+        ref={videoRef}
         src={videoUrl}
-        autoPlay
         muted
         loop
         playsInline
         controls
-        preload="auto"
+        preload="metadata"
         className="absolute inset-0 w-full h-full object-contain"
       />
 
       <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
-    </motion.div>
+    </div>
   );
 };
 
@@ -268,8 +260,8 @@ export default function WorkSection() {
 
   return (
     <section
-      className="relative py-24 bg-[#02040a] text-white min-h-screen flex flex-col justify-center bg-cover bg-center bg-no-repeat bg-fixed"
-      style={{ backgroundImage: `url(${bgImage})` }} // Replace with your image path
+      className="relative py-24 bg-[#02040a] text-white min-h-screen flex flex-col justify-center bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* This div creates the dark overlay to make text readable */}
       <div className="absolute inset-0 bg-[#02040a]/80 z-0" />
@@ -334,28 +326,6 @@ export default function WorkSection() {
 
       <div className="absolute bottom-0 left-0 w-full h-64 z-20 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/70 to-[#02040a]" />
-        <div className="absolute inset-0 backdrop-blur-md opacity-40" />
-      </div>
-
-      {/* Floating Social Icons */}
-      <div
-        className="pointer-events-none absolute right-6 top-1/4 -translate-y-1/2 z-40 hidden xl:block"
-        aria-hidden="true"
-      >
-        <div className="pointer-events-auto flex flex-col items-center gap-4 rounded-2xl border border-white/15 bg-[#1A1A1A]/60 px-3 py-4 backdrop-blur-md">
-          {socials.map(({ icon: Icon, label, href }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-white/5 text-white/70 transition hover:bg-white hover:text-black"
-            >
-              <Icon className="h-5 w-5" />
-            </a>
-          ))}
-        </div>
       </div>
     </section>
   );

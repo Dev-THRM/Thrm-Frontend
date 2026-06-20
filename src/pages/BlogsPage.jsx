@@ -57,8 +57,9 @@ export default function BlogsPage() {
               <motion.div 
                 key={blog._id}
                 initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: (idx % 3) * 0.05, duration: 0.5 }}
                 className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/[0.05] transition-all duration-300"
               >
                 <div className="aspect-[16/10] overflow-hidden relative">

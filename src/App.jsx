@@ -50,7 +50,6 @@ export default function App() {
   return (
     // Wrap everything in AuthProvider!
     <AuthProvider>
-      {/* <CustomCursor /> */}
 
       <AnimatePresence>
         {isPreloading && <Preloader />}

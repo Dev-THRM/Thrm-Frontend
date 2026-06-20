@@ -157,12 +157,10 @@ export default function SingleFounderPage() {
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-600 to-white transform origin-left z-50"
       />
 
-      {/* Ambient Background */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[10%] left-[-10%] w-[55%] h-[55%] bg-white/[0.03] blur-[160px] rounded-full" />
-        <div className="absolute bottom-[15%] right-[-10%] w-[50%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full" />
-        <div className="star-drift opacity-30" />
-        <div className="star-drift star-drift-2 opacity-15" />
+      {/* Ambient Background - lightweight version */}
+      <div className="fixed inset-0 pointer-events-none z-0" style={{willChange: 'transform'}}>
+        <div className="absolute top-[10%] left-[-10%] w-[55%] h-[55%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)'}} />
+        <div className="absolute bottom-[15%] right-[-10%] w-[50%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)'}} />
       </div>
 
       {/* ═══════════════ BACK BUTTON ═══════════════ */}
@@ -307,18 +305,23 @@ export default function SingleFounderPage() {
           className="grid lg:grid-cols-[1fr_auto] gap-10 items-start"
         >
           {/* Instagram Embed */}
-          <div className="w-full">
+          <div className="w-full max-w-[420px] mx-auto lg:mx-0">
             {embedUrl ? (
-              <div className="relative w-full max-w-[540px] mx-auto lg:mx-0 rounded-[2rem] overflow-hidden border border-white/10 bg-white/[0.02] shadow-2xl">
-                <iframe
-                  src={embedUrl}
-                  title={`Interview with ${founder.name}`}
-                  className="w-full"
-                  style={{ minHeight: 680, border: "none", display: "block" }}
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  allowFullScreen
-                  loading="lazy"
-                />
+              <div className="flex flex-col">
+
+                {/* Cropped iframe container with scale to hide white margins */}
+                <div className="relative w-full aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-black shadow-2xl">
+                  <iframe
+                    src={embedUrl}
+                    title={`Interview with ${founder.name}`}
+                    className="absolute w-full h-full left-0 top-[-60px] origin-top-center scale-[1.35]"
+                    style={{ border: "none", display: "block", transformOrigin: "50% 0%" }}
+                    scrolling="no"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
               </div>
             ) : (
               /* Fallback card if embed fails */

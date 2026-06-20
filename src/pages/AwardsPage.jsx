@@ -124,7 +124,7 @@ export default function AwardsPage() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: index * 0.1, duration: 0.6 }}
+              transition={{ delay: (index % 3) * 0.05, duration: 0.6 }}
               onClick={() => setSelectedAward(award)}
               // Increased height here (h-[400px] on mobile, h-[500px] on desktop) and added cursor-pointer
               className="group relative w-full h-[400px] lg:h-[500px] rounded-3xl bg-white/[0.02] border border-white/5 overflow-hidden backdrop-blur-sm p-4 hover:border-white/30 transition-colors duration-500 shadow-2xl cursor-pointer"
