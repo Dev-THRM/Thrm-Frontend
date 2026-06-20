@@ -307,18 +307,23 @@ export default function SingleFounderPage() {
           className="grid lg:grid-cols-[1fr_auto] gap-10 items-start"
         >
           {/* Instagram Embed */}
-          <div className="w-full">
+          <div className="w-full max-w-[420px] mx-auto lg:mx-0">
             {embedUrl ? (
-              <div className="relative w-full max-w-[540px] mx-auto lg:mx-0 rounded-[2rem] overflow-hidden border border-white/10 bg-white/[0.02] shadow-2xl">
-                <iframe
-                  src={embedUrl}
-                  title={`Interview with ${founder.name}`}
-                  className="w-full"
-                  style={{ minHeight: 680, border: "none", display: "block" }}
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  allowFullScreen
-                  loading="lazy"
-                />
+              <div className="flex flex-col">
+
+                {/* Cropped iframe container with scale to hide white margins */}
+                <div className="relative w-full aspect-[9/14] overflow-hidden rounded-[2.5rem] border border-white/10 bg-black shadow-2xl">
+                  <iframe
+                    src={embedUrl}
+                    title={`Interview with ${founder.name}`}
+                    className="absolute w-full h-full left-0 origin-top scale-[1.28] -top-[65px]"
+                    style={{ border: "none", display: "block" }}
+                    scrolling="no"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
               </div>
             ) : (
               /* Fallback card if embed fails */
