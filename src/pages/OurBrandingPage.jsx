@@ -76,7 +76,7 @@ const MediaCard = ({ item, index }) => {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
+      transition={{ delay: (index % 3) * 0.05, duration: 0.6 }}
       className="group relative aspect-[4/3] rounded-[2rem] bg-white/5 border border-white/10 overflow-hidden shadow-2xl"
     >
       {/* FIXED: Removed the space in "im age" */}

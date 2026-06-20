@@ -295,3 +295,12 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+
+/* GPU-friendly ambient glow optimizations instead of heavy CPU/GPU filter: blur() on Retina displays */
+.blur-\[80px\],
+.blur-\[120px\],
+.blur-\[150px\],
+.blur-\[160px\] {
+  filter: none !important;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 45%, transparent 70%) !important;
+}
