@@ -3,15 +3,17 @@ import { Link } from "react-router-dom";
 import { Mail, MapPin, ArrowRight } from "lucide-react";
 
 import logo from "../../assets/logo.png";
-import instagram from "../../assets/icons/3.png";
-import facebook from "../../assets/icons/4.png";
-import youtube from "../../assets/icons/5.png";
-import X from "../../assets/icons/6.png";
-import whatsapp from "../../assets/icons/7.png";
-import linkedin from "../../assets/icons/9.png";
-import linktree from "../../assets/icons/10.jpeg";
-import medium from "../../assets/icons/medium1.png";
-import pinterest from "../../assets/icons/pinterest1.png";
+import {
+  FaInstagram,
+  FaFacebookF,
+  FaXTwitter,
+  FaYoutube,
+  FaWhatsapp,
+  FaLinkedinIn,
+  FaMedium,
+  FaPinterestP
+} from "react-icons/fa6";
+import { SiLinktree } from "react-icons/si";
 
 const footerLinks = [
   { name: "Home", path: "/" },
@@ -46,15 +48,69 @@ const footerLocations = [
 ];
 
 const socialLinks = [
-  { icon: instagram, href: "https://www.instagram.com/thrm.digitalmarketing_agency/", label: "Instagram" },
-  { icon: facebook, href: "https://www.facebook.com/people/THRM-Digital-Marketing-Agency/61554950021351/", label: "Facebook" },
-  { icon: X, href: "https://x.com/thrm_social", label: "X (Twitter)" },
-  { icon: youtube, href: "https://www.youtube.com/@thrmdigitalmarketingagency", label: "YouTube" },
-  { icon: whatsapp, href: "https://api.whatsapp.com/send/?phone=919004500657", label: "WhatsApp" },
-  { icon: linkedin, href: "https://www.linkedin.com/company/thrmdigitalmarketingagency/", label: "LinkedIn" },
-  { icon: linktree, href: "https://linktr.ee/thrm_group", label: "Linktree" }, 
-  { icon: medium, href: "https://medium.com/@brands_69181", label: "Medium" },
-  { icon: pinterest, href: "https://www.pinterest.com/thrmdigitalmarketing/", label: "Pinterest" },
+  {
+    icon: FaInstagram,
+    href: "https://www.instagram.com/thrm.digitalmarketing_agency/",
+    label: "Instagram",
+    bgClass: "bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]",
+    iconClass: "text-white"
+  },
+  {
+    icon: FaFacebookF,
+    href: "https://www.facebook.com/people/THRM-Digital-Marketing-Agency/61554950021351/",
+    label: "Facebook",
+    bgClass: "bg-[#1877f2]",
+    iconClass: "text-white"
+  },
+  {
+    icon: FaXTwitter,
+    href: "https://x.com/thrm_social",
+    label: "X (Twitter)",
+    bgClass: "bg-[#0f1419] border border-white/20",
+    iconClass: "text-white"
+  },
+  {
+    icon: FaYoutube,
+    href: "https://www.youtube.com/@thrmdigitalmarketingagency",
+    label: "YouTube",
+    bgClass: "bg-[#ff0000]",
+    iconClass: "text-white"
+  },
+  {
+    icon: FaWhatsapp,
+    href: "https://api.whatsapp.com/send/?phone=919004500657",
+    label: "WhatsApp",
+    bgClass: "bg-[#25d366]",
+    iconClass: "text-white"
+  },
+  {
+    icon: FaLinkedinIn,
+    href: "https://www.linkedin.com/company/thrmdigitalmarketingagency/",
+    label: "LinkedIn",
+    bgClass: "bg-[#0a66c2]",
+    iconClass: "text-white"
+  },
+  {
+    icon: SiLinktree,
+    href: "https://linktr.ee/thrm_group",
+    label: "Linktree",
+    bgClass: "bg-[#39e09b]",
+    iconClass: "text-[#191919]"
+  },
+  {
+    icon: FaMedium,
+    href: "https://medium.com/@brands_69181",
+    label: "Medium",
+    bgClass: "bg-[#121212] border border-white/20",
+    iconClass: "text-white"
+  },
+  {
+    icon: FaPinterestP,
+    href: "https://www.pinterest.com/thrmdigitalmarketing/",
+    label: "Pinterest",
+    bgClass: "bg-[#e60023]",
+    iconClass: "text-white"
+  }
 ];
 
 export default function Footer() {
@@ -69,7 +125,7 @@ export default function Footer() {
       </div>
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-14">
-        
+
         {/* Pre-Footer CTA Banner */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -106,7 +162,7 @@ export default function Footer() {
 
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-6 mb-16">
-          
+
           {/* Brand Column */}
           <div className="lg:col-span-3 pr-4">
             <Link to="/" className="flex items-center gap-3 mb-6 hover:opacity-80 transition-opacity">
@@ -117,23 +173,22 @@ export default function Footer() {
             </p>
 
             {/* FIX: Allowed wrapping and increased gap/size so icons can breathe */}
-            <div className="flex flex-wrap items-center gap-6">
-              {socialLinks.map((social, idx) => (
-                <a
-                  key={idx}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="transition-all duration-300 hover:scale-110 hover:-translate-y-1"
-                >
-                  <img
-                    src={social.icon}
-                    alt={social.label}
-                    className="h-9 w-9 object-cover rounded-md shadow-sm"
-                  />
-                </a>
-              ))}
+            <div className="flex flex-wrap items-center gap-3">
+              {socialLinks.map((social, idx) => {
+                const IconComponent = social.icon;
+                return (
+                  <a
+                    key={idx}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className={`flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 shadow-sm ${social.bgClass}`}
+                  >
+                    <IconComponent className={`w-5 h-5 ${social.iconClass}`} />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
