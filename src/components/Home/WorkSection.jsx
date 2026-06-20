@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import bgImage from "../../assets/Home/home-work.png";
 
@@ -201,24 +201,45 @@ const workData = {
 };
 
 const VideoCard = ({ videoUrl }) => {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Only control play/pause based on visibility — src is always set
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      layout
+    <div
       className="relative w-full aspect-9/16 bg-[#1a1c23] rounded-2xl overflow-hidden border border-white/10 snap-center shrink-0 md:w-70"
     >
       <video
+        ref={videoRef}
         src={videoUrl}
-        autoPlay
         muted
         loop
         playsInline
         controls
-        preload="auto"
+        preload="metadata"
         className="absolute inset-0 w-full h-full object-contain"
       />
 
       <div className="absolute inset-0 bg-linear-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
-    </motion.div>
+    </div>
   );
 };
 
@@ -239,8 +260,8 @@ export default function WorkSection() {
 
   return (
     <section
-      className="relative py-24 bg-[#02040a] text-white min-h-screen flex flex-col justify-center bg-cover bg-center bg-no-repeat bg-fixed"
-      style={{ backgroundImage: `url(${bgImage})` }} // Replace with your image path
+      className="relative py-24 bg-[#02040a] text-white min-h-screen flex flex-col justify-center bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* This div creates the dark overlay to make text readable */}
       <div className="absolute inset-0 bg-[#02040a]/80 z-0" />
@@ -305,7 +326,6 @@ export default function WorkSection() {
 
       <div className="absolute bottom-0 left-0 w-full h-64 z-20 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/70 to-[#02040a]" />
-        <div className="absolute inset-0 backdrop-blur-md opacity-40" />
       </div>
     </section>
   );

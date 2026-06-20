@@ -97,12 +97,10 @@ export default function FoundersPage() {
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-600 to-white transform origin-left z-50"
       />
 
-      {/* Ambient Background */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[5%] left-[-5%] w-[55%] h-[55%] bg-white/[0.03] blur-[160px] rounded-full" />
-        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-white/[0.03] blur-[160px] rounded-full" />
-        <div className="star-drift opacity-30" />
-        <div className="star-drift star-drift-2 opacity-15" />
+      {/* Ambient Background - lightweight */}
+      <div className="fixed inset-0 pointer-events-none z-0" style={{willChange: 'transform'}}>
+        <div className="absolute top-[5%] left-[-5%] w-[55%] h-[55%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)'}} />
+        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)'}} />
       </div>
 
       {/* ═══════════════ HERO ═══════════════ */}

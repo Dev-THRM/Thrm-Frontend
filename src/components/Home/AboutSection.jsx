@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion } from "framer-motion";
 import about_me from "../../assets/Home/home-about.png";
 import {
   FiArrowUpRight,
@@ -12,22 +11,6 @@ import {
 import { Link } from "react-router-dom";
 
 export default function AboutSection() {
-  const ref = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  const ySlow = useTransform(smoothProgress, [0, 1], [100, -100]);
-  const yFast = useTransform(smoothProgress, [0, 1], [-40, 40]);
-  const opacity = useTransform(smoothProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   const coreServices = [
     "SEO Strategy",
@@ -60,7 +43,6 @@ export default function AboutSection() {
 
 return (
   <section
-    ref={ref}
     id="about"
     className="relative overflow-hidden text-white py-24 lg:py-40"
   >
@@ -74,9 +56,9 @@ return (
       />
       {/* Dark Overlay to ensure text stays readable */}
       <div className="absolute inset-0 bg-neutral-950/40 mix-blend-multiply" />
-      {/* Your original ambient glows layered on top of the image */}
-      <div className="absolute top-[10%] left-[-10%] w-[50%] h-[50%] bg-white/5 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-white/5 blur-[120px] rounded-full" />
+      {/* Lightweight ambient glows using radial-gradient (no filter: blur) */}
+      <div className="absolute top-[10%] left-[-10%] w-[50%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)'}} />
+      <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)'}} />
     </div>
 
     {/* Added z-10 to content container so it sits cleanly above the background */}
@@ -99,7 +81,10 @@ return (
             </motion.div>
 
             <motion.h2
-              style={{ opacity }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
               className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-bold tracking-tighter leading-[1.05] mb-10"
             >
               We build the digital <br />
@@ -174,7 +159,13 @@ return (
         </div>
 
         {/* RIGHT SIDE - FLOATING CARD */}
-        <motion.div style={{ y: yFast }} className="lg:col-span-5 relative">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="lg:col-span-5 relative"
+        >
           {/* Decorative Glow - Neutral/Silver */}
           <div className="absolute -inset-4 bg-linear-to-br from-white/10 to-transparent blur-3xl opacity-50" />
 
@@ -246,7 +237,6 @@ return (
 
     <div className="absolute bottom-0 left-0 w-full h-64 z-20 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/70 to-[#02040a]" />
-        <div className="absolute inset-0 backdrop-blur-md opacity-40" />
       </div>
   </section>
 );

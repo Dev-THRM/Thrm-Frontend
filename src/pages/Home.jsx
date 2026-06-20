@@ -12,10 +12,10 @@ export default function Home() {
 
       {/* ================= GLOBAL AMBIENT BACKGROUND ================= */}
       {/* 'fixed' ensures this background stays in place while the user scrolls */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        {/* Subtle Silver/White Glow Orbs */}
-        <div className="absolute top-[10%] left-[5%] w-[40%] h-[40%] bg-white/5 blur-[150px] rounded-full" />
-        <div className="absolute bottom-[20%] right-[10%] w-[50%] h-[50%] bg-white/5 blur-[150px] rounded-full" />
+      <div className="fixed inset-0 pointer-events-none z-0" style={{willChange: 'transform'}}>
+        {/* Lightweight radial-gradient orbs instead of expensive filter: blur */}
+        <div className="absolute top-[10%] left-[5%] w-[40%] h-[40%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)'}} />
+        <div className="absolute bottom-[20%] right-[10%] w-[50%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)'}} />
 
         {/* Animated Stars - 3D Parallax Effect */}
         <div className="star-drift star-drift-1 opacity-70" />

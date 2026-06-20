@@ -37,29 +37,35 @@ export default function FloatingButtons() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [showSocials, setShowSocials] = useState(false);
 
-  // Monitor scroll position to show/hide buttons
+  // Monitor scroll position to show/hide buttons (rAF throttled)
   useEffect(() => {
+    let rafId = null;
+
     const handleScroll = () => {
-      const scrollPos = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const scrollPos = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
 
-      // Show back to top button after scrolling down 300px
-      setShowBackToTop(scrollPos > 300);
+        setShowBackToTop(scrollPos > 300);
 
-      // Show socials after hero (500px) and before footer (650px from bottom)
-      // Exclude all pages except the home page ("/")
-      const isHomePage = location.pathname === "/";
-      const isPastHero = scrollPos > 500;
-      const isNearFooter = scrollPos + windowHeight > documentHeight - 650;
+        const isHomePage = location.pathname === "/";
+        const isPastHero = scrollPos > 500;
+        const isNearFooter = scrollPos + windowHeight > documentHeight - 650;
 
-      setShowSocials(isHomePage && isPastHero && !isNearFooter);
+        setShowSocials(isHomePage && isPastHero && !isNearFooter);
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
-    
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [location.pathname]);
 
   const scrollToTop = () => {

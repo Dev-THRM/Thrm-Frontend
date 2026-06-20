@@ -57,9 +57,10 @@ body {
   width: 180px;
   height: 2px;
   border-radius: 999px;
-  background: linear-linear(90deg, rgba(255,255,255,0), rgba(255,255,255,0.95), rgba(79,124,255,0));
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.95), rgba(79,124,255,0));
   filter: drop-shadow(0 0 10px rgba(255,255,255,0.7));
   animation: shooting-star 8s linear infinite;
+  will-change: transform;
 }
 
 .shooting-star::after {
@@ -75,9 +76,10 @@ body {
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: radial-linear(circle, rgba(255,255,255,0.95), rgba(79,124,255,0.25));
+  background: radial-gradient(circle, rgba(255,255,255,0.95), rgba(79,124,255,0.25));
   box-shadow: 0 0 18px rgba(79,124,255,0.8);
   animation: orb-float 7s ease-in-out infinite;
+  will-change: transform;
 }
 
 /* --- OPTIMIZED SPACE AMBIENCE & STARS --- */
@@ -90,22 +92,30 @@ body {
   background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png') repeat top center;
   pointer-events: none;
   z-index: 0;
-  /* Hardware acceleration to kill lag */
-  will-change: transform; 
+  /* Isolated compositor layer — no repaints cascade to parent */
+  will-change: transform;
+  contain: strict;
 }
 
-/* Layer 1: Base stars, spaced out */
+/* Layer 1: Base stars, very slow */
 .star-drift-1 {
-  background-size: 1000px; /* Larger size = fewer stars on screen */
-  animation: driftHardware 90s linear infinite;
-  opacity: 0.3; /* Subtle */
+  background-size: 1200px;
+  animation: driftHardware 200s linear infinite;
+  opacity: 0.2;
 }
 
-/* Layer 2: Foreground stars, larger, moving slightly faster */
+/* Layer 2: Foreground stars */
 .star-drift-2 {
-  background-size: 1400px; /* Even fewer stars */
-  animation: driftHardware 60s linear infinite;
-  opacity: 0.5; /* Slightly brighter */
+  background-size: 1600px;
+  animation: driftHardware 150s linear infinite;
+  opacity: 0.3;
+}
+
+/* Layer 3 (home only) */
+.star-drift-3 {
+  background-size: 2000px;
+  animation: driftHardware 120s linear infinite reverse;
+  opacity: 0.15;
 }
 
 /* Seamless, GPU-accelerated vertical drift */
@@ -121,25 +131,26 @@ body {
 .nebula-glow {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(60px);
+  /* No filter: blur — use radial-gradient instead for zero GPU cost */
   pointer-events: none;
+  will-change: transform;
 }
 
 .nebula-glow-1 {
-  width: 460px;
-  height: 460px;
+  width: 600px;
+  height: 600px;
   right: 8%;
   top: 10%;
-  background: rgba(79, 124, 255, 0.14);
+  background: radial-gradient(circle, rgba(79, 124, 255, 0.18) 0%, transparent 70%);
   animation: drift-slow 16s ease-in-out infinite;
 }
 
 .nebula-glow-2 {
-  width: 520px;
-  height: 520px;
+  width: 680px;
+  height: 680px;
   left: 12%;
   bottom: 2%;
-  background: rgba(170, 106, 255, 0.12);
+  background: radial-gradient(circle, rgba(170, 106, 255, 0.15) 0%, transparent 70%);
   animation: drift-slow 20s ease-in-out infinite reverse;
 }
 
@@ -170,8 +181,7 @@ body {
   position: absolute;
   inset: 10% 10% 10% 10%;
   border-radius: 9999px;
-  background: radial-linear(circle, rgba(79, 124, 255, 0.22), transparent 65%);
-  filter: blur(40px);
+  background: radial-gradient(circle, rgba(79, 124, 255, 0.22), transparent 65%);
   z-index: -1;
   animation: drift-slow 8s ease-in-out infinite;
 }
@@ -227,14 +237,14 @@ body {
 /* 2. The Edge Fade Mask */
 .mask-linear {
   /* Creates a fade effect on the left and right edges so it doesn't just cut off */
-  -webkit-mask-image: linear-linear(
+  -webkit-mask-image: linear-gradient(
     to right,
     transparent,
     black 10%,
     black 90%,
     transparent
   );
-  mask-image: linear-linear(
+  mask-image: linear-gradient(
     to right,
     transparent,
     black 10%,
@@ -268,7 +278,7 @@ body {
 
 /* Smooth edge fade */
 .mask-linear {
-  -webkit-mask-image: linear-linear(
+  -webkit-mask-image: linear-gradient(
     to right,
     transparent,
     black 8%,
@@ -276,7 +286,7 @@ body {
     transparent
   );
 
-  mask-image: linear-linear(
+  mask-image: linear-gradient(
     to right,
     transparent,
     black 8%,
@@ -297,10 +307,33 @@ body {
 }
 
 /* GPU-friendly ambient glow optimizations instead of heavy CPU/GPU filter: blur() on Retina displays */
+/* Suppress all large pixel blur filters that cause frame drops on macOS/Retina */
 .blur-\[80px\],
 .blur-\[120px\],
 .blur-\[150px\],
-.blur-\[160px\] {
+.blur-\[160px\],
+.blur-\[200px\] {
   filter: none !important;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 45%, transparent 70%) !important;
+}
+
+/* Globally promote fixed/sticky elements to their own compositor layer */
+.fixed, .sticky {
+  will-change: transform;
+}
+
+/* Ensure animated/transition elements use GPU layers */
+[class*="animate-"] {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* nebula glows: replace blur filter with pure radial-gradient for zero repaint cost */
+.nebula-glow {
+  filter: none !important;
+}
+
+/* page sections can be skipped by the renderer until they scroll into view */
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
 }
