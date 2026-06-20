@@ -207,7 +207,8 @@ const VideoCard = ({ videoUrl }) => {
     const video = videoRef.current;
     if (!video) return;
 
-    // Only control play/pause based on visibility — src is always set
+    // Pause videos that scroll out of view to save CPU
+    // autoPlay handles starting — observer only handles pausing when off-screen
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -216,7 +217,7 @@ const VideoCard = ({ videoUrl }) => {
           video.pause();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     observer.observe(video);
@@ -230,11 +231,12 @@ const VideoCard = ({ videoUrl }) => {
       <video
         ref={videoRef}
         src={videoUrl}
+        autoPlay
         muted
         loop
         playsInline
         controls
-        preload="metadata"
+        preload="auto"
         className="absolute inset-0 w-full h-full object-contain"
       />
 
