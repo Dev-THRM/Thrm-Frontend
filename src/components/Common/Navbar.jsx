@@ -51,7 +51,8 @@ const navData = [
   },
   { name: "Blogs", path: "/blogs" },
   { name: "Founder's Forum", path: "/founders" },
-  { name: "Contact", path: "/contact" }
+  { name: "Careers", path: "/careers" },
+  // { name: "Contact", path: "/contact" },
 ];
 
 export default function Navbar() {

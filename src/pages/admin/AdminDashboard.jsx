@@ -14,6 +14,8 @@ import {
   LogOut,
   Mic2,
   ChevronDown,
+  MapPin,
+  Clock,
   PenIcon
 } from "lucide-react";
 import { useAuth } from "../../context/RouteContext.jsx"; // Assuming this is the correct path from earlier
@@ -41,6 +43,10 @@ export const AdminDashboard = () => {
   const [founders, setFounders] = useState([]);
   const [loadingf, setLoadingf] = useState(true);
 
+  // ------------------ careers ------------------
+  const [openings, setOpenings] = useState([]);
+  const [loadingc, setLoadingc] = useState(true);
+
   // n = none, c = client edit, b = blog edit
   const [edittoggle, setEditToggle] = useState("n");
   const [editingClient, setEditingClient] = useState(null);
@@ -50,6 +56,7 @@ export const AdminDashboard = () => {
   const [isClientsExpanded, setIsClientsExpanded] = useState(false);
   const [isBlogsExpanded, setIsBlogsExpanded] = useState(false);
   const [isFoundersExpanded, setIsFoundersExpanded] = useState(false);
+  const [isCareersExpanded, setIsCareersExpanded] = useState(false);
 
   const [clientEditForm, setClientEditForm] = useState({
     name: "",
@@ -61,6 +68,14 @@ export const AdminDashboard = () => {
     title: "",
     content: "",
     image: null,
+  });
+
+  const [editingCareer, setEditingCareer] = useState(null);
+  const [careerEditForm, setCareerEditForm] = useState({
+    title: "",
+    location: "",
+    type: "Full-Time",
+    experience: "",
   });
 
   useEffect(() => {
@@ -91,6 +106,21 @@ export const AdminDashboard = () => {
       }
     };
     fetchFounders();
+  }, []);
+
+  useEffect(() => {
+    const fetchOpenings = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/openings`);
+        const result = await response.json();
+        if (result.success) setOpenings(result.data);
+      } catch (err) {
+        console.error("Error fetching openings:", err);
+      } finally {
+        setLoadingc(false);
+      }
+    };
+    fetchOpenings();
   }, []);
 
   const createExcerpt = (htmlString) => {
@@ -187,6 +217,26 @@ export const AdminDashboard = () => {
     }
   };
 
+  const deleteCareer = async (id) => {
+    if (!id) return;
+    if (!window.confirm("Are you sure you want to delete this job opening?")) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/openings/${id}`, {
+        method: "DELETE",
+        credentials: "include"
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || "Failed to delete opening");
+
+      setOpenings((prev) => prev.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
+
   const openClientEdit = (client) => {
     setEditingClient(client);
     setClientEditForm({
@@ -207,10 +257,22 @@ export const AdminDashboard = () => {
     setEditToggle("b");
   };
 
+  const openCareerEdit = (job) => {
+    setEditingCareer(job);
+    setCareerEditForm({
+      title: job.title || "",
+      location: job.location || "",
+      type: job.type || "Full-Time",
+      experience: job.experience || "",
+    });
+    setEditToggle("j");
+  };
+
   const closeEditModal = () => {
     setEditToggle("n");
     setEditingClient(null);
     setEditingBlog(null);
+    setEditingCareer(null);
   };
 
   const submitClientEdit = async (e) => {
@@ -291,6 +353,35 @@ export const AdminDashboard = () => {
     }
   };
 
+  const submitCareerEdit = async (e) => {
+    e.preventDefault();
+    if (!editingCareer?._id) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/openings/${editingCareer._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(careerEditForm),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to update job opening");
+      }
+
+      setOpenings((prev) =>
+        prev.map((item) => (item._id === editingCareer._id ? data.data : item))
+      );
+
+      closeEditModal();
+    } catch (error) {
+      console.error("Career edit error:", error);
+      alert(error.message);
+    }
+  };
+
   return (
     <main className="bg-[#02040a] text-white min-h-screen relative overflow-hidden pt-40 pb-32 px-6 lg:px-14">
       {/* Ambient Background */}
@@ -339,6 +430,12 @@ export const AdminDashboard = () => {
               className="flex items-center gap-2 bg-white/5 border border-white/20 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition-all"
             >
               <Plus className="w-5 h-5" /> Add Founder Episode
+            </Link>
+            <Link
+              to="/admin/careers"
+              className="flex items-center gap-2 bg-white/5 border border-white/20 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition-all"
+            >
+              <Plus className="w-5 h-5" /> Add Career Opening
             </Link>
           </div>
         </div>
@@ -635,6 +732,101 @@ export const AdminDashboard = () => {
             )}
           </AnimatePresence>
         </div>
+
+        {/* ================= CAREERS SECTION ================= */}
+        <div className="mt-20">
+          <button
+            onClick={() => setIsCareersExpanded(!isCareersExpanded)}
+            className="w-full flex items-center justify-between border-b border-white/10 pb-4 mb-8 text-left group cursor-pointer"
+          >
+            <div className="flex items-center gap-4">
+              <Briefcase className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+              <h2 className="text-3xl font-bold text-white">Manage Careers</h2>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50">
+                {openings.length}
+              </span>
+            </div>
+            <ChevronDown className={`w-6 h-6 text-white/50 group-hover:text-white transition-transform duration-300 ${isCareersExpanded ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence initial={false}>
+            {isCareersExpanded && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                style={{ overflow: "hidden" }}
+              >
+                {loadingc ? (
+                  <div className="flex justify-center items-center h-40">
+                    <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+                  </div>
+                ) : openings.length === 0 ? (
+                  <div className="text-center text-white/50 p-8">No job openings published yet.</div>
+                ) : (
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {openings.map((job, idx) => (
+                      <motion.div
+                        key={job._id}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] p-6 shadow-xl hover:border-white/30 transition-all duration-300"
+                      >
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold mb-3">{job.title}</h3>
+                          <div className="space-y-2 text-sm text-white/60">
+                            <div className="flex items-center gap-2">
+                              <Briefcase className="w-4 h-4 shrink-0 text-white/40" />
+                              <span>{job.type}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4 shrink-0 text-white/40" />
+                              <span>{job.location}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-4 h-4 shrink-0 text-white/40" />
+                              <span>{job.experience}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center pt-6 border-t border-white/5 mt-6">
+                          <a
+                            href="/careers"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white/40 hover:text-white transition-colors"
+                            title="View Careers"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                          <div className="flex gap-3">
+                            <button
+                              onClick={() => openCareerEdit(job)}
+                              className="text-white/40 hover:text-white transition-colors"
+                              title="Edit Job Opening"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              className="text-red-400/70 hover:text-red-400 transition-colors"
+                              onClick={() => deleteCareer(job._id)}
+                              title="Delete Job Opening"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* ================= EDIT MODAL ================= */}
@@ -645,7 +837,7 @@ export const AdminDashboard = () => {
           <div className="w-full max-w-4xl max-h-[95vh] overflow-y-auto hide-scrollbar rounded-3xl border border-white/10 bg-[#0b1020] p-6 md:p-10 shadow-2xl relative">
             <div className="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
               <h3 className="text-2xl font-bold">
-                {edittoggle === "c" ? "Edit Client" : "Edit Blog Post"}
+                {edittoggle === "c" ? "Edit Client" : edittoggle === "b" ? "Edit Blog Post" : "Edit Job Opening"}
               </h3>
               <button
                 onClick={closeEditModal}
@@ -778,6 +970,79 @@ export const AdminDashboard = () => {
                     className="px-6 py-3 rounded-xl bg-white text-black hover:bg-gray-200 transition-colors font-bold shadow-[0_0_20px_rgba(255,255,255,0.2)]"
                   >
                     Update Blog Post
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {edittoggle === "j" && (
+              <form onSubmit={submitCareerEdit} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-white/70 mb-2 ml-1">Job Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={careerEditForm.title}
+                    onChange={(e) =>
+                      setCareerEditForm({ ...careerEditForm, title: e.target.value })
+                    }
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-5 py-4 outline-none focus:border-white/50 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white/70 mb-2 ml-1">Location</label>
+                  <input
+                    type="text"
+                    required
+                    value={careerEditForm.location}
+                    onChange={(e) =>
+                      setCareerEditForm({ ...careerEditForm, location: e.target.value })
+                    }
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-5 py-4 outline-none focus:border-white/50 transition-colors"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white/70 mb-2 ml-1">Job Type</label>
+                  <select
+                    value={careerEditForm.type}
+                    onChange={(e) =>
+                      setCareerEditForm({ ...careerEditForm, type: e.target.value })
+                    }
+                    className="w-full bg-[#0b1020] border border-white/10 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-white/50 focus:bg-white/10 transition-all cursor-pointer"
+                  >
+                    <option value="Full-Time" className="text-black">Full-Time</option>
+                    <option value="Internship" className="text-black">Internship</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white/70 mb-2 ml-1">Experience Required</label>
+                  <input
+                    type="text"
+                    required
+                    value={careerEditForm.experience}
+                    onChange={(e) =>
+                      setCareerEditForm({ ...careerEditForm, experience: e.target.value })
+                    }
+                    className="w-full rounded-xl bg-white/5 border border-white/10 px-5 py-4 outline-none focus:border-white/50 transition-colors"
+                  />
+                </div>
+
+                <div className="flex gap-4 justify-end pt-4 border-t border-white/10 mt-12">
+                  <button
+                    type="button"
+                    onClick={closeEditModal}
+                    className="px-6 py-3 rounded-xl border border-white/10 hover:bg-white/5 transition-colors font-semibold"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-3 rounded-xl bg-white text-black hover:bg-gray-200 transition-colors font-bold shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                  >
+                    Save Changes
                   </button>
                 </div>
               </form>
