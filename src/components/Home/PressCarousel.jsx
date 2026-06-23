@@ -2,18 +2,23 @@ import { motion } from "framer-motion";
 
 // Simply define how many images you have in your public/PressImages folder.
 // For example, if you have 1.png through 104.png, set this to 104.
-const NUMBER_OF_LOGOS = 104; 
+const NUMBER_OF_LOGOS = 12; 
 
 const PRESS_LINKS = {
   // Add press links as needed, e.g.:
   // 1: "https://example.com/featured-article",
   1: "https://123menlife.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
-  58: "https://knowthatsall.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
-  99: "https://quoramagazine.com/thrm-business-solutions-pvt-ltd-transforming-brands-talent-the-digital-landscape/",
-  100: "https://tedxmagazine.com/thrm-business-solutions-pvt-ltd-a-digital-powerhouse-shaping-the-future/",
-  101: "https://newyorkfeatured.com/thrm-business-solutions-pvt-ltd-the-next-big-name-in-digital-recruitment-web3/",
-  102: "https://ussharks.com/thrm-business-solutions-pvt-ltd-a-360-growth-hub-for-digital-talent-web3-solutions/",
-  103: "https://en.wikiflux.org/wiki/index.php/THRM_Group",
+  2: "https://buzzcenter.co/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  3: "https://buzzinginfo.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  4: "https://goreaditright.com/agency-news/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  5: "https://knowthatsall.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  6: "https://theexpertfinds.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  7: "https://topicsdaily.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  8: "https://quoramagazine.com/thrm-business-solutions-pvt-ltd-transforming-brands-talent-the-digital-landscape/",
+  9: "https://tedxmagazine.com/thrm-business-solutions-pvt-ltd-a-digital-powerhouse-shaping-the-future/",
+  10: "https://newyorkfeatured.com/thrm-business-solutions-pvt-ltd-the-next-big-name-in-digital-recruitment-web3/",
+  11: "https://ussharks.com/thrm-business-solutions-pvt-ltd-a-360-growth-hub-for-digital-talent-web3-solutions/",
+  12: "https://en.wikiflux.org/wiki/index.php/THRM_Group",
 
 };
 
