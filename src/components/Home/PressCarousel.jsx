@@ -1,15 +1,67 @@
 
-// Simply define how many images you have in your public/PressImages folder.
-// For example, if you have 1.png through 104.png, set this to 104.
-const NUMBER_OF_LOGOS = 104; 
+const NUMBER_OF_LOGOS = 12; 
 
-// Generate the array dynamically without relying on Vite's bundler
-const pressLogos = Array.from({ length: NUMBER_OF_LOGOS }, (_, i) => ({
-  id: i + 1,
-  // This points directly to the public folder!
-  src: `/PressImages/${i + 1}.png`, 
-  alt: `Press coverage ${i + 1}`,
-}));
+const PRESS_LINKS = {
+  1: "https://123menlife.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  2: "https://buzzcenter.co/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  3: "https://buzzinginfo.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  4: "https://goreaditright.com/agency-news/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  5: "https://knowthatsall.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  6: "https://theexpertfinds.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  7: "https://topicsdaily.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
+  8: "https://quoramagazine.com/thrm-business-solutions-pvt-ltd-transforming-brands-talent-the-digital-landscape/",
+  9: "https://tedxmagazine.com/thrm-business-solutions-pvt-ltd-a-digital-powerhouse-shaping-the-future/",
+  10: "https://newyorkfeatured.com/thrm-business-solutions-pvt-ltd-the-next-big-name-in-digital-recruitment-web3/",
+  11: "https://ussharks.com/thrm-business-solutions-pvt-ltd-a-360-growth-hub-for-digital-talent-web3-solutions/",
+  12: "https://en.wikiflux.org/wiki/index.php/THRM_Group",
+
+};
+
+const pressLogos = Array.from({ length: NUMBER_OF_LOGOS }, (_, i) => {
+  const id = i + 1;
+  return {
+    id,
+    src: `/PressImages/${id}.png`, 
+    alt: `Press coverage ${id}`,
+    link: PRESS_LINKS[id] || null,
+  };
+});
+
+function LogoCard({ logo }) {
+  const cardContent = (
+    <>
+      <img
+        src={logo.src}
+        alt={logo.alt}
+        loading="lazy"
+        className="h-full w-full object-contain p-2 filter grayscale opacity-60 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-110"
+      />
+      {/* Subtle White Glow */}
+      <div className="absolute inset-0 rounded-3xl bg-white/0 transition-all duration-500 group-hover/card:bg-white/5 pointer-events-none" />
+    </>
+  );
+
+  const className = "group/card relative mx-5 flex h-32 md:h-44 w-72 md:w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-md transition-all duration-500 hover:border-white/40 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]";
+
+  if (logo.link) {
+    return (
+      <a
+        href={logo.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${className} cursor-pointer`}
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return (
+    <div className={className}>
+      {cardContent}
+    </div>
+  );
+}
 
 export default function PressCarousel() {
   return (
@@ -27,21 +79,7 @@ export default function PressCarousel() {
         {/* Track 1 */}
         <div className="marquee-track flex whitespace-nowrap">
           {pressLogos.map((logo) => (
-            <div
-              key={`track1-${logo.id}`}
-              // Updated to charcoal/silver hover effects
-              className="group/card relative mx-5 flex h-32 md:h-44 w-72 md:w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:border-white/40 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-            >
-              <img
-                src={logo.src}
-                alt={logo.alt}
-                // Added grayscale that turns to full color on hover for a premium feel
-                className="h-full w-full object-contain p-2 filter grayscale opacity-60 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-110"
-              />
-
-              {/* Subtle White Glow */}
-              <div className="absolute inset-0 rounded-3xl bg-white/0 transition-all duration-500 group-hover/card:bg-white/5 pointer-events-none" />
-            </div>
+            <LogoCard key={`track1-${logo.id}`} logo={logo} className="group/card relative mx-5 flex h-32 md:h-44 w-72 md:w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:border-white/40 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"/>
           ))}
         </div>
 
@@ -51,18 +89,7 @@ export default function PressCarousel() {
           aria-hidden="true"
         >
           {pressLogos.map((logo) => (
-            <div
-              key={`track2-${logo.id}`}
-              className="group/card relative mx-5 flex h-32 md:h-44 w-72 md:w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:border-white/40 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-            >
-              <img
-                src={logo.src}
-                alt={logo.alt}
-                className="h-full w-full object-contain p-2 filter grayscale opacity-60 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-110"
-              />
-
-              <div className="absolute inset-0 rounded-3xl bg-white/0 transition-all duration-500 group-hover/card:bg-white/5 pointer-events-none" />
-            </div>
+            <LogoCard key={`track2-${logo.id}`} logo={logo} className="group/card relative mx-5 flex h-32 md:h-44 w-72 md:w-105 shrink-0 items-center justify-center overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:border-white/40 hover:bg-white/[0.06] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]"/>
           ))}
         </div>
       </div>
