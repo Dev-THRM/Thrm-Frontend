@@ -1,12 +1,8 @@
 import { motion } from "framer-motion";
 
-// Simply define how many images you have in your public/PressImages folder.
-// For example, if you have 1.png through 104.png, set this to 104.
 const NUMBER_OF_LOGOS = 12; 
 
 const PRESS_LINKS = {
-  // Add press links as needed, e.g.:
-  // 1: "https://example.com/featured-article",
   1: "https://123menlife.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
   2: "https://buzzcenter.co/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
   3: "https://buzzinginfo.com/thrm-business-solutions-pvt-ltd-revolutionizing-digital-recruitment-web3/",
@@ -22,12 +18,10 @@ const PRESS_LINKS = {
 
 };
 
-// Generate the array dynamically without relying on Vite's bundler
 const pressLogos = Array.from({ length: NUMBER_OF_LOGOS }, (_, i) => {
   const id = i + 1;
   return {
     id,
-    // This points directly to the public folder!
     src: `/PressImages/${id}.png`, 
     alt: `Press coverage ${id}`,
     link: PRESS_LINKS[id] || null,
@@ -41,7 +35,6 @@ function LogoCard({ logo }) {
         src={logo.src}
         alt={logo.alt}
         loading="lazy"
-        // Added grayscale that turns to full color on hover for a premium feel
         className="h-full w-full object-contain p-2 filter grayscale opacity-60 transition-all duration-500 group-hover/card:grayscale-0 group-hover/card:opacity-100 group-hover/card:scale-110"
       />
       {/* Subtle White Glow */}
