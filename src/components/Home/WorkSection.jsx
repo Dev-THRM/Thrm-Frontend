@@ -146,7 +146,7 @@ const CATEGORY_GROUPS = [
 
 const workData = {
   // THRM (same order)
-  "THRM Podcast": [thrm1, thrm2, thrm3, thrm4, thrm5, thrm6],
+  "Behind The Brand": [thrm1, thrm2, thrm3, thrm4, thrm5, thrm6],
 
   // Restaurants (exact sequence from HTML)
   Restaurants: [
@@ -387,7 +387,7 @@ function FilterBar({ activeFilter, onSelect }) {
 // WorkSection
 // ------------------------------------------------------------------
 export default function WorkSection() {
-  const [activeFilter, setActiveFilter] = useState("THRM Podcast");
+  const [activeFilter, setActiveFilter] = useState("Behind The Brand");
 
   const filteredVideos = workData[activeFilter] || [];
   const repeatedVideos = getRepeatedVideos(filteredVideos);
