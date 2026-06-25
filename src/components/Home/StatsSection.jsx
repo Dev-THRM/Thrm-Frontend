@@ -92,6 +92,12 @@ export default function StatsSection() {
         {/* Ambient glows */}
         <div className="absolute top-[10%] left-[-10%] w-[50%] h-[50%] bg-white/5 blur-[120px] rounded-full" />
         <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] bg-white/5 blur-[120px] rounded-full" />
+        
+        {/* Bottom gradient and blur to transition to the next section */}
+        <div className="absolute bottom-0 left-0 w-full h-64">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/70 to-[#02040a]" />
+          <div className="absolute inset-0 backdrop-blur-md opacity-40" />
+        </div>
       </div>
 
       {/* Changed: Fixed invalid max-w-350 class to standard Tailwind max-w-7xl */}
@@ -182,11 +188,6 @@ export default function StatsSection() {
       <p className="sr-only">
         THRM has completed over 1569 projects, serves over 170 global clients, has won 69 brand awards, and possesses over 3 years of digital marketing experience.
       </p>
-
-      <div className="absolute bottom-0 left-0 w-full h-64 z-20 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#02040a]/70 to-[#02040a]" />
-        <div className="absolute inset-0 backdrop-blur-md opacity-40" />
-      </div>
     </section>
   );
 }
