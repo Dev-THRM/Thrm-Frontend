@@ -29,6 +29,7 @@ const navData = [
     name: "Services",
     path: "/services",
     isMegaMenu: true,
+    menuWidth: "w-[750px]",
     subItems: [
       { name: "Social Media Marketing", path: "/services/social", desc: "Using Social Platforms To Promote Brands, Engage Users, And Drive Sales.", icon: Share2 },
       { name: "SEO", path: "/services/seo", desc: "Optimizing Websites To Rank Higher On Search Engines And Increase Organic Traffic.", icon: Search },
@@ -41,7 +42,8 @@ const navData = [
   {
     name: "About",
     path: "/about",
-    isMegaMenu: false,
+    isMegaMenu: true,
+    menuWidth: "w-[500px]",
     subItems: [
       { name: "Our Clients", path: "/clients", icon: Briefcase },
       { name: "Our Team", path: "/about/team", icon: Users },
@@ -157,8 +159,9 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.98 }}
                             transition={{ duration: 0.2, ease: "easeOut" }}
-                            className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 cursor-default ${item.isMegaMenu ? "w-[750px]" : "w-[250px]"
-                              }`}
+                            className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 cursor-default ${
+                              item.isMegaMenu ? (item.menuWidth || "w-[750px]") : "w-[250px]"
+                            }`}
                           >
                             <div className="bg-[#0b1020]/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
                               <div className={`grid gap-4 ${item.isMegaMenu ? "grid-cols-2 gap-y-6" : "grid-cols-1"}`}>
@@ -170,7 +173,9 @@ export default function Navbar() {
                                       key={subItem.name}
                                       to={subItem.path}
                                       onClick={() => setHoveredNav(null)}
-                                      className="group flex items-start gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors"
+                                      className={`group flex ${
+                                        subItem.desc ? "items-start" : "items-center"
+                                      } gap-2 p-1 rounded-xl hover:bg-white/5 transition-colors`}
                                     >
                                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 text-white/70 transition-all group-hover:scale-110 group-hover:bg-white group-hover:text-black">
                                         <SubIcon className="h-4 w-4" />
