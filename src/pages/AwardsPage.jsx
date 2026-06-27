@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { 
   Trophy, 
   Award, 
@@ -201,9 +202,9 @@ export default function AwardsPage() {
           <p className="relative z-10 text-lg text-white/70 leading-relaxed mb-12 max-w-2xl mx-auto">
             Let's translate this level of excellence into measurable growth for your business. Partner with THRM today.
           </p>
-          <button className="relative z-10 group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-black transition-all hover:bg-gray-200">
+          <Link to="/contact" className="relative z-10 group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 font-bold text-black transition-all hover:bg-gray-200">
             Start Your Project <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </button>
+          </Link>
         </motion.div>
       </section>
 
