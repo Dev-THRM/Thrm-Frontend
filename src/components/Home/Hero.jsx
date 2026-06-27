@@ -23,7 +23,7 @@ export default function Hero() {
     : "/home/desktop-banner.png";
 
   return (
-    <section className="relative h-[100dvh] w-full overflow-hidden bg-[#02040a]">
+    <section className="relative w-full aspect-[9/16] md:aspect-video overflow-hidden bg-[#02040a]">
       {/* Fallback image for instant visual paint (LCP optimized) */}
       <img
         src={fallbackImage}
