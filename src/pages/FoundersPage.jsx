@@ -47,7 +47,7 @@ function FounderCard({ founder, index }) {
 
 
             <h2 className="text-xl font-bold text-white mb-1">{founder.name}</h2>
-            <p className="text-sm text-white/50 mb-4">{founder.title}</p>
+            <p className="text-sm text-white/50 mb-4">{founder.title} - {founder.company}</p>
 
 
 
