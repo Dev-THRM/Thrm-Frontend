@@ -348,4 +348,19 @@ body {
 section {
   content-visibility: auto;
   contain-intrinsic-size: 0 500px;
+}
+
+/* Custom class to force justification in blog contents */
+.blog-content-rich p,
+.blog-content-rich li,
+.blog-content-rich span {
+  text-align: justify !important;
+}
+
+/* Headings should be left-aligned, not justified */
+.blog-content-rich h1,
+.blog-content-rich h2,
+.blog-content-rich h3,
+.blog-content-rich h4 {
+  text-align: left !important;
 }

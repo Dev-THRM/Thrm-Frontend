@@ -45,6 +45,12 @@ export default function SingleBlogPage() {
     );
   }
 
+  // Replace &nbsp; with regular spaces so the browser can properly wrap and justify text
+  const sanitizeContent = (html) => {
+    if (!html) return "";
+    return html.replace(/&nbsp;/g, " ").replace(/\u00A0/g, " ");
+  };
+
   return (
     <main className="bg-[#02040a] text-white min-h-screen relative overflow-hidden">
       
@@ -83,7 +89,7 @@ export default function SingleBlogPage() {
         </div>
 
         {/* Blog Title */}
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-10 leading-[1.1] break-words">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-10 leading-[1.1]">
           {blog.title}
         </h1>
 
@@ -99,7 +105,7 @@ export default function SingleBlogPage() {
 
         {/* RICH TEXT CONTENT - Colors updated to monochrome aesthetic */}
         <div 
-          className="text-lg text-white/80 leading-relaxed space-y-6 break-words w-full
+          className="blog-content-rich text-lg text-white/80 leading-relaxed space-y-6 w-full
             [&>p]:mb-6 
             [&>h1]:text-4xl [&>h1]:font-bold [&>h1]:mt-12 [&>h1]:mb-6 [&>h1]:text-white [&>h1]:tracking-tight
             [&>h2]:text-3xl [&>h2]:font-bold [&>h2]:mt-10 [&>h2]:mb-6 [&>h2]:text-white [&>h2]:tracking-tight
@@ -110,7 +116,7 @@ export default function SingleBlogPage() {
             [&>a]:text-white [&>a]:underline [&>a]:underline-offset-4 [&>a]:decoration-white/30 hover:[&>a]:decoration-white [&>a]:transition-all [&>a]:break-all
             [&>blockquote]:border-l-4 [&>blockquote]:border-white/30 [&>blockquote]:bg-white/[0.02] [&>blockquote]:p-6 [&>blockquote]:rounded-r-2xl [&>blockquote]:italic [&>blockquote]:text-white/70 [&>blockquote]:my-8
             [&>strong]:text-white [&>strong]:font-bold"
-          dangerouslySetInnerHTML={{ __html: blog.content }} 
+          dangerouslySetInnerHTML={{ __html: sanitizeContent(blog.content) }} 
         />
         
         {/* Footer/Share Divider inside the post */}

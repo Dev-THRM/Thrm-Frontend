@@ -599,7 +599,7 @@ export const AdminDashboard = () => {
                       {new Date(blog.createdAt).toLocaleDateString()}
                     </div>
                     <h2 className="text-xl font-bold mb-3 line-clamp-2">{blog.title}</h2>
-                    <p className="text-white/50 text-sm mb-6 flex-1 line-clamp-2 break-words">
+                    <p className="text-white/50 text-sm mb-6 flex-1 line-clamp-2 break-normal text-justify">
                       {createExcerpt(blog.content)}
                     </p>
                   </div>

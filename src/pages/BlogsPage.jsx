@@ -23,13 +23,12 @@ export default function BlogsPage() {
     fetchBlogs();
   }, []);
 
-  // UPDATED: Perfectly decodes &nbsp; and strips HTML using the browser's native parser
+  // UPDATED: Decodes &nbsp; and strips HTML, then replaces non-breaking spaces with regular spaces
   const createExcerpt = (htmlString) => {
     if (!htmlString) return "";
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = htmlString;
-    const plainText = tempDiv.textContent || tempDiv.innerText || "";
-    // Increased character count to ensure we have enough text to fill 3-4 lines
+    const plainText = (tempDiv.textContent || tempDiv.innerText || "").replace(/\u00A0/g, " ");
     return plainText.length > 250 ? plainText.substring(0, 250) + '...' : plainText;
   };
 
@@ -73,7 +72,7 @@ export default function BlogsPage() {
                   <h2 className="text-2xl font-bold mb-4 line-clamp-2">{blog.title}</h2>
                   
                   {/* UPDATED: Added line-clamp-3 to strictly lock it to 3 lines */}
-                  <p className="text-white/60 text-sm mb-8 flex-1 line-clamp-3 break-words">
+                  <p className="text-white/60 text-sm mb-8 flex-1 line-clamp-3 break-normal text-justify">
                     {createExcerpt(blog.content)}
                   </p>
                   
