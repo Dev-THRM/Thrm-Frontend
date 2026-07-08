@@ -585,13 +585,13 @@ export const AdminDashboard = () => {
                   transition={{ delay: idx * 0.1 }}
                   className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] overflow-hidden shadow-xl hover:border-white/30 transition-all duration-300"
                 >
-                  <div className="aspect-[16/10] overflow-hidden relative">
+                  <Link to={`/blogs/${blog._id}`} className="aspect-[16/10] overflow-hidden relative block">
                     <img
                       src={blog.imageUrl}
                       alt={blog.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
                     />
-                  </div>
+                  </Link>
 
                   <div className="p-6 flex flex-col flex-1">
                     <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest mb-3">

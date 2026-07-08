@@ -62,9 +62,9 @@ export default function BlogsPage() {
                 transition={{ delay: (idx % 3) * 0.05, duration: 0.5 }}
                 className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/[0.05] transition-all duration-300"
               >
-                <div className="aspect-[16/10] overflow-hidden relative">
+                <Link to={`/blogs/${blog._id}`} className="aspect-[16/10] overflow-hidden relative block">
                   <img src={blog.imageUrl} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                </div>
+                </Link>
                 <div className="p-8 flex flex-col flex-1">
                   <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest mb-4">
                     <Calendar className="w-4 h-4" />
