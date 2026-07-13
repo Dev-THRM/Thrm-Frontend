@@ -1,10 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import bgImage from "../../assets/Home/home-work.png";
 
-// Helper to build optimized Cloudinary video URL
-// w_300 = scales down to 300px wide (massive size reduction), q_auto = auto quality, f_auto = auto format (WebM/MP4)
-const cl = (path) =>
-  `https://res.cloudinary.com/djwwbrdss/video/upload/w_300,q_auto,f_auto/${path}`;
+// Helper to build local video URL from the public/videos folder
+const cl = (path) => {
+  // Extract just the filename (e.g., 'v1782196392/cafe-1_qyw61x.mp4' becomes 'cafe-1_qyw61x.mp4')
+  const filename = path.split('/').pop();
+  // Strip the Cloudinary 6-character random suffix so it matches your clean local files (e.g., 'cafe-1.mp4')
+  const cleanName = filename.replace(/_[a-zA-Z0-9]{6}\.mp4$/, '.mp4');
+  return `/videos/${cleanName}`;
+};
 
 // Import Cafe Videos
 const cafe1 = cl("v1782196392/cafe-1_qyw61x.mp4");
