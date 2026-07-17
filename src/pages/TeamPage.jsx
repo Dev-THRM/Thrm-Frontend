@@ -16,6 +16,9 @@ import Manmeet from "../../src/assets/TeamImages/manmeet.jpeg"
 import Vedant from "../../src/assets/TeamImages/vedant.jpeg"
 import Mitali from "../../src/assets/TeamImages/mitali.jpeg"
 import Sneha from "../../src/assets/TeamImages/Sneha.jpeg"
+import Manilal from "../../src/assets/TeamImages/manilal.jpeg"
+import Sahil from "../../src/assets/TeamImages/sahil.jpg"
+import Diya from "../../src/assets/TeamImages/diya.jpg"
 
 // --- TEAM DATA (All descriptions restored) ---
 const teamMembers = [
@@ -36,25 +39,23 @@ const teamMembers = [
       "Meet the visionary behind THRM Digital Marketing Agency, a dynamic leader who brings creativity, innovation, and strategy to the forefront of our operations. As the Co-Founder, they have been instrumental in shaping THRM into a 360° digital marketing powerhouse, known for delivering impactful results and building strong, lasting relationships with clients. With a sharp eye for detail and a passion for helping brands thrive in the digital space, they have spearheaded countless successful campaigns across diverse industries. Their expertise spans social media management, performance marketing, influencer collaborations, and content creation—always with a focus on authenticity and measurable outcomes. Their leadership and dedication inspire our team to push boundaries, embrace innovation, and deliver excellence in every project. At THRM Digital Marketing Agency, their vision drives us to go above and beyond, ensuring that our clients achieve success in the ever-evolving digital world.",
     image: Sunny,
   },
-
   {
     id: 3,
-    name: "Mr. Manas Patil",
-    designation: "Director IT",
+    name: "Mr.Manilal",
+    designation: "CHO",
     description:
-      "Manas Patil is a passionate and innovative full stack developer, dedicated to crafting seamless digital experiences. With a strong foundation in both frontend and backend technologies, Manas specializes in building dynamic web applications that combine functionality with aesthetic appeal. His expertise spans JavaScript, React.js, Node.js, Express.js, and MongoDB, enabling him to deliver robust and scalable solutions. Manas’s commitment to continuous learning and his problem-solving mindset empower him to tackle complex challenges with precision and creativity. As a forward-thinking developer, Manas thrives in collaborative environments, ensuring each project exceeds expectations. His dedication to excellence and ability to transform ideas into impactful digital products make him a valuable asset in today’s fast-evolving tech landscape.",
-    image: Manas,
+    "Meet our Chief Happiness Officer (CHO), the calmest and most loved member of the team. Known for spending most of the day peacefully napping, our office cat has mastered the art of creating a relaxed and positive workplace. Whether quietly supervising from a cozy corner or greeting everyone with a gentle stretch, the CHO reminds us to slow down, recharge, and enjoy the little moments that make every workday better.",
+    image: Manilal
   },
   {
     id: 4,
-    name: "Ms. Sneha Dewani",
-    designation: "Full Stack Developer",
+    name: "Ms. Mitali Rupani",
+    designation: "HR + Content Manager",
     description:
-      "Sneha Dewani is a passionate and driven Full Stack Developer with a strong foundation in modern web technologies and software development. With expertise in both frontend and backend development, she specializes in creating responsive, user-friendly, and scalable web applications that deliver exceptional user experiences. Her technical skill set includes React.js, JavaScript, PHP Laravel, MySQL, HTML, CSS, and Bootstrap, enabling her to develop robust solutions from concept to deployment.Having gained hands-on experience through professional internships and real-world projects, Sneha combines technical proficiency with a problem-solving mindset to build efficient and innovative digital products. She is committed to continuous learning, staying updated with emerging technologies, and applying best practices to every project she undertakes.Known for her dedication, adaptability, and collaborative approach, Sneha thrives in dynamic environments where creativity and technology intersect. Her ability to transform complex requirements into practical, high-quality solutions makes her a valuable contributor to any development team and a promising professional in the ever-evolving technology industry.",
-    image: Sneha,
+      "Mitali Rupani, our HR & Content Manager at THRM Digital Marketing Agency, plays a vital role in both talent management and content development. She oversees recruitment, employee engagement, and HR operations while also leading the creation and management of high-quality content that helps clients effectively communicate their brand message. Mitali develops content strategies, plans content calendars, and ensures all written materials align with client objectives and audience interests. With a strong understanding of digital marketing, storytelling, and content trends, she creates engaging content for websites, social media platforms, blogs, and marketing campaigns. Her ability to balance people management with creative and strategic thinking helps foster a positive workplace culture while delivering content that drives engagement, strengthens brand authority, and supports business growth. Dedicated to maintaining excellence in both human resources and content initiatives, Mitali contributes significantly to the continued success of THRM and its clients.",
+    image: Mitali,
   },
-
-  {
+   {
     id: 5,
     name: "Mr. Omkar Jadhav",
     designation: "Deputy Director Creative Department",
@@ -62,8 +63,7 @@ const teamMembers = [
       "Omkar, our Creative Video Editor at THRM Digital Marketing Agency, is the creative mind who turns ideas into cinematic experiences. With a sharp eye for detail and a natural flair for storytelling, he transforms raw footage into compelling visual narratives that engage audiences and strengthen brand identity. His expertise lies in blending crisp editing, smooth transitions, and impactful sound design to create videos that don’t just inform, but inspire. From dynamic social media reels to high-end promotional campaigns, Omkar ensures each project reflects both creativity and strategy. His strong command over editing tools, along with his ability to align visuals with brand messaging, makes him a key driver of THRM’s content success. Beyond technical skill, Omkar brings passion, patience, and originality to every frame—turning ordinary visuals into extraordinary stories that leave a lasting impression.",
     image: Omkar,
   },
-
-  {
+   {
     id: 6,
     name: "Ms. Mahek Bhagwani",
     designation: "Deputy Director Social Department",
@@ -71,27 +71,32 @@ const teamMembers = [
       "Mahek Bhagwani, our Digital Marketing Associate at THRM Digital Marketing Agency, is known for her strategic thinking and creative flair. She plays an integral role in planning and executing campaigns that enhance brand awareness and engagement across digital platforms. With a strong understanding of social media trends, content strategy, and audience behavior, Mahek ensures that every campaign resonates with its target audience. Her curiosity and commitment to staying updated with the latest marketing techniques make her a valuable contributor to THRM’s growing success. Focused, driven, and passionate about delivering results, Mahek helps THRM craft digital experiences that not only attract attention but also build meaningful brand connections.",
     image: Mahek,
   },
-
   {
     id: 7,
+    name: "Ms. Diya Valecha",
+    designation: "Deputy Director Content Department",
+    description: 
+      "Diya Valecha, our Deputy Director of the Content Team at THRM Digital Marketing Agency, plays a pivotal role in shaping compelling content that helps brands connect with their audiences. With a keen eye for detail and a passion for creative storytelling, she supports the planning, development, and execution of high-quality content across websites, social media platforms, blogs, and digital marketing campaigns. Working closely with the Content Manager, Diya helps coordinate content strategies, maintain editorial standards, and ensure every piece of content aligns with client objectives and brand identity. Her ability to combine creativity with strategic thinking enables her to craft engaging, impactful content that builds brand authority and drives meaningful audience engagement. Dedicated to consistency, collaboration, and continuous innovation, Diya contributes significantly to the success of THRM's content initiatives, helping transform ideas into powerful stories that leave a lasting impression.",
+    image: Diya,
+  },
+  {
+    id: 8,
+    name: "Ms. Sneha Dewani",
+    designation: "Senior Full Stack Developer",
+    description:
+      "Sneha Dewani is a passionate and driven Full Stack Developer with a strong foundation in modern web technologies and software development. With expertise in both frontend and backend development, she specializes in creating responsive, user-friendly, and scalable web applications that deliver exceptional user experiences. Her technical skill set includes React.js, JavaScript, PHP Laravel, MySQL, HTML, CSS, and Bootstrap, enabling her to develop robust solutions from concept to deployment.Having gained hands-on experience through professional internships and real-world projects, Sneha combines technical proficiency with a problem-solving mindset to build efficient and innovative digital products. She is committed to continuous learning, staying updated with emerging technologies, and applying best practices to every project she undertakes.Known for her dedication, adaptability, and collaborative approach, Sneha thrives in dynamic environments where creativity and technology intersect. Her ability to transform complex requirements into practical, high-quality solutions makes her a valuable contributor to any development team and a promising professional in the ever-evolving technology industry.",
+    image: Sneha,
+  },
+  {
+    id: 9,
     name: "Mr. Kaustubh Tambade",
     designation: "Creative Director",
     description:
       "Kaustubh Tambade, our Creative Director at THRM Digital Marketing Agency, is responsible for transforming ideas into compelling visual stories. He plays a key role in planning and executing shoots based on content strategies developed by the content team, ensuring that every project aligns with the client's objectives and brand identity. With a strong eye for detail, creativity, and production planning, Kaustubh oversees the entire creative process from concept development to on-site execution. His ability to coordinate teams, manage shoot schedules, and bring creative concepts to life helps deliver engaging content that captures audience attention. Passionate about innovation and visual excellence, Kaustubh consistently ensures that every campaign reflects the highest standards of quality and creativity, contributing significantly to THRM's success and reputation.",
     image: Kaustubh,
   },
-
   {
-    id: 8,
-    name: "Mr. Sujal Kanojiya",
-    designation: "Creative video editor",
-    description:
-      "Sujal Kanojiya, our Jr. Creative Video Editor at THRM Digital Marketing Agency, brings fresh creativity, sharp visual instincts, and a passion for storytelling to every project he works on. With a strong understanding of pacing, transitions, and visual flow, Sujal transforms raw clips into engaging videos that capture attention and deliver the message with impact. As an emerging talent, Sujal combines technical skill with youthful innovation—ensuring every reel, short, or campaign video feels modern, energetic, and aligned with brand goals. He constantly experiments with new editing styles, effects, and trends to keep THRM’s content ahead of the curve. Focused, dedicated, and always eager to learn, Sujal contributes to the team with new ideas and a strong commitment to quality. With his growing expertise and passion for visual storytelling, he is on a path to becoming a key creative force in THRM’s video production team.",
-    image: Sujal,
-  },
-
-  {
-    id: 9,
+    id: 10,
     name: "Mr. Sagar Bhuwad",
     designation: "Creative Designer",
     description:
@@ -100,23 +105,13 @@ const teamMembers = [
   },
 
   {
-    id: 10,
+    id: 11,
     name: "Ms. Hanisha Murjani",
     designation: "Social Media Manager",
     description:
       "Hanisha Murjani, our Social Media Manager at THRM Digital Marketing Agency, plays a vital role in building and maintaining a strong digital presence for our clients. She is responsible for managing social media accounts across various platforms, ensuring consistent brand communication and audience engagement. With a deep understanding of social media trends, content planning, and community management, Hanisha develops strategies that help clients grow their online reach and strengthen their connection with their target audience. Her proactive approach to monitoring performance, responding to audience interactions, and optimizing content ensures that every social media campaign delivers meaningful results. Dedicated, creative, and detail-oriented, Hanisha contributes significantly to enhancing brand visibility and driving client success in the digital space.",
     image: Hanisha,
   },
-
-  {
-    id: 11,
-    name: "Ms. Mitali Rupani",
-    designation: "Content Manager",
-    description:
-      "Mitali Rupani, our Content Manager at THRM Digital Marketing Agency, is responsible for creating and managing high-quality content that helps clients effectively communicate their brand message. She plays a key role in developing content strategies, planning content calendars, and ensuring that all written materials align with client objectives and audience interests. With a strong understanding of digital marketing, storytelling, and content trends, Mitali crafts engaging content for websites, social media platforms, blogs, and marketing campaigns. Her ability to balance creativity with strategic thinking helps deliver content that drives engagement, builds brand authority, and supports business growth. Dedicated to maintaining consistency and quality across all content initiatives, Mitali contributes significantly to the success of THRM's client campaigns.",
-    image: Mitali,
-  },
-
   {
     id: 12,
     name: "Ms. Manmeet Kaur",
@@ -134,6 +129,13 @@ const teamMembers = [
       "Vedant Patil, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. He is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Vedant effectively understands client requirements and connects them with services that best support their business goals. His proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Vedant contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
     image: Vedant,
   },
+  {
+    id: 14,
+    name: "Mr. Sahil Bijlani",
+    designation: "Full Stack Developer",
+    description: "Sahil Bijlani is a passionate and results-driven Full Stack Developer with a strong foundation in software engineering and modern web technologies. He specializes in building scalable, secure, and user-centric web applications, with hands-on experience across both frontend and backend development. His technical expertise includes React.js, Next.js, Node.js, Express.js, JavaScript, Java, PHP, MySQL, PostgreSQL, HTML, CSS, Bootstrap, and RESTful APIs, enabling him to deliver end-to-end solutions from design to deployment. Through internships and real-world projects, Sahil has developed applications involving authentication, database management, API integration, and responsive user interfaces. He enjoys solving complex problems, writing clean and maintainable code, and building applications that are both efficient and intuitive. His projects demonstrate a strong understanding of software architecture, database design, and modern development practices.",
+    image: Sahil
+  }
 ];
 
 export default function TeamPage() {
@@ -198,7 +200,7 @@ export default function TeamPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.7 }}
-                className={`flex flex-col gap-10 lg:gap-16 items-center ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"}`}
+                className={`flex flex-col gap-10 lg:gap-16 items-center lg:items-start ${isEven ? "lg:flex-row" : "lg:flex-row-reverse"}`}
               >
                 <div className="w-full lg:w-1/2 flex flex-col items-start text-left">
                   <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">

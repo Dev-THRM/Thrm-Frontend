@@ -11,7 +11,7 @@ function FounderCard({ founder, index }) {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: (index % 3) * 0.05 }}
+      transition={{ duration: 0.6, delay: (index % 4) * 0.05 }}
     >
       <Link to={`/founders/${founder.slug}`} className="block group">
         <div className="relative overflow-hidden rounded-3xl bg-white/[0.02] border border-white/10 transition-all duration-500 hover:border-white/25 hover:bg-white/[0.04] hover:shadow-[0_0_60px_rgba(255,255,255,0.04)]">
@@ -179,7 +179,7 @@ export default function FoundersPage() {
         ) : founders.length === 0 ? (
           <div className="text-center text-white/50 p-8">No founder episodes found.</div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {founders.map((founder, i) => (
               <FounderCard key={founder._id} founder={founder} index={i} />
             ))}

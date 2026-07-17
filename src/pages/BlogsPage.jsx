@@ -51,14 +51,14 @@ export default function BlogsPage() {
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {blogs.map((blog, idx) => (
               <motion.div 
                 key={blog._id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: (idx % 3) * 0.05, duration: 0.5 }}
+                transition={{ delay: (idx % 4) * 0.05, duration: 0.5 }}
                 className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/[0.05] transition-all duration-300"
               >
                 <Link to={`/blogs/${blog._id}`} className="aspect-[16/10] overflow-hidden relative block">
