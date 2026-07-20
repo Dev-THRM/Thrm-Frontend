@@ -2,20 +2,16 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Users, ArrowRight, Compass } from "lucide-react";
 import Gunjan from "../../src/assets/TeamImages/Founder.jpeg";
-import Khushi from "../../src/assets/TeamImages/khushi.jpeg";
-import Mahek from "../../src/assets/TeamImages/mahek.jpeg";
-import Manas from "../../src/assets/TeamImages/manas.jpeg";
+import Mahek from "../../src/assets/TeamImages/mahek.jpg";
 import Sunny from "../../src/assets/TeamImages/sunny.png";
-import Omkar from "../../src/assets/TeamImages/omkar.jpeg";
-import Sujal from "../../src/assets/TeamImages/sujal.png";
-import Abhidnya from "../../src/assets/TeamImages/abhidnya.jpeg";
+import Omkar from "../../src/assets/TeamImages/omkar.jpg";
 import Kaustubh from "../../src/assets/TeamImages/kaustubh.jpg";
-import Sagar from "../../src/assets/TeamImages/Sagar.jpeg";
-import Hanisha from "../../src/assets/TeamImages/hanisha.jpeg"
-import Manmeet from "../../src/assets/TeamImages/manmeet.jpeg"
-import Vedant from "../../src/assets/TeamImages/vedant.jpeg"
-import Mitali from "../../src/assets/TeamImages/mitali.jpeg"
-import Sneha from "../../src/assets/TeamImages/Sneha.jpeg"
+import Sagar from "../../src/assets/TeamImages/Sagar.jpg";
+import Hanisha from "../../src/assets/TeamImages/hanisha.jpg"
+import Manmeet from "../../src/assets/TeamImages/manmeet.jpg"
+import Vedant from "../../src/assets/TeamImages/vedant.jpg"
+import Mitali from "../../src/assets/TeamImages/mitali.jpg";
+import Sneha from "../../src/assets/TeamImages/sneha.jpg"
 import Manilal from "../../src/assets/TeamImages/manilal.jpeg"
 import Sahil from "../../src/assets/TeamImages/sahil.jpg"
 import Diya from "../../src/assets/TeamImages/diya.jpg"
@@ -44,7 +40,7 @@ const teamMembers = [
     name: "Mr.Manilal",
     designation: "CHO",
     description:
-    "Meet our Chief Happiness Officer (CHO), the calmest and most loved member of the team. Known for spending most of the day peacefully napping, our office cat has mastered the art of creating a relaxed and positive workplace. Whether quietly supervising from a cozy corner or greeting everyone with a gentle stretch, the CHO reminds us to slow down, recharge, and enjoy the little moments that make every workday better.",
+      "Meet our Chief Happiness Officer (CHO), the calmest and most loved member of the team. Known for spending most of the day peacefully napping, our office cat has mastered the art of creating a relaxed and positive workplace. Whether quietly supervising from a cozy corner or greeting everyone with a gentle stretch, the CHO reminds us to slow down, recharge, and enjoy the little moments that make every workday better.",
     image: Manilal
   },
   {
@@ -55,7 +51,7 @@ const teamMembers = [
       "Mitali Rupani, our HR & Content Manager at THRM Digital Marketing Agency, plays a vital role in both talent management and content development. She oversees recruitment, employee engagement, and HR operations while also leading the creation and management of high-quality content that helps clients effectively communicate their brand message. Mitali develops content strategies, plans content calendars, and ensures all written materials align with client objectives and audience interests. With a strong understanding of digital marketing, storytelling, and content trends, she creates engaging content for websites, social media platforms, blogs, and marketing campaigns. Her ability to balance people management with creative and strategic thinking helps foster a positive workplace culture while delivering content that drives engagement, strengthens brand authority, and supports business growth. Dedicated to maintaining excellence in both human resources and content initiatives, Mitali contributes significantly to the continued success of THRM and its clients.",
     image: Mitali,
   },
-   {
+  {
     id: 5,
     name: "Mr. Omkar Jadhav",
     designation: "Deputy Director Creative Department",
@@ -63,7 +59,7 @@ const teamMembers = [
       "Omkar, our Creative Video Editor at THRM Digital Marketing Agency, is the creative mind who turns ideas into cinematic experiences. With a sharp eye for detail and a natural flair for storytelling, he transforms raw footage into compelling visual narratives that engage audiences and strengthen brand identity. His expertise lies in blending crisp editing, smooth transitions, and impactful sound design to create videos that don’t just inform, but inspire. From dynamic social media reels to high-end promotional campaigns, Omkar ensures each project reflects both creativity and strategy. His strong command over editing tools, along with his ability to align visuals with brand messaging, makes him a key driver of THRM’s content success. Beyond technical skill, Omkar brings passion, patience, and originality to every frame—turning ordinary visuals into extraordinary stories that leave a lasting impression.",
     image: Omkar,
   },
-   {
+  {
     id: 6,
     name: "Ms. Mahek Bhagwani",
     designation: "Deputy Director Social Department",
@@ -75,7 +71,7 @@ const teamMembers = [
     id: 7,
     name: "Ms. Diya Valecha",
     designation: "Deputy Director Content Department",
-    description: 
+    description:
       "Diya Valecha, our Deputy Director of the Content Team at THRM Digital Marketing Agency, plays a pivotal role in shaping compelling content that helps brands connect with their audiences. With a keen eye for detail and a passion for creative storytelling, she supports the planning, development, and execution of high-quality content across websites, social media platforms, blogs, and digital marketing campaigns. Working closely with the Content Manager, Diya helps coordinate content strategies, maintain editorial standards, and ensure every piece of content aligns with client objectives and brand identity. Her ability to combine creativity with strategic thinking enables her to craft engaging, impactful content that builds brand authority and drives meaningful audience engagement. Dedicated to consistency, collaboration, and continuous innovation, Diya contributes significantly to the success of THRM's content initiatives, helping transform ideas into powerful stories that leave a lasting impression.",
     image: Diya,
   },
