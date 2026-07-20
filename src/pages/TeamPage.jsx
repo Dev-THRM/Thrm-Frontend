@@ -1,20 +1,20 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Users, ArrowRight, Compass } from "lucide-react";
-import Gunjan from "../../src/assets/TeamImages/Founder.jpeg";
-import Mahek from "../../src/assets/TeamImages/mahek.jpg";
-import Sunny from "../../src/assets/TeamImages/sunny.png";
-import Omkar from "../../src/assets/TeamImages/omkar.jpg";
-import Kaustubh from "../../src/assets/TeamImages/kaustubh.jpg";
-import Sagar from "../../src/assets/TeamImages/Sagar.jpg";
-import Hanisha from "../../src/assets/TeamImages/hanisha.jpg";
-import Manmeet from "../../src/assets/TeamImages/manmeet.jpg";
-import Vedant from "../../src/assets/TeamImages/vedant.jpg"
-import Mitali from "../../src/assets/TeamImages/mitali.jpg";
-import Sneha from "../../src/assets/TeamImages/sneha.jpg"
-import Manilal from "../../src/assets/TeamImages/manilal.jpeg"
-import Sahil from "../../src/assets/TeamImages/sahil.jpg"
-import Diya from "../../src/assets/TeamImages/diya.jpg"
+import Gunjan from "../assets/TeamImages/Founder.jpeg";
+import Mahek from "../assets/TeamImages/mahek.jpg";
+import Sunny from "../assets/TeamImages/sunny.png";
+import Omkar from "../assets/TeamImages/omkar.jpg";
+import Kaustubh from "../assets/TeamImages/kaustubh.jpg";
+import Sagar from "../assets/TeamImages/Sagar.jpg";
+import Hanisha from "../assets/TeamImages/hanisha.jpg";
+import Manmeet from "../assets/TeamImages/manmeet.jpg";
+import Vedant from "../assets/TeamImages/vedant.jpg"
+import Mitali from "../assets/TeamImages/mitali.jpg";
+import Sneha from "../assets/TeamImages/sneha.jpg"
+import Manilal from "../assets/TeamImages/manilal.jpeg"
+import Sahil from "../assets/TeamImages/sahil.jpg"
+import Diya from "../assets/TeamImages/diya.jpg"
 
 // --- TEAM DATA (All descriptions restored) ---
 const teamMembers = [
