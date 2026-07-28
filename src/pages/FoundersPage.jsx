@@ -4,7 +4,260 @@ import { Mic2, ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { API_BASE_URL } from "../config";
 
+// ── GLOBE SECTION ─────────────────────────────────────────────────────────────
+//
+// Fixed positional layout — cards are placed in explicit zones:
+//   TOP    : 2 cards side-by-side above the globe
+//   SIDES  : 1-2 cards on each side (left / right) of the globe
+//   BOTTOM : 2 cards side-by-side below the globe
+//
+// The globe sits in the center of a wide container.
+// Cards overflow the globe vertically so the whole group feels connected.
+
+// ── Dynamic sizing: bigger cards when fewer founders, scales down as more are added
+// Breakpoints: 1-4 founders → large, 5-6 → medium, 7-8 → compact
+function getCardSize(count) {
+  if (count <= 4) return { cardW: 240, cardH: 320, globeD: 430, gap: 28, infoH: 64, badgeFontSize: "0.65rem", nameFontSize: "0.82rem", titleFontSize: "0.65rem" };
+  if (count <= 6) return { cardW: 200, cardH: 266, globeD: 415, gap: 24, infoH: 56, badgeFontSize: "0.6rem",  nameFontSize: "0.74rem", titleFontSize: "0.6rem"  };
+  return           { cardW: 170, cardH: 226, globeD: 400, gap: 20, infoH: 50, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
+}
+
+// How the cards are distributed for up to 8 founders:
+//   slots[i] = { zone: "top"|"left"|"right"|"bottom", slot: 0|1 }
+// For a given count we pick the first `count` entries.
+// Layout stays consistent regardless of how many founders are added:
+//   1-2 founders  → top only
+//   3-4 founders  → top + sides
+//   5-6 founders  → top + sides + bottom
+//   7-8 founders  → top + sides (2 each) + bottom
+const SLOT_MAP = [
+  { zone: "top",    slot: 0 },   // founder 0
+  { zone: "top",    slot: 1 },   // founder 1
+  { zone: "left",   slot: 0 },   // founder 2
+  { zone: "right",  slot: 0 },   // founder 3
+  { zone: "bottom", slot: 0 },   // founder 4
+  { zone: "bottom", slot: 1 },   // founder 5
+  { zone: "left",   slot: 1 },   // founder 6
+  { zone: "right",  slot: 1 },   // founder 7
+];
+
+// Skeleton always shows 6 cards using the first 6 slots
+const SKELETON_SLOTS = SLOT_MAP.slice(0, 6);
+
+// ── Mini founder card used inside GlobeSection ─────────────────────────────
+function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.6, y: 10 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.55, delay, type: "spring", stiffness: 180, damping: 20 }}
+      className="group shrink-0"
+      style={{ width: cardW }}
+    >
+      <Link to={`/founders/${founder.slug}`}>
+        <div
+          className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-sm
+                     transition-all duration-300 group-hover:border-white/35 group-hover:bg-white/[0.08]
+                     group-hover:scale-105 group-hover:shadow-[0_8px_40px_rgba(255,255,255,0.08)]"
+          style={{ width: cardW, height: cardH }}
+        >
+          {/* Episode badge */}
+          <div className="absolute top-2 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10">
+            <Mic2 className="w-2 h-2 text-white/60 shrink-0" />
+            <span style={{ fontSize: badgeFontSize }} className="font-bold tracking-widest uppercase text-white/60 whitespace-nowrap">
+              EP {String(founder.episode).padStart(2, "0")}
+            </span>
+          </div>
+
+          {/* Photo */}
+          <div className="relative overflow-hidden" style={{ height: cardH - infoH }}>
+            <img
+              src={founder.imageUrl}
+              alt={founder.name}
+              loading="lazy"
+              className="w-full h-full object-cover object-top brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/15 to-transparent" />
+          </div>
+
+          {/* Info bar */}
+          <div className="px-3 py-2.5 bg-[#02040a]/85 absolute bottom-0 left-0 right-0">
+            <p style={{ fontSize: nameFontSize }} className="font-bold text-white leading-tight truncate">{founder.name}</p>
+            <p style={{ fontSize: titleFontSize }} className="text-white/45 truncate mt-0.5">{founder.company}</p>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+function SkeletonCard({ cardW, cardH }) {
+  return (
+    <div
+      className="rounded-2xl bg-white/[0.05] animate-pulse border border-white/10 shrink-0"
+      style={{ width: cardW, height: cardH }}
+    />
+  );
+}
+
+function GlobeSection({ founders, loading }) {
+  const count = loading ? 6 : founders.length;
+  const { cardW, cardH, globeD, gap, infoH, badgeFontSize, nameFontSize, titleFontSize } = getCardSize(count);
+
+  const slots = loading ? SKELETON_SLOTS : SLOT_MAP.slice(0, Math.min(founders.length, SLOT_MAP.length));
+
+  // Group items by zone
+  const byZone = { top: [], left: [], right: [], bottom: [] };
+  slots.forEach((s, i) => {
+    byZone[s.zone].push(loading ? { skeleton: true, i } : { founder: founders[i], i });
+  });
+
+  // Shared card props
+  const cardProps = { cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize };
+
+  // Connector line component
+  const ConnectorLine = ({ direction }) => {
+    const isH = direction === "h";
+    return (
+      <div
+        className="pointer-events-none"
+        style={{
+          width: isH ? gap : 1,
+          height: isH ? 1 : gap,
+          background: "linear-gradient(to right, rgba(255,255,255,0.08), rgba(255,255,255,0.22), rgba(255,255,255,0.08))",
+          flexShrink: 0,
+        }}
+      />
+    );
+  };
+
+  return (
+    <section className="relative z-10 py-16 lg:py-24 overflow-hidden">
+      {/* Heading */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-12 px-6"
+      >
+        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[0.65rem] font-bold tracking-[0.25em] uppercase text-white/50 mb-4">
+          <Mic2 className="w-3 h-3" /> Our Founders Network
+        </span>
+        <h2 className="text-2xl lg:text-3xl font-black tracking-tight text-white">
+          Visionaries Around the World
+        </h2>
+      </motion.div>
+
+      {/* ── Main layout: [left cards] [globe column] [right cards] ── */}
+      <div className="flex flex-col items-center gap-0 select-none px-4">
+
+        {/* TOP ROW */}
+        {byZone.top.length > 0 && (
+          <div className="flex items-end justify-center" style={{ gap: gap }}>
+            {byZone.top.map((item) =>
+              item.skeleton
+                ? <SkeletonCard key={item.i} {...cardProps} />
+                : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+            )}
+          </div>
+        )}
+
+        {/* Connector lines — top */}
+        {byZone.top.length > 0 && (
+          <div className="flex items-center justify-center" style={{ gap: gap }}>
+            {byZone.top.map((item) => (
+              <div key={item.i} style={{ width: cardW, display: "flex", justifyContent: "center" }}>
+                <ConnectorLine direction="v" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* MIDDLE ROW: left cards + globe + right cards */}
+        <div className="flex items-center justify-center">
+
+          {/* LEFT CARDS */}
+          {byZone.left.length > 0 && (
+            <div className="flex items-center">
+              <div className="flex flex-col" style={{ gap: gap }}>
+                {byZone.left.map((item) =>
+                  item.skeleton
+                    ? <SkeletonCard key={item.i} {...cardProps} />
+                    : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+                )}
+              </div>
+              <ConnectorLine direction="h" />
+            </div>
+          )}
+
+          {/* GLOBE */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.75 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="relative rounded-full overflow-hidden shrink-0"
+            style={{
+              width: globeD,
+              height: globeD,
+              boxShadow:
+                "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18), 0 0 220px rgba(255,255,255,0.08)",
+            }}
+          >
+            <video
+              src="/videos/globe.mp4"
+              autoPlay loop muted playsInline
+              className="w-full h-full object-cover rounded-full"
+            />
+          </motion.div>
+
+          {/* RIGHT CARDS */}
+          {byZone.right.length > 0 && (
+            <div className="flex items-center">
+              <ConnectorLine direction="h" />
+              <div className="flex flex-col" style={{ gap: gap }}>
+                {byZone.right.map((item) =>
+                  item.skeleton
+                    ? <SkeletonCard key={item.i} {...cardProps} />
+                    : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Connector lines — bottom */}
+        {byZone.bottom.length > 0 && (
+          <div className="flex items-center justify-center" style={{ gap: gap }}>
+            {byZone.bottom.map((item) => (
+              <div key={item.i} style={{ width: cardW, display: "flex", justifyContent: "center" }}>
+                <ConnectorLine direction="v" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* BOTTOM ROW */}
+        {byZone.bottom.length > 0 && (
+          <div className="flex items-start justify-center" style={{ gap: gap }}>
+            {byZone.bottom.map((item) =>
+              item.skeleton
+                ? <SkeletonCard key={item.i} {...cardProps} />
+                : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+            )}
+          </div>
+        )}
+
+      </div>
+    </section>
+  );
+}
+
 // ── FOUNDER CARD ──────────────────────────────────────────────────────────────
+
+
 function FounderCard({ founder, index }) {
   return (
     <motion.div
@@ -157,7 +410,10 @@ export default function FoundersPage() {
         </motion.div>
       </section>
 
-      {/* ═══════════════ GRID ═══════════════ */}
+      {/* ═══════════════ GLOBE + FOUNDERS ═══════════════ */}
+      <GlobeSection founders={founders} loading={loading} />
+
+      {/* ═══════════════ GRID ═══════════════ 
       <section className="relative z-10 px-6 lg:px-14 pb-40 max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -186,7 +442,8 @@ export default function FoundersPage() {
           </div>
         )}
       </section>
-
+      */}
+      
     </main>
   );
 }
