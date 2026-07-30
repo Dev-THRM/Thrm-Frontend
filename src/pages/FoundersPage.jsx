@@ -145,31 +145,40 @@ function SkeletonCard({ cardW, cardH, isMobile = false }) {
 // ── Globe Video Component ────────────────────────────────────────────────────
 function GlobeVideo({ className = "" }) {
   const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const el = videoRef.current;
     if (el) {
       el.defaultMuted = true;
       el.muted = true;
+
+      const handlePlaying = () => setIsPlaying(true);
+      el.addEventListener("playing", handlePlaying);
+
       const playPromise = el.play();
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
           console.log("Mobile video play attempt:", err);
         });
       }
+
+      return () => {
+        el.removeEventListener("playing", handlePlaying);
+      };
     }
   }, []);
 
   return (
     <div className={`relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-black ${className}`}>
-      {/* Globe Poster Fallback Image (Pic 2) */}
+      {/* Globe Poster Fallback Image (Pic 2) - ALWAYS VISIBLE AT START */}
       <img
         src={globePoster}
         alt="Visionaries Globe"
         className="absolute inset-0 w-full h-full object-cover rounded-full z-0 pointer-events-none"
       />
 
-      {/* Globe Video Player */}
+      {/* Globe Video Player (Only fades to opacity-100 when ACTIVELY PLAYING) */}
       <video
         ref={videoRef}
         src="/videos/globe.mp4"
@@ -181,7 +190,7 @@ function GlobeVideo({ className = "" }) {
         webkit-playsinline="true"
         x5-playsinline="true"
         preload="auto"
-        className="w-full h-full object-cover rounded-full relative z-10"
+        className={`w-full h-full object-cover rounded-full relative z-10 transition-opacity duration-500 ${isPlaying ? "opacity-100" : "opacity-0"}`}
       />
     </div>
   );
