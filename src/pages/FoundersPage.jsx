@@ -142,19 +142,99 @@ function SkeletonCard({ cardW, cardH, isMobile = false }) {
   );
 }
 
-// ── Mobile Globe UI (Pure Image & Ambient Glow Component for 100% Mobile Visibility) ──
+// ── Mobile Globe UI — Pure CSS Globe (no image, 100% iOS/Android compatible) ──
+// Mimics Pic 2: dark earth sphere with orbit rings and social platform icons
+const GLOBE_ICONS = [
+  { label: "IG",   color: "#E1306C", bg: "#1a0a10", deg:  0,  r: "46%" },
+  { label: "in",   color: "#0077B5", bg: "#00121d", deg: 52,  r: "46%" },
+  { label: "f",    color: "#1877F2", bg: "#06143d", deg: 104, r: "46%" },
+  { label: "▶",   color: "#FF0000", bg: "#1a0000", deg: 156, r: "46%" },
+  { label: "SEO",  color: "#34A853", bg: "#001a08", deg: 208, r: "46%" },
+  { label: "M",    color: "#0081FB", bg: "#00102d", deg: 260, r: "46%" },
+  { label: "G",    color: "#FBBC04", bg: "#1a1200", deg: 312, r: "46%" },
+];
+
 function MobileGlobeUI({ className = "" }) {
   return (
-    <div className={`relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-[#02040a] ${className}`}>
-      <img
-        src={globePoster}
-        alt="Visionaries Network Globe"
-        className="w-full h-full object-cover rounded-full select-none"
+    <div
+      className={`relative w-full h-full rounded-full flex items-center justify-center ${className}`}
+      style={{ background: "radial-gradient(circle at 38% 35%, #1a2340 0%, #0a0d1a 55%, #02040a 100%)" }}
+    >
+      {/* ── Outer orbit ring ── */}
+      <div
+        className="absolute rounded-full border"
+        style={{
+          width: "90%", height: "90%",
+          borderColor: "rgba(255,255,255,0.12)",
+          borderStyle: "solid",
+        }}
       />
-      <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] border border-white/20" />
+      {/* ── Inner orbit ring ── */}
+      <div
+        className="absolute rounded-full border"
+        style={{
+          width: "72%", height: "72%",
+          borderColor: "rgba(255,255,255,0.08)",
+          borderStyle: "solid",
+        }}
+      />
+
+      {/* ── Central earth sphere ── */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: "54%", height: "54%",
+          background: "radial-gradient(circle at 35% 30%, #2a3f6a 0%, #14213d 40%, #05090f 100%)",
+          boxShadow: "inset -6px -6px 20px rgba(0,0,0,0.7), inset 4px 4px 14px rgba(255,255,255,0.06), 0 0 30px rgba(100,140,255,0.15)",
+        }}
+      >
+        {/* Continent-like blobs for earth feel */}
+        <div className="absolute rounded-full opacity-30" style={{ width:"38%",height:"25%",top:"22%",left:"18%",background:"rgba(255,255,255,0.25)", borderRadius:"60% 40% 55% 45%/45% 55% 45% 55%" }} />
+        <div className="absolute rounded-full opacity-20" style={{ width:"28%",height:"20%",top:"48%",left:"52%",background:"rgba(255,255,255,0.20)", borderRadius:"50% 50% 60% 40%/55% 45% 55% 45%" }} />
+        <div className="absolute rounded-full opacity-15" style={{ width:"20%",height:"15%",top:"65%",left:"22%",background:"rgba(255,255,255,0.18)", borderRadius:"50%" }} />
+      </div>
+
+      {/* ── Social icon bubbles on orbit ── */}
+      {GLOBE_ICONS.map(({ label, color, bg, deg }) => {
+        const rad = (deg - 90) * (Math.PI / 180);
+        // orbit radius as % of container, shifted from center (50%)
+        const orbitPct = 44;
+        const cx = 50 + orbitPct * Math.cos(rad);
+        const cy = 50 + orbitPct * Math.sin(rad);
+        return (
+          <div
+            key={label}
+            className="absolute flex items-center justify-center rounded-full"
+            style={{
+              width: "13%",
+              height: "13%",
+              left: `${cx}%`,
+              top: `${cy}%`,
+              transform: "translate(-50%,-50%)",
+              background: bg,
+              border: `1.5px solid ${color}55`,
+              boxShadow: `0 0 8px ${color}33`,
+            }}
+          >
+            <span style={{ color, fontSize: "clamp(7px, 1.8vw, 11px)", fontWeight: 900, lineHeight: 1, fontFamily: "Arial, sans-serif", letterSpacing: "-0.5px" }}>
+              {label}
+            </span>
+          </div>
+        );
+      })}
+
+      {/* ── Edge glow overlay ── */}
+      <div
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle at center, transparent 48%, rgba(0,0,0,0.6) 100%)",
+          boxShadow: "inset 0 0 30px rgba(0,0,0,0.5)",
+        }}
+      />
     </div>
   );
 }
+
 
 // ── Globe Video Component for Desktop ──────────────────────────────────────────
 function GlobeVideo({ className = "" }) {
