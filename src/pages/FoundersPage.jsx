@@ -14,38 +14,73 @@ import { API_BASE_URL } from "../config";
 // The globe sits in the center of a wide container.
 // Cards overflow the globe vertically so the whole group feels connected.
 
-// ── Dynamic sizing: bigger cards when fewer founders, scales down as more are added
-// Breakpoints: 1-4 founders → large, 5-6 → medium, 7-8 → compact
+// ── Dynamic sizing for Desktop ───────────────────────────────────────────
 function getCardSize(count) {
-  if (count <= 4) return { cardW: 240, cardH: 320, globeD: 430, gap: 28, infoH: 64, badgeFontSize: "0.65rem", nameFontSize: "0.82rem", titleFontSize: "0.65rem" };
-  if (count <= 6) return { cardW: 200, cardH: 266, globeD: 415, gap: 24, infoH: 56, badgeFontSize: "0.6rem",  nameFontSize: "0.74rem", titleFontSize: "0.6rem"  };
-  return           { cardW: 170, cardH: 226, globeD: 400, gap: 20, infoH: 50, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
+  if (count <= 4) return { cardW: 210, cardH: 280, globeD: 360, gap: 22, infoH: 58, badgeFontSize: "0.65rem", nameFontSize: "0.82rem", titleFontSize: "0.65rem" };
+  if (count <= 6) return { cardW: 185, cardH: 245, globeD: 340, gap: 18, infoH: 52, badgeFontSize: "0.6rem",  nameFontSize: "0.74rem", titleFontSize: "0.6rem"  };
+  return           { cardW: 160, cardH: 215, globeD: 320, gap: 16, infoH: 46, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
 }
 
-// How the cards are distributed for up to 8 founders:
-//   slots[i] = { zone: "top"|"left"|"right"|"bottom", slot: 0|1 }
-// For a given count we pick the first `count` entries.
-// Layout stays consistent regardless of how many founders are added:
-//   1-2 founders  → top only
-//   3-4 founders  → top + sides
-//   5-6 founders  → top + sides + bottom
-//   7-8 founders  → top + sides (2 each) + bottom
+// How cards are distributed for desktop (up to 8 founders)
 const SLOT_MAP = [
-  { zone: "top",    slot: 0 },   // founder 0
-  { zone: "top",    slot: 1 },   // founder 1
-  { zone: "left",   slot: 0 },   // founder 2
-  { zone: "right",  slot: 0 },   // founder 3
-  { zone: "bottom", slot: 0 },   // founder 4
-  { zone: "bottom", slot: 1 },   // founder 5
-  { zone: "left",   slot: 1 },   // founder 6
-  { zone: "right",  slot: 1 },   // founder 7
+  { zone: "top",    slot: 0 },
+  { zone: "top",    slot: 1 },
+  { zone: "left",   slot: 0 },
+  { zone: "right",  slot: 0 },
+  { zone: "bottom", slot: 0 },
+  { zone: "bottom", slot: 1 },
+  { zone: "left",   slot: 1 },
+  { zone: "right",  slot: 1 },
 ];
 
-// Skeleton always shows 6 cards using the first 6 slots
 const SKELETON_SLOTS = SLOT_MAP.slice(0, 6);
 
-// ── Mini founder card used inside GlobeSection ─────────────────────────────
-function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize }) {
+// ── Founder Card Component ──────────────────────────────────────────────────
+function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize, isMobile = false }) {
+  if (isMobile) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5, delay, type: "spring", stiffness: 180, damping: 22 }}
+        className="group w-full"
+      >
+        <Link to={`/founders/${founder.slug}`} className="block w-full">
+          <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-md transition-all duration-300 group-hover:border-white/35 group-hover:bg-white/[0.08] group-hover:shadow-[0_8px_30px_rgba(255,255,255,0.12)]">
+            {/* Episode badge */}
+            <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15">
+              <Mic2 className="w-3 h-3 text-white/70 shrink-0" />
+              <span className="text-[0.6rem] sm:text-[0.65rem] font-bold tracking-widest uppercase text-white/80 whitespace-nowrap">
+                EP {String(founder.episode).padStart(2, "0")}
+              </span>
+            </div>
+
+            {/* Photo */}
+            <div className="relative aspect-[4/5] w-full overflow-hidden bg-white/5">
+              <img
+                src={founder.imageUrl}
+                alt={founder.name}
+                loading="lazy"
+                className="w-full h-full object-cover object-top brightness-90 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/25 to-transparent" />
+            </div>
+
+            {/* Info bar */}
+            <div className="p-3 bg-[#02040a]/95 border-t border-white/5 flex items-center justify-between gap-1">
+              <div className="min-w-0 flex-1">
+                <p className="text-xs sm:text-sm font-bold text-white leading-tight truncate">{founder.name}</p>
+                <p className="text-[0.65rem] sm:text-xs text-white/50 truncate mt-0.5">{founder.company}</p>
+              </div>
+              <ArrowRight className="w-3.5 h-3.5 text-white/30 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0" />
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.6, y: 10 }}
@@ -92,7 +127,12 @@ function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFon
   );
 }
 
-function SkeletonCard({ cardW, cardH }) {
+function SkeletonCard({ cardW, cardH, isMobile = false }) {
+  if (isMobile) {
+    return (
+      <div className="w-full aspect-[4/5] rounded-2xl bg-white/[0.05] animate-pulse border border-white/10 shrink-0" />
+    );
+  }
   return (
     <div
       className="rounded-2xl bg-white/[0.05] animate-pulse border border-white/10 shrink-0"
@@ -107,16 +147,16 @@ function GlobeSection({ founders, loading }) {
 
   const slots = loading ? SKELETON_SLOTS : SLOT_MAP.slice(0, Math.min(founders.length, SLOT_MAP.length));
 
-  // Group items by zone
+  // Group items by zone for Desktop
   const byZone = { top: [], left: [], right: [], bottom: [] };
   slots.forEach((s, i) => {
     byZone[s.zone].push(loading ? { skeleton: true, i } : { founder: founders[i], i });
   });
 
-  // Shared card props
+  // Shared card props for desktop
   const cardProps = { cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize };
 
-  // Connector line component
+  // Connector line component for desktop
   const ConnectorLine = ({ direction }) => {
     const isH = direction === "h";
     return (
@@ -133,25 +173,28 @@ function GlobeSection({ founders, loading }) {
   };
 
   return (
-    <section className="relative z-10 py-16 lg:py-24 overflow-hidden">
-      {/* Heading */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="text-center mb-12 px-6"
-      >
-        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[0.65rem] font-bold tracking-[0.25em] uppercase text-white/50 mb-4">
-          <Mic2 className="w-3 h-3" /> Our Founders Network
-        </span>
-        <h2 className="text-2xl lg:text-3xl font-black tracking-tight text-white">
-          Visionaries Around the World
-        </h2>
-      </motion.div>
+    <section className="relative z-10 py-10 lg:py-20 overflow-hidden">
 
-      {/* ── Main layout: [left cards] [globe column] [right cards] ── */}
-      <div className="flex flex-col items-center gap-0 select-none px-4">
+      {/* ── DESKTOP LAYOUT (Screens >= 1024px) ── */}
+      <div className="hidden lg:flex flex-col items-center gap-0 select-none px-4">
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8 lg:mb-12 px-6"
+        >
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[0.65rem] font-bold tracking-[0.25em] uppercase text-white/50 mb-4">
+            <Mic2 className="w-3 h-3 text-white/70" /> Our Founders Network
+          </span>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white">
+            Visionaries Around the World
+          </h2>
+          <p className="text-white/40 text-xs sm:text-sm mt-2 max-w-md mx-auto">
+            Connecting builders, innovators, and leaders globally
+          </p>
+        </motion.div>
 
         {/* TOP ROW */}
         {byZone.top.length > 0 && (
@@ -249,7 +292,61 @@ function GlobeSection({ founders, loading }) {
             )}
           </div>
         )}
+      </div>
 
+      {/* ── MOBILE & TABLET LAYOUT (< 1024px) ── */}
+      <div className="flex lg:hidden flex-col items-center select-none px-3 sm:px-6 max-w-xl mx-auto w-full">
+        {/* Section Title */}
+        <div className="text-center mb-6 px-2">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[0.6rem] font-bold tracking-[0.2em] uppercase text-white/50 mb-2">
+            <Mic2 className="w-2.5 h-2.5 text-white/70" /> Our Founders Network
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+            Visionaries Around the World
+          </h2>
+          <p className="text-white/50 text-xs sm:text-sm mt-1 max-w-xs sm:max-w-md mx-auto leading-relaxed">
+            Connecting builders, innovators, and leaders globally
+          </p>
+        </div>
+
+        {/* Unified 2-Column Founder Cards Grid (ALL 6 CARDS) */}
+        <div className="grid grid-cols-2 gap-3.5 sm:gap-4.5 w-full">
+          {loading
+            ? [0, 1, 2, 3, 4, 5].map((i) => <SkeletonCard key={i} isMobile />)
+            : founders.map((founder, i) => (
+                <GlobeCard
+                  key={founder._id || i}
+                  founder={founder}
+                  delay={0.05 * i}
+                  isMobile
+                />
+              ))}
+        </div>
+
+        {/* Vertical Connector Line (Leading down to Globe) */}
+        <div className="w-[1px] h-10 bg-gradient-to-b from-white/40 via-white/60 to-white/20 my-5 shrink-0" />
+
+        {/* Large Globe Sphere (Fits left/right with tiny gap, after all cards) */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative w-[calc(100%-0.75rem)] max-w-[440px] aspect-square rounded-full overflow-hidden shrink-0 mb-6 mx-auto"
+          style={{
+            boxShadow:
+              "0 0 0 2px rgba(255,255,255,0.25), 0 0 50px rgba(255,255,255,0.4), 0 0 120px rgba(255,255,255,0.2)",
+          }}
+        >
+          <video
+            src="/videos/globe.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover rounded-full"
+          />
+        </motion.div>
       </div>
     </section>
   );
