@@ -142,95 +142,144 @@ function SkeletonCard({ cardW, cardH, isMobile = false }) {
   );
 }
 
-// ── Mobile Globe UI — Pure CSS Globe (no image, 100% iOS/Android compatible) ──
-// Mimics Pic 2: dark earth sphere with orbit rings and social platform icons
-const GLOBE_ICONS = [
-  { label: "IG",   color: "#E1306C", bg: "#1a0a10", deg:  0,  r: "46%" },
-  { label: "in",   color: "#0077B5", bg: "#00121d", deg: 52,  r: "46%" },
-  { label: "f",    color: "#1877F2", bg: "#06143d", deg: 104, r: "46%" },
-  { label: "▶",   color: "#FF0000", bg: "#1a0000", deg: 156, r: "46%" },
-  { label: "SEO",  color: "#34A853", bg: "#001a08", deg: 208, r: "46%" },
-  { label: "M",    color: "#0081FB", bg: "#00102d", deg: 260, r: "46%" },
-  { label: "G",    color: "#FBBC04", bg: "#1a1200", deg: 312, r: "46%" },
+// ── Animated Mobile Globe — orbiting social icons with CSS keyframes ──────────
+const ORBIT_ICONS = [
+  { id: "ig",  label: "IG",   color: "#E1306C", bg: "#1a0508", angle: 0   },
+  { id: "li",  label: "in",   color: "#0077B5", bg: "#031229", angle: 36  },
+  { id: "pi",  label: "P",    color: "#E60023", bg: "#1a0005", angle: 72  },
+  { id: "yt",  label: "▶",   color: "#FF0000", bg: "#1a0000", angle: 108 },
+  { id: "web", label: "</>",  color: "#61DAFB", bg: "#021929", angle: 144 },
+  { id: "wa",  label: "W",    color: "#25D366", bg: "#011a08", angle: 180 },
+  { id: "seo", label: "SEO",  color: "#34A853", bg: "#011a08", angle: 216 },
+  { id: "ma",  label: "M∞",   color: "#0081FB", bg: "#031229", angle: 252 },
+  { id: "ga",  label: "Ads",  color: "#FBBC04", bg: "#1a1200", angle: 288 },
+  { id: "fb",  label: "f",    color: "#1877F2", bg: "#031229", angle: 324 },
 ];
+
+const ORBIT_R = 43; // orbit radius as % of container (44% from center = icons at 94% from edge)
 
 function MobileGlobeUI({ className = "" }) {
   return (
     <div
-      className={`relative w-full h-full rounded-full flex items-center justify-center ${className}`}
-      style={{ background: "radial-gradient(circle at 38% 35%, #1a2340 0%, #0a0d1a 55%, #02040a 100%)" }}
+      className={`relative w-full h-full rounded-full overflow-hidden select-none ${className}`}
+      style={{ background: "radial-gradient(ellipse at 40% 35%, #1a2240 0%, #0c1022 55%, #040610 100%)" }}
     >
-      {/* ── Outer orbit ring ── */}
-      <div
-        className="absolute rounded-full border"
-        style={{
-          width: "90%", height: "90%",
-          borderColor: "rgba(255,255,255,0.12)",
-          borderStyle: "solid",
-        }}
-      />
-      {/* ── Inner orbit ring ── */}
-      <div
-        className="absolute rounded-full border"
-        style={{
-          width: "72%", height: "72%",
-          borderColor: "rgba(255,255,255,0.08)",
-          borderStyle: "solid",
-        }}
-      />
+      {/* ── CSS keyframes injected inline ── */}
+      <style>{`
+        @keyframes thrm-cw  { to { transform: rotate(360deg);  } }
+        @keyframes thrm-ccw { to { transform: rotate(-360deg); } }
+      `}</style>
 
-      {/* ── Central earth sphere ── */}
-      <div
-        className="absolute rounded-full"
-        style={{
-          width: "54%", height: "54%",
-          background: "radial-gradient(circle at 35% 30%, #2a3f6a 0%, #14213d 40%, #05090f 100%)",
-          boxShadow: "inset -6px -6px 20px rgba(0,0,0,0.7), inset 4px 4px 14px rgba(255,255,255,0.06), 0 0 30px rgba(100,140,255,0.15)",
-        }}
-      >
-        {/* Continent-like blobs for earth feel */}
-        <div className="absolute rounded-full opacity-30" style={{ width:"38%",height:"25%",top:"22%",left:"18%",background:"rgba(255,255,255,0.25)", borderRadius:"60% 40% 55% 45%/45% 55% 45% 55%" }} />
-        <div className="absolute rounded-full opacity-20" style={{ width:"28%",height:"20%",top:"48%",left:"52%",background:"rgba(255,255,255,0.20)", borderRadius:"50% 50% 60% 40%/55% 45% 55% 45%" }} />
-        <div className="absolute rounded-full opacity-15" style={{ width:"20%",height:"15%",top:"65%",left:"22%",background:"rgba(255,255,255,0.18)", borderRadius:"50%" }} />
+      {/* ── Orbit ring 1 (outer dashed) ── */}
+      <div style={{
+        position:"absolute", borderRadius:"50%",
+        width:"90%", height:"90%", top:"5%", left:"5%",
+        border:"0.75px dashed rgba(255,255,255,0.18)",
+        pointerEvents:"none",
+      }}/>
+      {/* ── Orbit ring 2 (mid) ── */}
+      <div style={{
+        position:"absolute", borderRadius:"50%",
+        width:"72%", height:"72%", top:"14%", left:"14%",
+        border:"0.5px solid rgba(255,255,255,0.08)",
+        pointerEvents:"none",
+      }}/>
+      {/* ── Orbit ring 3 (inner) ── */}
+      <div style={{
+        position:"absolute", borderRadius:"50%",
+        width:"56%", height:"56%", top:"22%", left:"22%",
+        border:"0.5px solid rgba(255,255,255,0.06)",
+        pointerEvents:"none",
+      }}/>
+
+      {/* ── Globe sphere ── */}
+      <div style={{
+        position:"absolute", borderRadius:"50%",
+        width:"50%", height:"50%", top:"25%", left:"25%",
+        background:"radial-gradient(circle at 34% 28%, #3d5c94 0%, #1a3260 32%, #0a1838 65%, #040810 100%)",
+        boxShadow:"inset -8px -8px 22px rgba(0,0,0,0.75), inset 5px 5px 14px rgba(255,255,255,0.08), 0 0 35px rgba(60,100,220,0.14)",
+      }}>
+        {/* continent blobs */}
+        <div style={{ position:"absolute", width:"42%",height:"28%",top:"17%",left:"14%", background:"rgba(255,255,255,0.22)", borderRadius:"62% 38% 56% 44%/38% 58% 42% 62%", opacity:0.75 }}/>
+        <div style={{ position:"absolute", width:"30%",height:"22%",top:"45%",left:"52%", background:"rgba(255,255,255,0.18)", borderRadius:"50% 50% 62% 38%", opacity:0.6 }}/>
+        <div style={{ position:"absolute", width:"22%",height:"16%",top:"65%",left:"20%", background:"rgba(255,255,255,0.15)", borderRadius:"50%", opacity:0.5 }}/>
+        <div style={{ position:"absolute", width:"16%",height:"12%",top:"28%",left:"70%", background:"rgba(255,255,255,0.14)", borderRadius:"50%", opacity:0.5 }}/>
+        {/* specular highlight */}
+        <div style={{ position:"absolute", width:"32%",height:"26%",top:"6%",left:"10%", background:"rgba(255,255,255,0.13)", borderRadius:"50%", filter:"blur(8px)" }}/>
+        {/* atmosphere overlay */}
+        <div style={{ position:"absolute", inset:0, borderRadius:"50%", background:"radial-gradient(circle at center, transparent 52%, rgba(0,0,0,0.68) 100%)" }}/>
+        {/* rim */}
+        <div style={{ position:"absolute", inset:0, borderRadius:"50%", border:"1px solid rgba(255,255,255,0.22)" }}/>
       </div>
 
-      {/* ── Social icon bubbles on orbit ── */}
-      {GLOBE_ICONS.map(({ label, color, bg, deg }) => {
-        const rad = (deg - 90) * (Math.PI / 180);
-        // orbit radius as % of container, shifted from center (50%)
-        const orbitPct = 44;
-        const cx = 50 + orbitPct * Math.cos(rad);
-        const cy = 50 + orbitPct * Math.sin(rad);
-        return (
-          <div
-            key={label}
-            className="absolute flex items-center justify-center rounded-full"
-            style={{
-              width: "13%",
-              height: "13%",
-              left: `${cx}%`,
-              top: `${cy}%`,
-              transform: "translate(-50%,-50%)",
-              background: bg,
-              border: `1.5px solid ${color}55`,
-              boxShadow: `0 0 8px ${color}33`,
-            }}
-          >
-            <span style={{ color, fontSize: "clamp(7px, 1.8vw, 11px)", fontWeight: 900, lineHeight: 1, fontFamily: "Arial, sans-serif", letterSpacing: "-0.5px" }}>
-              {label}
-            </span>
-          </div>
-        );
-      })}
-
-      {/* ── Edge glow overlay ── */}
+      {/* ── SVG connector lines (inside spinning orbit so they rotate with icons) ── */}
       <div
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{
-          background: "radial-gradient(circle at center, transparent 48%, rgba(0,0,0,0.6) 100%)",
-          boxShadow: "inset 0 0 30px rgba(0,0,0,0.5)",
-        }}
-      />
+        className="absolute inset-0"
+        style={{ animation: "thrm-cw 24s linear infinite", transformOrigin:"50% 50%" }}
+      >
+        <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", overflow:"visible" }}>
+          {ORBIT_ICONS.map(({ id, angle }) => {
+            const rad = (angle - 90) * Math.PI / 180;
+            const ix = 50 + ORBIT_R * Math.cos(rad);
+            const iy = 50 + ORBIT_R * Math.sin(rad);
+            const ex = 50 + 25.5 * Math.cos(rad); // globe edge ~25.5% from center
+            const ey = 50 + 25.5 * Math.sin(rad);
+            return (
+              <line key={id + "_l"}
+                x1={`${ix}%`} y1={`${iy}%`}
+                x2={`${ex}%`} y2={`${ey}%`}
+                stroke="rgba(255,255,255,0.13)" strokeWidth="0.7"
+              />
+            );
+          })}
+        </svg>
+
+        {/* ── Orbiting icon bubbles ── */}
+        {ORBIT_ICONS.map(({ id, label, color, bg, angle }) => {
+          const rad = (angle - 90) * Math.PI / 180;
+          const leftPct = 50 + ORBIT_R * Math.cos(rad);
+          const topPct  = 50 + ORBIT_R * Math.sin(rad);
+          return (
+            <div key={id} style={{
+              position:"absolute",
+              left:`${leftPct}%`, top:`${topPct}%`,
+              transform:"translate(-50%,-50%)",
+            }}>
+              {/* counter-rotate to keep icon upright */}
+              <div style={{ animation:"thrm-ccw 24s linear infinite", transformOrigin:"50% 50%" }}>
+                <div style={{
+                  width:"clamp(26px, 7.5vw, 40px)",
+                  height:"clamp(26px, 7.5vw, 40px)",
+                  borderRadius:"50%",
+                  background: bg,
+                  border:`1.5px solid ${color}BB`,
+                  boxShadow:`0 0 10px ${color}55, inset 0 0 4px rgba(255,255,255,0.08)`,
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                }}>
+                  <span style={{
+                    color:"white",
+                    fontSize:"clamp(6px, 1.6vw, 10px)",
+                    fontWeight:900,
+                    fontFamily:"Arial, Helvetica, sans-serif",
+                    lineHeight:1,
+                    letterSpacing:"-0.5px",
+                    textAlign:"center",
+                    whiteSpace:"nowrap",
+                  }}>
+                    {label}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Outer vignette ── */}
+      <div style={{
+        position:"absolute", inset:0, borderRadius:"50%", pointerEvents:"none",
+        boxShadow:"inset 0 0 45px rgba(0,0,0,0.55), inset 0 0 5px rgba(255,255,255,0.05)",
+      }}/>
     </div>
   );
 }
