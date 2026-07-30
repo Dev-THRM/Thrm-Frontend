@@ -3,6 +3,7 @@ import { motion, useScroll, useSpring } from "framer-motion";
 import { Mic2, ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { API_BASE_URL } from "../config";
+import globePoster from "../assets/globe-poster.jpg";
 
 // ── GLOBE SECTION ─────────────────────────────────────────────────────────────
 //
@@ -163,7 +164,7 @@ function GlobeVideo({ className = "" }) {
     <div className={`relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-black ${className}`}>
       {/* Globe Poster Fallback Image (Pic 2) */}
       <img
-        src="/images/globe-poster.jpg"
+        src={globePoster}
         alt="Visionaries Globe"
         className="absolute inset-0 w-full h-full object-cover rounded-full z-0 pointer-events-none"
       />
@@ -172,7 +173,7 @@ function GlobeVideo({ className = "" }) {
       <video
         ref={videoRef}
         src="/videos/globe.mp4"
-        poster="/images/globe-poster.jpg"
+        poster={globePoster}
         autoPlay
         loop
         muted
