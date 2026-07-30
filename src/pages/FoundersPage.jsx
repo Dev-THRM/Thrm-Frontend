@@ -142,7 +142,21 @@ function SkeletonCard({ cardW, cardH, isMobile = false }) {
   );
 }
 
-// ── Globe Video Component ────────────────────────────────────────────────────
+// ── Mobile Globe UI (Pure Image & Ambient Glow Component for 100% Mobile Visibility) ──
+function MobileGlobeUI({ className = "" }) {
+  return (
+    <div className={`relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-[#02040a] ${className}`}>
+      <img
+        src={globePoster}
+        alt="Visionaries Network Globe"
+        className="w-full h-full object-cover rounded-full select-none"
+      />
+      <div className="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] border border-white/20" />
+    </div>
+  );
+}
+
+// ── Globe Video Component for Desktop ──────────────────────────────────────────
 function GlobeVideo({ className = "" }) {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -389,7 +403,7 @@ function GlobeSection({ founders, loading }) {
               "0 0 0 2px rgba(255,255,255,0.25), 0 0 50px rgba(255,255,255,0.4), 0 0 120px rgba(255,255,255,0.2)",
           }}
         >
-          <GlobeVideo />
+          <MobileGlobeUI />
         </motion.div>
       </div>
     </section>
