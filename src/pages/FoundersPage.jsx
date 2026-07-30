@@ -141,7 +141,7 @@ function SkeletonCard({ cardW, cardH, isMobile = false }) {
   );
 }
 
-// ── Globe Video Component with Fast Mobile Source & iOS Autoplay Fix ──────────
+// ── Globe Video Component ────────────────────────────────────────────────────
 function GlobeVideo({ className = "" }) {
   const videoRef = useRef(null);
 
@@ -163,6 +163,7 @@ function GlobeVideo({ className = "" }) {
     <div className={`relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-black ${className}`}>
       <video
         ref={videoRef}
+        src="/videos/globe.mp4"
         autoPlay
         loop
         muted
@@ -171,10 +172,7 @@ function GlobeVideo({ className = "" }) {
         x5-playsinline="true"
         preload="auto"
         className="w-full h-full object-cover rounded-full relative z-10"
-      >
-        <source src="/videos/founderclear.mp4" type="video/mp4" />
-        <source src="/videos/globe.mp4" type="video/mp4" />
-      </video>
+      />
     </div>
   );
 }
