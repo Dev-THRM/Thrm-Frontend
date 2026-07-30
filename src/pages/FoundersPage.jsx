@@ -210,30 +210,8 @@ function GlobeSection({ founders, loading }) {
         </h2>
       </motion.div>
 
-      {/* ── MOBILE LAYOUT (< lg) ── globe centred, cards in 2-col grid below */}
+      {/* ── MOBILE LAYOUT (< lg) ── cards first, globe below */}
       <div className="lg:hidden flex flex-col items-center gap-8 px-4">
-        {/* Globe */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.75 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="relative rounded-full overflow-hidden shrink-0"
-          style={{
-            width: 280,
-            height: 280,
-            boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18), 0 0 220px rgba(255,255,255,0.08)",
-          }}
-        >
-          <video
-            ref={videoRef}
-            src="/videos/globe.mp4"
-            poster="/images/globe-poster.jpg"
-            autoPlay loop muted playsInline
-            className="w-full h-full object-cover rounded-full"
-          />
-        </motion.div>
 
         {/* Founder cards — 2-col grid */}
         <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
@@ -245,6 +223,38 @@ function GlobeSection({ founders, loading }) {
             )
           )}
         </div>
+
+        {/* Globe — below cards */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.75 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="relative rounded-full overflow-hidden shrink-0"
+          style={{
+            width: 280,
+            height: 280,
+            // poster as CSS fallback — shows instantly even if video is blocked
+            backgroundImage: "url('/images/globe-poster.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            boxShadow:
+              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18), 0 0 220px rgba(255,255,255,0.08)",
+          }}
+        >
+          <video
+            ref={videoRef}
+            src="/videos/globe.mp4"
+            poster="/images/globe-poster.jpg"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            className="w-full h-full object-cover rounded-full"
+            style={{ display: "block" }}
+          />
+        </motion.div>
       </div>
 
       {/* ── DESKTOP LAYOUT (≥ lg) ── original positional layout */}
