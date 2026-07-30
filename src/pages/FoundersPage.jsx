@@ -92,12 +92,53 @@ function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFon
   );
 }
 
-function SkeletonCard({ cardW, cardH }) {
+function SkeletonCard({ cardW, cardH, isMobile = false }) {
+  if (isMobile) {
+    return <div className="rounded-2xl bg-white/[0.05] animate-pulse border border-white/10 aspect-[3/4] w-full" />;
+  }
   return (
     <div
       className="rounded-2xl bg-white/[0.05] animate-pulse border border-white/10 shrink-0"
       style={{ width: cardW, height: cardH }}
     />
+  );
+}
+
+// Compact card for the mobile 2-col grid
+function MobileGlobeCard({ founder, delay }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.85, y: 10 }}
+      whileInView={{ opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay, type: "spring", stiffness: 180, damping: 22 }}
+      className="group"
+    >
+      <Link to={`/founders/${founder.slug}`}>
+        <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-sm transition-all duration-300 group-hover:border-white/35 group-hover:bg-white/[0.08] aspect-[3/4]">
+          {/* Episode badge */}
+          <div className="absolute top-2 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10">
+            <Mic2 className="w-2 h-2 text-white/60 shrink-0" />
+            <span className="text-[0.55rem] font-bold tracking-widest uppercase text-white/60 whitespace-nowrap">
+              EP {String(founder.episode).padStart(2, "0")}
+            </span>
+          </div>
+          {/* Photo */}
+          <img
+            src={founder.imageUrl}
+            alt={founder.name}
+            loading="lazy"
+            className="w-full h-full object-cover object-top brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/15 to-transparent" />
+          {/* Info bar */}
+          <div className="px-2.5 py-2 bg-[#02040a]/85 absolute bottom-0 left-0 right-0">
+            <p className="text-[0.72rem] font-bold text-white leading-tight truncate">{founder.name}</p>
+            <p className="text-[0.6rem] text-white/45 truncate mt-0.5">{founder.company}</p>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
 
@@ -132,6 +173,25 @@ function GlobeSection({ founders, loading }) {
     );
   };
 
+  // Video ref: force .play() for iOS Safari (bypasses Low Power Mode block)
+  const videoRef = useRef(null);
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().catch(() => {});
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) video.play().catch(() => {}); },
+      { threshold: 0.3 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  // Flat list of all items for the mobile 2-col grid
+  const allItems = slots.map((s, i) =>
+    loading ? { skeleton: true, i } : { founder: founders[i], i }
+  );
+
   return (
     <section className="relative z-10 py-16 lg:py-24 overflow-hidden">
       {/* Heading */}
@@ -150,8 +210,45 @@ function GlobeSection({ founders, loading }) {
         </h2>
       </motion.div>
 
-      {/* ── Main layout: [left cards] [globe column] [right cards] ── */}
-      <div className="flex flex-col items-center gap-0 select-none px-4">
+      {/* ── MOBILE LAYOUT (< lg) ── globe centred, cards in 2-col grid below */}
+      <div className="lg:hidden flex flex-col items-center gap-8 px-4">
+        {/* Globe */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.75 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="relative rounded-full overflow-hidden shrink-0"
+          style={{
+            width: 280,
+            height: 280,
+            boxShadow:
+              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18), 0 0 220px rgba(255,255,255,0.08)",
+          }}
+        >
+          <video
+            ref={videoRef}
+            src="/videos/globe.mp4"
+            poster="/images/globe-poster.jpg"
+            autoPlay loop muted playsInline
+            className="w-full h-full object-cover rounded-full"
+          />
+        </motion.div>
+
+        {/* Founder cards — 2-col grid */}
+        <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
+          {allItems.map((item) =>
+            item.skeleton ? (
+              <SkeletonCard key={item.i} isMobile />
+            ) : (
+              <MobileGlobeCard key={item.founder._id} founder={item.founder} delay={0.05 + item.i * 0.05} />
+            )
+          )}
+        </div>
+      </div>
+
+      {/* ── DESKTOP LAYOUT (≥ lg) ── original positional layout */}
+      <div className="hidden lg:flex flex-col items-center gap-0 select-none px-4">
 
         {/* TOP ROW */}
         {byZone.top.length > 0 && (
