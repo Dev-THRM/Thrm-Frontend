@@ -141,6 +141,58 @@ function SkeletonCard({ cardW, cardH, isMobile = false }) {
   );
 }
 
+// ── Globe Video Component with Instant Fallback & Autoplay Guard ─────────────
+function GlobeVideo({ className = "" }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.log("Autoplay triggered or delayed:", err);
+      });
+    }
+  }, []);
+
+  return (
+    <div className={`relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-[#02040a] ${className}`}>
+      {/* ── Ambient Glowing 3D Network Globe Fallback ── */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-full">
+        {/* Glow backdrop */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.18)_0%,rgba(15,23,42,0.85)_65%,rgba(2,4,10,1)_100%)]" />
+
+        {/* Orbit ring 1 */}
+        <div className="absolute w-[82%] h-[82%] rounded-full border border-white/20 animate-[spin_24s_linear_infinite]"
+             style={{ transformStyle: "preserve-3d" }} />
+
+        {/* Orbit ring 2 */}
+        <div className="absolute w-[92%] h-[92%] rounded-full border border-white/10 animate-[spin_32s_linear_infinite_reverse]"
+             style={{ transformStyle: "preserve-3d" }} />
+
+        {/* Central glowing sphere graphic */}
+        <div className="w-[75%] h-[75%] rounded-full border border-white/30 bg-gradient-to-tr from-indigo-950/90 via-blue-900/50 to-cyan-400/25 shadow-[inset_0_0_35px_rgba(255,255,255,0.25)] flex items-center justify-center relative">
+          <div className="absolute top-[28%] left-[32%] w-2 h-2 rounded-full bg-cyan-400 animate-ping opacity-75" />
+          <div className="absolute top-[42%] right-[24%] w-2 h-2 rounded-full bg-indigo-400 animate-ping opacity-75" style={{ animationDelay: "0.7s" }} />
+          <div className="absolute bottom-[32%] left-[46%] w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+          <div className="absolute top-[62%] left-[22%] w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse" />
+        </div>
+      </div>
+
+      {/* ── HTML5 Video Player ── */}
+      <video
+        ref={videoRef}
+        src="/videos/globe.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        webkit-playsinline="true"
+        preload="auto"
+        className="w-full h-full object-cover rounded-full relative z-10 opacity-95 transition-opacity duration-500"
+      />
+    </div>
+  );
+}
+
 function GlobeSection({ founders, loading }) {
   const count = loading ? 6 : founders.length;
   const { cardW, cardH, globeD, gap, infoH, badgeFontSize, nameFontSize, titleFontSize } = getCardSize(count);
@@ -249,11 +301,7 @@ function GlobeSection({ founders, loading }) {
                 "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18), 0 0 220px rgba(255,255,255,0.08)",
             }}
           >
-            <video
-              src="/videos/globe.mp4"
-              autoPlay loop muted playsInline
-              className="w-full h-full object-cover rounded-full"
-            />
+            <GlobeVideo />
           </motion.div>
 
           {/* RIGHT CARDS */}
@@ -338,14 +386,7 @@ function GlobeSection({ founders, loading }) {
               "0 0 0 2px rgba(255,255,255,0.25), 0 0 50px rgba(255,255,255,0.4), 0 0 120px rgba(255,255,255,0.2)",
           }}
         >
-          <video
-            src="/videos/globe.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover rounded-full"
-          />
+          <GlobeVideo />
         </motion.div>
       </div>
     </section>
