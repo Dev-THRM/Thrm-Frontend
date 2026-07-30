@@ -161,9 +161,18 @@ function GlobeVideo({ className = "" }) {
 
   return (
     <div className={`relative w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-black ${className}`}>
+      {/* Globe Poster Fallback Image (Pic 2) */}
+      <img
+        src="/images/globe-poster.jpg"
+        alt="Visionaries Globe"
+        className="absolute inset-0 w-full h-full object-cover rounded-full z-0 pointer-events-none"
+      />
+
+      {/* Globe Video Player */}
       <video
         ref={videoRef}
         src="/videos/globe.mp4"
+        poster="/images/globe-poster.jpg"
         autoPlay
         loop
         muted
