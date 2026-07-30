@@ -217,8 +217,8 @@ const ORBIT_ICONS = [
 const ORBIT_R = 43; // orbit radius as % of container
 
 // World Map Component: Seamless flat world map rotating horizontally
-const WorldMapSvg = () => (
-  <svg viewBox="0 0 200 100" className="absolute top-0 left-0 w-[200%] h-full opacity-80 animate-[rotate-map_24s_linear_infinite]" style={{ transformStyle: "preserve-3d" }}>
+const WorldMapSvg = ({ mapRef }) => (
+  <svg viewBox="0 0 200 100" ref={mapRef} className="absolute top-0 left-0 w-[200%] h-full opacity-80" style={{ transformStyle: "preserve-3d" }}>
     {/* Map 1 */}
     <g fill="#f1f5f9" opacity="0.9">
       {/* Greenland */}
@@ -265,20 +265,51 @@ const WorldMapSvg = () => (
 );
 
 function MobileGlobeUI({ className = "" }) {
+  const mapRef = useRef(null);
+  const orbitRef = useRef(null);
+  const iconRefs = useRef([]);
+
+  useEffect(() => {
+    let animationId;
+    let mapOffset = 0;
+    let orbitAngle = 0;
+    let lastTime = performance.now();
+
+    const animate = (time) => {
+      const delta = time - lastTime;
+      lastTime = time;
+
+      // 50% map translation loop runs every 24 seconds (approx 2.083% per second)
+      mapOffset = (mapOffset - (2.083 * delta) / 1000) % 50;
+
+      // 360 degree orbit loop runs every 28 seconds (approx 12.857 degrees per second)
+      orbitAngle = (orbitAngle + (12.857 * delta) / 1000) % 360;
+
+      // Directly update inline styles for smooth 60fps rotation, bypassing CSS keyframes block on mobile
+      if (mapRef.current) {
+        mapRef.current.style.transform = `translate3d(${mapOffset}%, 0, 0)`;
+      }
+      if (orbitRef.current) {
+        orbitRef.current.style.transform = `rotate(${orbitAngle}deg)`;
+      }
+      iconRefs.current.forEach((el) => {
+        if (el) {
+          el.style.transform = `rotate(${-orbitAngle}deg)`;
+        }
+      });
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
   return (
     <div
-      className={`relative w-full h-full rounded-full overflow-hidden select-none ${className}`}
+      className={`relative w-full h-full rounded-full overflow-hidden select-none bg-[#02040a] ${className}`}
       style={{ background: "radial-gradient(ellipse at 40% 35%, #181d28 0%, #080a0f 60%, #010204 100%)" }}
     >
-      <style>{`
-        @keyframes rotate-map {
-          0% { transform: translate3d(0, 0, 0); }
-          100% { transform: translate3d(-50%, 0, 0); }
-        }
-        @keyframes thrm-cw  { to { transform: rotate(360deg);  } }
-        @keyframes thrm-ccw { to { transform: rotate(-360deg); } }
-      `}</style>
-
       {/* ── Overlapping elliptical wireframe orbit rings (matching Pic 2 mesh) ── */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ opacity: 0.25 }}>
         <ellipse cx="50%" cy="50%" rx="45%" ry="18%" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="0.6" transform="rotate(-15 250 250)" />
@@ -300,7 +331,7 @@ function MobileGlobeUI({ className = "" }) {
         overflow: "hidden",
       }}>
         {/* Rotating world map continents */}
-        <WorldMapSvg />
+        <WorldMapSvg mapRef={mapRef} />
 
         {/* 3D sphere ambient lighting shadows & specular overlays (non-moving on top of map) */}
         <div style={{
@@ -334,8 +365,9 @@ function MobileGlobeUI({ className = "" }) {
 
       {/* ── Spinning orbit container ── */}
       <div
+        ref={orbitRef}
         className="absolute inset-0"
-        style={{ animation: "thrm-cw 28s linear infinite", transformOrigin: "50% 50%" }}
+        style={{ transformOrigin: "50% 50%" }}
       >
         {/* Connector lines inside the spinning orbit container */}
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }}>
@@ -358,7 +390,7 @@ function MobileGlobeUI({ className = "" }) {
         </svg>
 
         {/* Orbiting White Icon Badges */}
-        {ORBIT_ICONS.map(({ id, icon, angle }) => {
+        {ORBIT_ICONS.map(({ id, icon, angle }, idx) => {
           const rad = (angle - 90) * Math.PI / 180;
           const leftPct = 50 + ORBIT_R * Math.cos(rad);
           const topPct  = 50 + ORBIT_R * Math.sin(rad);
@@ -370,7 +402,10 @@ function MobileGlobeUI({ className = "" }) {
               transform: "translate(-50%,-50%)",
             }}>
               {/* Counter-rotate icon badge to keep it upright */}
-              <div style={{ animation: "thrm-ccw 28s linear infinite", transformOrigin: "50% 50%" }}>
+              <div
+                ref={(el) => (iconRefs.current[idx] = el)}
+                style={{ transformOrigin: "50% 50%" }}
+              >
                 <div
                   className="rounded-full bg-white flex items-center justify-center border transition-all duration-300"
                   style={{
@@ -400,10 +435,12 @@ function MobileGlobeUI({ className = "" }) {
   );
 }
 
+
 // ── Globe Video Component for Desktop ──────────────────────────────────────────
 function GlobeVideo({ className = "" }) {
   return <MobileGlobeUI className={className} />;
 }
+
 
 function GlobeSection({ founders, loading }) {
   const count = loading ? 6 : founders.length;
