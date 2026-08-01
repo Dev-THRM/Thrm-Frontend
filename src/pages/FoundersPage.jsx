@@ -173,18 +173,22 @@ function GlobeSection({ founders, loading }) {
     );
   };
 
-  // Video ref: force .play() for iOS Safari (bypasses Low Power Mode block)
-  const videoRef = useRef(null);
+  // Video refs: force .play() for iOS Safari (bypasses Low Power Mode block)
+  const videoRef = useRef(null);      // mobile globe
+  const videoRefDesktop = useRef(null); // desktop globe
+
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.play().catch(() => {});
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) video.play().catch(() => {}); },
-      { threshold: 0.3 }
-    );
-    observer.observe(video);
-    return () => observer.disconnect();
+    const refs = [videoRef.current, videoRefDesktop.current].filter(Boolean);
+    const observers = refs.map((video) => {
+      video.play().catch(() => {});
+      const observer = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) video.play().catch(() => {}); },
+        { threshold: 0.3 }
+      );
+      observer.observe(video);
+      return observer;
+    });
+    return () => observers.forEach((o) => o.disconnect());
   }, []);
 
   // Flat list of all items for the mobile 2-col grid
@@ -250,7 +254,7 @@ function GlobeSection({ founders, loading }) {
             loop
             muted
             playsInline
-            preload="none"
+            preload="metadata"
             className="w-full h-full object-cover rounded-full"
             style={{ display: "block" }}
           />
@@ -314,9 +318,11 @@ function GlobeSection({ founders, loading }) {
             }}
           >
             <video
+              ref={videoRefDesktop}
               src="/videos/globe.mp4"
               poster="/images/globe-poster.jpg"
               autoPlay loop muted playsInline
+              preload="metadata"
               className="w-full h-full object-cover rounded-full"
             />
           </motion.div>
