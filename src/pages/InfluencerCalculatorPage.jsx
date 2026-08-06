@@ -1,23 +1,24 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 import {
   Camera,
   Video,
   Users,
-  Heart,
-  MessageCircle,
-  MapPin,
   Tag,
   ChevronDown,
   ArrowRight,
   Sparkles,
-  TrendingUp,
   BarChart3,
   BadgeCheck,
-  AlertCircle,
   RefreshCw,
   Calculator,
+  User,
+  Phone,
+  AtSign,
+  AlertCircle,
+  Link as LinkIcon,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -85,45 +86,13 @@ function getTierIndex(followers) {
   return TIER_BOUNDARIES.length; // 1M+
 }
 
-function calcER(likes, comments, followers) {
-  if (!followers || followers === 0) return 0;
-  return ((Number(likes) + Number(comments)) / Number(followers)) * 100;
-}
-
-function getERMultiplier(er) {
-  if (er < 1)  return 0.6;
-  if (er < 3)  return 0.85;
-  if (er < 6)  return 1.0;
-  if (er < 10) return 1.2;
-  return 1.4;
-}
-
-function getERLabel(er) {
-  if (er < 1)  return { label: "Low",         color: "text-red-400",    bg: "bg-red-400/10 border-red-400/30",    note: "Focus on content quality to improve engagement." };
-  if (er < 3)  return { label: "Average",     color: "text-yellow-400", bg: "bg-yellow-400/10 border-yellow-400/30", note: "Room for improvement — work on posting consistency." };
-  if (er < 6)  return { label: "Good",        color: "text-emerald-400",bg: "bg-emerald-400/10 border-emerald-400/30", note: "Barter deals are very viable at this engagement level." };
-  if (er < 10) return { label: "Excellent",   color: "text-blue-400",   bg: "bg-blue-400/10 border-blue-400/30",  note: "Strong paid campaign potential — brands will notice you." };
-  return        { label: "Outstanding",       color: "text-violet-400", bg: "bg-violet-400/10 border-violet-400/30", note: "Premium positioning — you are significantly undercharging at market rates." };
-}
-
-function getCollabType(tierIndex, er) {
+function getCollabType(tierIndex) {
   if (tierIndex === 0) return "Barter Only";
-  if (tierIndex === 1 && er < 3) return "Barter + Product Gifting";
   if (tierIndex === 1) return "Barter + Small Paid Campaigns";
   if (tierIndex <= 4) return "Paid Brand Campaigns";
   if (tierIndex <= 7) return "Dedicated Paid Campaigns + Brand Packages";
   if (tierIndex === 8) return "Premium Paid Campaigns + Long-term Partnerships";
   return "Custom Brand Representation (Contact THRM)";
-}
-
-function calcConfidenceScore(er, tierIndex) {
-  let score = 50;
-  if (er >= 3)  score += 15;
-  if (er >= 6)  score += 10;
-  if (er >= 10) score += 5;
-  if (tierIndex >= 2) score += 10;
-  if (tierIndex >= 4) score += 5;
-  return Math.min(score, 95);
 }
 
 function applyMultipliers(base, erMult) {
@@ -149,19 +118,13 @@ function formatRange(range) {
 // MAIN CALCULATION LOGIC
 // ─────────────────────────────────────────────────────────────────────────────
 
-function calculate({ platform, followers, avgLikes, avgComments, category, location }) {
+function calculate({ platform, followers, name, mobile, handle, category, profileImage }) {
   const f = Number(followers);
   const tierIndex = getTierIndex(f);
-  const er = calcER(avgLikes, avgComments, f);
-  const erMult = getERMultiplier(er);
 
-  // Category and location are collected for THRM's reference only — not used in pricing
-  const locObj = LOCATION_OPTIONS.find(l => l.value === location) || LOCATION_OPTIONS[0];
   const catObj = CONTENT_CATEGORIES.find(c => c.value === category) || CONTENT_CATEGORIES[5];
 
-  const confidenceScore = calcConfidenceScore(er, tierIndex);
-  const collabType = getCollabType(tierIndex, er);
-  const erInfo = getERLabel(er);
+  const collabType = getCollabType(tierIndex);
 
   let formats = [];
   let creatorType = "";
@@ -185,9 +148,9 @@ function calculate({ platform, followers, avgLikes, avgComments, category, locat
         { format: "Brand Package",      range: "Custom Pricing" },
       ];
     } else {
-      const story = applyMultipliers(tier.story, erMult);
-      const post  = applyMultipliers(tier.post,  erMult);
-      const reel  = applyMultipliers(tier.reel,  erMult);
+      const story = applyMultipliers(tier.story, 1.0);
+      const post  = applyMultipliers(tier.post,  1.0);
+      const reel  = applyMultipliers(tier.reel,  1.0);
       const pkg   = post && reel
         ? [Math.round((post[0] + reel[0] + (story?.[0] || 0)) * 0.85), Math.round((post[1] + reel[1] + (story?.[1] || 0)) * 0.85)]
         : null;
@@ -214,8 +177,8 @@ function calculate({ platform, followers, avgLikes, avgComments, category, locat
         { format: "Dedicated Video",    range: "Custom Pricing" },
       ];
     } else {
-      const shorts = applyMultipliers(tier.shorts, erMult);
-      const video  = applyMultipliers(tier.video,  erMult);
+      const shorts = applyMultipliers(tier.shorts, 1.0);
+      const video  = applyMultipliers(tier.video,  1.0);
 
       formats = [
         { format: "YouTube Shorts",     range: formatRange(shorts) },
@@ -227,15 +190,15 @@ function calculate({ platform, followers, avgLikes, avgComments, category, locat
   return {
     platform,
     followers: f,
-    er: er.toFixed(2),
     creatorType,
     tierLabel: (platform === "instagram" ? INSTAGRAM_PRICING : YOUTUBE_PRICING)[tierIndex].label,
-    confidenceScore,
     collabType,
-    erInfo,
     formats,
-    locLabel: locObj.label.split(" (")[0],
+    name,
+    mobile,
+    handle,
     catLabel: catObj.label,
+    profileImage,
   };
 }
 
@@ -289,46 +252,43 @@ function NumberField({ id, label, icon: Icon, value, onChange, placeholder, hint
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONFIDENCE RING
-// ─────────────────────────────────────────────────────────────────────────────
-
-function ConfidenceRing({ score }) {
-  const radius = 42;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
-
+function TextField({ id, label, icon: Icon, value, onChange, placeholder, hint, type = "text" }) {
   return (
-    <div className="relative flex items-center justify-center w-28 h-28">
-      <svg className="absolute inset-0 -rotate-90" width="112" height="112" viewBox="0 0 112 112">
-        <circle cx="56" cy="56" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="8" />
-        <motion.circle
-          cx="56" cy="56" r={radius}
-          fill="none" stroke="url(#confGrad)" strokeWidth="8"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
-        />
-        <defs>
-          <linearGradient id="confGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#a78bfa" />
-            <stop offset="100%" stopColor="#60a5fa" />
-          </linearGradient>
-        </defs>
-      </svg>
-      <div className="text-center">
-        <motion.p
-          className="text-2xl font-black text-white leading-none"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, type: "spring" }}
-        >
-          {score}%
-        </motion.p>
-        <p className="text-[10px] text-white/40 uppercase tracking-wider mt-0.5">Confidence</p>
-      </div>
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="text-sm font-semibold text-white/60 uppercase tracking-wider flex items-center gap-2">
+        <Icon className="w-4 h-4" /> {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full bg-white/[0.04] border border-white/10 rounded-2xl px-5 py-4 text-white font-medium placeholder:text-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all"
+      />
+      {hint && <p className="text-xs text-white/30 pl-1">{hint}</p>}
+    </div>
+  );
+}
+
+function FileField({ id, label, icon: Icon, onChange, hint }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <label htmlFor={id} className="text-sm font-semibold text-white/60 uppercase tracking-wider flex items-center gap-2">
+        <Icon className="w-4 h-4" /> {label}
+      </label>
+      <input
+        id={id}
+        type="file"
+        accept="image/*"
+        onChange={e => {
+          if (e.target.files && e.target.files[0]) {
+            onChange(e.target.files[0]);
+          }
+        }}
+        className="w-full bg-white/[0.04] border border-white/10 rounded-2xl px-5 py-4 text-white font-medium file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-white/10 file:text-white hover:file:bg-white/20 focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all"
+      />
+      {hint && <p className="text-xs text-white/30 pl-1">{hint}</p>}
     </div>
   );
 }
@@ -338,7 +298,7 @@ function ConfidenceRing({ score }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ResultCard({ result, onReset }) {
-  const { platform, followers, er, creatorType, tierLabel, confidenceScore, collabType, erInfo, formats, locLabel, catLabel } = result;
+  const { platform, followers, creatorType, tierLabel, collabType, formats, name, mobile, handle, catLabel } = result;
 
   return (
     <motion.div
@@ -386,12 +346,12 @@ function ResultCard({ result, onReset }) {
             <p className="text-xs text-white/40 uppercase tracking-widest font-semibold mb-4">Creator Summary</p>
             <div className="space-y-3">
               {[
+                { k: "Name",            v: name },
                 { k: "Platform",        v: platform === "instagram" ? "📸 Instagram" : "▶️ YouTube" },
+                { k: "Handle",          v: handle },
                 { k: "Followers",       v: Number(followers).toLocaleString("en-IN") },
                 { k: "Follower Tier",   v: tierLabel },
                 { k: "Creator Type",    v: creatorType },
-                { k: "Engagement Rate", v: `${er}%` },
-                { k: "Location",        v: locLabel },
                 { k: "Category",        v: catLabel },
               ].map(({ k, v }) => (
                 <div key={k} className="flex items-center justify-between border-b border-white/5 pb-2 last:border-0 last:pb-0">
@@ -399,17 +359,6 @@ function ResultCard({ result, onReset }) {
                   <span className="text-sm font-bold text-white">{v}</span>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Confidence Score Ring */}
-          <div className="flex items-center gap-5 pt-2 border-t border-white/10">
-            <ConfidenceRing score={confidenceScore} />
-            <div>
-              <p className="text-xs text-white/40 uppercase tracking-widest font-semibold mb-1">Confidence Score</p>
-              <p className="text-sm text-white/70 leading-relaxed">
-                How likely brands are to pay within this estimated range for your audience quality.
-              </p>
             </div>
           </div>
 
@@ -451,22 +400,6 @@ function ResultCard({ result, onReset }) {
             </div>
           </motion.div>
 
-          {/* ER Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className={`rounded-2xl border p-5 flex gap-4 items-start ${erInfo.bg}`}
-          >
-            <AlertCircle className={`w-5 h-5 shrink-0 mt-0.5 ${erInfo.color}`} />
-            <div>
-              <p className={`font-bold text-sm mb-1 ${erInfo.color}`}>
-                Engagement Rate: {er}% — {erInfo.label}
-              </p>
-              <p className="text-xs text-white/60 leading-relaxed">{erInfo.note}</p>
-            </div>
-          </motion.div>
-
           {/* CTA */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -495,19 +428,14 @@ function ResultCard({ result, onReset }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function CalculatorForm({ onResult }) {
-  const [platform, setPlatform] = useState("instagram");
+  const [name, setName]               = useState("");
+  const [mobile, setMobile]           = useState("");
+  const [platform, setPlatform]       = useState("instagram");
+  const [handle, setHandle]           = useState("");
+  const [profileImage, setProfileImage] = useState(null);
   const [followers, setFollowers]     = useState("");
-  const [avgLikes, setAvgLikes]       = useState("");
-  const [avgComments, setAvgComments] = useState("");
   const [category, setCategory]       = useState("");
-  const [location, setLocation]       = useState("");
   const [errors, setErrors]           = useState({});
-
-  // Live ER preview
-  const liveER = followers && avgLikes !== ""
-    ? calcER(avgLikes, avgComments || 0, followers).toFixed(2)
-    : null;
-  const liveERInfo = liveER !== null ? getERLabel(Number(liveER)) : null;
 
   // Live tier label
   const liveTier = followers
@@ -516,19 +444,52 @@ function CalculatorForm({ onResult }) {
 
   function validate() {
     const e = {};
+    if (!name.trim()) e.name = "Enter your name";
+    if (!mobile.trim()) e.mobile = "Enter your mobile number";
+    if (!handle.trim()) e.handle = "Enter your platform handle";
     if (!followers || Number(followers) <= 0) e.followers = "Enter a valid follower count";
-    if (avgLikes === "" || Number(avgLikes) < 0) e.avgLikes = "Enter average likes";
     if (!category) e.category = "Select a content category";
-    if (!location) e.location = "Select your location";
     return e;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setErrors({});
-    onResult(calculate({ platform, followers, avgLikes, avgComments: avgComments || 0, category, location }));
+    
+    const result = calculate({ platform, followers, name, mobile, handle, category, profileImage });
+    
+    // We can't send files inside a JSON body. We must use FormData.
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('mobile', mobile);
+    formData.append('platform', platform);
+    formData.append('handle', handle);
+    formData.append('followers', followers);
+    formData.append('category', category);
+    formData.append('er', result.er || 0);
+    formData.append('creatorType', result.creatorType);
+    formData.append('tierLabel', result.tierLabel);
+    formData.append('collabType', result.collabType);
+    
+    // Append formats as JSON string since it's an array of objects
+    formData.append('formats', JSON.stringify(result.formats));
+
+    if (profileImage instanceof File) {
+      formData.append('profileImage', profileImage);
+    }
+    
+    try {
+      await fetch(`${API_BASE_URL}/api/influencers/calculate`, {
+        method: "POST",
+        body: formData
+      });
+    } catch (err) {
+      console.error("Failed to save influencer data:", err);
+    }
+
+    onResult(result);
   }
 
   return (
@@ -539,6 +500,33 @@ function CalculatorForm({ onResult }) {
       exit={{ opacity: 0 }}
       className="w-full flex flex-col gap-8"
     >
+      {/* Name and Mobile */}
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <TextField
+            id="name"
+            label="Your Name"
+            icon={User}
+            value={name}
+            onChange={setName}
+            placeholder="John Doe"
+          />
+          {errors.name && <p className="text-xs text-red-400 pl-1 mt-1">{errors.name}</p>}
+        </div>
+        <div>
+          <TextField
+            id="mobile"
+            label="Mobile Number"
+            icon={Phone}
+            value={mobile}
+            onChange={setMobile}
+            placeholder="e.g. 9876543210"
+            type="tel"
+          />
+          {errors.mobile && <p className="text-xs text-red-400 pl-1 mt-1">{errors.mobile}</p>}
+        </div>
+      </div>
+
       {/* Platform selector */}
       <div className="flex flex-col gap-3">
         <p className="text-sm font-semibold text-white/60 uppercase tracking-wider flex items-center gap-2">
@@ -564,6 +552,27 @@ function CalculatorForm({ onResult }) {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Platform Handle */}
+      <div className="flex flex-col gap-2">
+        <TextField
+          id="handle"
+          label="Platform Handle"
+          icon={AtSign}
+          value={handle}
+          onChange={setHandle}
+          placeholder={platform === "instagram" ? "@yourhandle" : "youtube.com/@channel"}
+          hint={`Your ${platform === "instagram" ? "Instagram username" : "YouTube channel link"}`}
+        />
+        <FileField
+          id="profileImage"
+          label="Profile Image (Optional)"
+          icon={LinkIcon}
+          onChange={setProfileImage}
+          hint="Upload a square photo to show in the creator directory"
+        />
+        {errors.handle && <p className="text-xs text-red-400 pl-1 mt-1">{errors.handle}</p>}
       </div>
 
       {/* Followers */}
@@ -594,53 +603,8 @@ function CalculatorForm({ onResult }) {
         {errors.followers && <p className="text-xs text-red-400 pl-1">{errors.followers}</p>}
       </div>
 
-      {/* Avg Likes + Comments */}
-      <div className="grid sm:grid-cols-2 gap-5">
-        <div>
-          <NumberField
-            id="avgLikes"
-            label="Average Likes"
-            icon={Heart}
-            value={avgLikes}
-            onChange={setAvgLikes}
-            placeholder="e.g. 600"
-            hint="Per post average"
-          />
-          {errors.avgLikes && <p className="text-xs text-red-400 pl-1 mt-1">{errors.avgLikes}</p>}
-        </div>
-        <NumberField
-          id="avgComments"
-          label="Average Comments"
-          icon={MessageCircle}
-          value={avgComments}
-          onChange={setAvgComments}
-          placeholder="e.g. 25"
-          hint="Optional — defaults to 0"
-        />
-      </div>
-
-      {/* Live ER Preview */}
-      <AnimatePresence>
-        {liveER !== null && (
-          <motion.div
-            initial={{ opacity: 0, y: -8, height: 0 }}
-            animate={{ opacity: 1, y: 0, height: "auto" }}
-            exit={{ opacity: 0, y: -8, height: 0 }}
-            className={`rounded-2xl border p-4 flex gap-4 items-center overflow-hidden ${liveERInfo.bg}`}
-          >
-            <TrendingUp className={`w-5 h-5 shrink-0 ${liveERInfo.color}`} />
-            <div>
-              <span className={`text-sm font-bold ${liveERInfo.color}`}>
-                Live Engagement Rate: {liveER}% — {liveERInfo.label}
-              </span>
-              <p className="text-xs text-white/50 mt-0.5">{liveERInfo.note}</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Category + Location */}
-      <div className="grid sm:grid-cols-2 gap-5">
+      {/* Category */}
+      <div className="flex flex-col gap-5">
         <div>
           <SelectField
             id="category"
@@ -652,18 +616,6 @@ function CalculatorForm({ onResult }) {
             placeholder="Select category"
           />
           {errors.category && <p className="text-xs text-red-400 pl-1 mt-1">{errors.category}</p>}
-        </div>
-        <div>
-          <SelectField
-            id="location"
-            label="Your Location"
-            icon={MapPin}
-            value={location}
-            onChange={setLocation}
-            options={LOCATION_OPTIONS.map(l => ({ value: l.value, label: l.label.split(" (")[0] }))}
-            placeholder="Select location"
-          />
-          {errors.location && <p className="text-xs text-red-400 pl-1 mt-1">{errors.location}</p>}
         </div>
       </div>
 
