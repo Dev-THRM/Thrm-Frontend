@@ -21,7 +21,7 @@ import {
   Link as LinkIcon,
   Download,
 } from "lucide-react";
-import html2canvas from "html2canvas";
+import { toPng } from "html-to-image";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PRICING TABLES
@@ -334,8 +334,7 @@ function ResultCard({ result, onReset }) {
     setIsDownloading(true);
     try {
       const elementToCapture = cardRef.current.closest('.rounded-\\[2\\.5rem\\]') || cardRef.current;
-      const canvas = await html2canvas(elementToCapture, { backgroundColor: '#0a0e17', scale: 2 });
-      const dataUrl = canvas.toDataURL('image/png');
+      const dataUrl = await toPng(elementToCapture, { backgroundColor: '#0a0e17', pixelRatio: 2 });
       const a = document.createElement('a');
       a.href = dataUrl;
       a.download = `THRM-Rate-${result.name.replace(/\s+/g, '-')}.png`;
