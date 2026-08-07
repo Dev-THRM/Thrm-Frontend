@@ -100,6 +100,14 @@ export default function ContactPage() {
       if (result.success) {
         setStatus({ type: "success", message: "Message sent successfully! We will contact you shortly." });
         setFormData({ name: "", phone: "", email: "", service: "", message: "" }); // Reset form
+
+        // Trigger Google Ads Conversion Tracking Event
+        if (typeof window !== "undefined" && typeof window.gtag === "function") {
+          window.gtag('event', 'ads_conversion_Contact_1', {
+            // <event_parameters>
+          });
+        }
+
         navigate("/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you");
       } else {
         setStatus({ type: "error", message: "Something went wrong. Please try again." });
