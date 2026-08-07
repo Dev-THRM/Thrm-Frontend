@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TicketCheck } from "lucide-react";
-import { useEffect } from "react";
 
 export const TYP = () => {
     useEffect(() => {
