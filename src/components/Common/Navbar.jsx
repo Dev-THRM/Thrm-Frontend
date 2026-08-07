@@ -31,6 +31,7 @@ const navData = [
     path: "/services",
     isMegaMenu: true,
     menuWidth: "w-[800px]",
+    dropdownAlign: "left",
     subItems: [
       { name: "Social Media Marketing", path: "/services/social", desc: "Using Social Platforms To Promote Brands, Engage Users, And Drive Sales.", icon: Share2 },
       { name: "SEO", path: "/services/seo", desc: "Optimizing Websites To Rank Higher On Search Engines And Increase Organic Traffic.", icon: Search },
@@ -172,8 +173,12 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.98 }}
                             transition={{ duration: 0.2, ease: "easeOut" }}
-                            className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 cursor-default ${
+                            className={`absolute top-full pt-2 cursor-default ${
                               item.isMegaMenu ? (item.menuWidth || "w-[750px]") : "w-[250px]"
+                            } ${
+                              item.dropdownAlign === "left" ? "left-0" :
+                              item.dropdownAlign === "right" ? "right-0" :
+                              "left-1/2 -translate-x-1/2"
                             }`}
                           >
                             <div className="bg-[#0b1020]/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">

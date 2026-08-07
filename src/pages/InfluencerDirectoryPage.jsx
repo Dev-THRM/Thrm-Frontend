@@ -226,6 +226,25 @@ Description: ${formData.description}
       });
 
       const result = await response.json();
+      
+      // Save to Database
+      try {
+        await fetch(`${API_BASE_URL}/api/leads`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            company: formData.company,
+            niche: formData.niche,
+            description: formData.description,
+            influencerId: inf._id
+          })
+        });
+      } catch (dbErr) {
+        console.error("Database save failed:", dbErr);
+      }
+
       if (result.success) {
         setSubmitStatus('success');
       } else {
