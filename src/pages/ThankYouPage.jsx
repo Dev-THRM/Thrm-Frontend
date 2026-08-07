@@ -1,7 +1,14 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { TicketCheck } from "lucide-react";
 
 export const TYP = () => {
+    useEffect(() => {
+        if (typeof window !== "undefined" && typeof window.gtag === "function") {
+            window.gtag('event', 'conversion', {'send_to': 'AW-16765085672/rGrKCIyOz_UZEOjPm7o-'});
+        }
+    }, []);
+
     return(
 <div className="relative min-h-screen bg-[#02040a] text-white flex flex-col justify-center items-center px-6 overflow-hidden">
 
