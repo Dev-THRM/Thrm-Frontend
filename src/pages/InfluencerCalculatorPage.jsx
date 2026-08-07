@@ -19,7 +19,9 @@ import {
   AtSign,
   AlertCircle,
   Link as LinkIcon,
+  Download,
 } from "lucide-react";
+import html2canvas from "html2canvas";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PRICING TABLES
@@ -112,6 +114,31 @@ function formatINR(amount) {
 function formatRange(range) {
   if (!range) return "Barter Only";
   return `${formatINR(range[0])} – ${formatINR(range[1])}`;
+}
+
+function extractUsername(link) {
+  if (!link) return "";
+  let str = link.trim();
+  if (str.startsWith('@') && !str.includes('/')) return str.split('?')[0];
+  
+  try {
+    if (!str.startsWith('http')) {
+      if (str.includes('.com')) str = 'https://' + str;
+      else {
+        str = str.split('?')[0];
+        return str.startsWith('@') ? str : '@' + str;
+      }
+    }
+    const url = new URL(str);
+    const paths = url.pathname.split('/').filter(Boolean);
+    if (paths.length > 0) {
+      const last = paths[paths.length - 1];
+      return last.startsWith('@') ? last : '@' + last;
+    }
+  } catch (e) {}
+  
+  str = str.split('?')[0];
+  return str.startsWith('@') ? str : '@' + str;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -299,9 +326,30 @@ function FileField({ id, label, icon: Icon, onChange, hint }) {
 
 function ResultCard({ result, onReset }) {
   const { platform, followers, creatorType, tierLabel, collabType, formats, name, mobile, handle, catLabel } = result;
+  const cardRef = useRef(null);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const handleDownload = async () => {
+    if (!cardRef.current) return;
+    setIsDownloading(true);
+    try {
+      const elementToCapture = cardRef.current.closest('.rounded-\\[2\\.5rem\\]') || cardRef.current;
+      const canvas = await html2canvas(elementToCapture, { backgroundColor: '#0a0e17', scale: 2 });
+      const dataUrl = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = `THRM-Rate-${result.name.replace(/\s+/g, '-')}.png`;
+      a.click();
+    } catch (err) {
+      console.error('Download failed', err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -309,7 +357,7 @@ function ResultCard({ result, onReset }) {
       className="w-full"
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
         <div>
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -324,13 +372,23 @@ function ResultCard({ result, onReset }) {
             Here's What You're Worth
           </h2>
         </div>
-        <button
-          onClick={onReset}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all text-sm font-medium"
-        >
-          <RefreshCw className="w-4 h-4" />
-          Recalculate
-        </button>
+        <div className="flex items-center gap-3 self-start md:self-auto">
+          <button
+            onClick={handleDownload}
+            disabled={isDownloading}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-500/20 border border-violet-500/30 text-violet-400 hover:text-white hover:bg-violet-500/40 transition-all text-sm font-bold disabled:opacity-50 whitespace-nowrap"
+          >
+            <Download className="w-4 h-4" />
+            {isDownloading ? 'Saving...' : 'Save Card'}
+          </button>
+          <button
+            onClick={onReset}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-all text-sm font-medium whitespace-nowrap"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Recalculate
+          </button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -348,7 +406,7 @@ function ResultCard({ result, onReset }) {
               {[
                 { k: "Name",            v: name },
                 { k: "Platform",        v: platform === "instagram" ? "📸 Instagram" : "▶️ YouTube" },
-                { k: "Handle",          v: handle },
+                { k: "Handle",          v: extractUsername(handle) },
                 { k: "Followers",       v: Number(followers).toLocaleString("en-IN") },
                 { k: "Follower Tier",   v: tierLabel },
                 { k: "Creator Type",    v: creatorType },
@@ -436,6 +494,7 @@ function CalculatorForm({ onResult }) {
   const [followers, setFollowers]     = useState("");
   const [category, setCategory]       = useState("");
   const [errors, setErrors]           = useState({});
+  const [consent, setConsent]         = useState(false);
 
   // Live tier label
   const liveTier = followers
@@ -446,7 +505,7 @@ function CalculatorForm({ onResult }) {
     const e = {};
     if (!name.trim()) e.name = "Enter your name";
     if (!mobile.trim()) e.mobile = "Enter your mobile number";
-    if (!handle.trim()) e.handle = "Enter your platform handle";
+    if (!handle.trim()) e.handle = "Enter your platform link";
     if (!followers || Number(followers) <= 0) e.followers = "Enter a valid follower count";
     if (!category) e.category = "Select a content category";
     return e;
@@ -460,33 +519,32 @@ function CalculatorForm({ onResult }) {
     
     const result = calculate({ platform, followers, name, mobile, handle, category, profileImage });
     
-    // We can't send files inside a JSON body. We must use FormData.
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('mobile', mobile);
-    formData.append('platform', platform);
-    formData.append('handle', handle);
-    formData.append('followers', followers);
-    formData.append('category', category);
-    formData.append('er', result.er || 0);
-    formData.append('creatorType', result.creatorType);
-    formData.append('tierLabel', result.tierLabel);
-    formData.append('collabType', result.collabType);
-    
-    // Append formats as JSON string since it's an array of objects
-    formData.append('formats', JSON.stringify(result.formats));
+    if (consent) {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('mobile', mobile);
+      formData.append('platform', platform);
+      formData.append('handle', handle);
+      formData.append('followers', followers);
+      formData.append('category', category);
+      formData.append('er', result.er || 0);
+      formData.append('creatorType', result.creatorType);
+      formData.append('tierLabel', result.tierLabel);
+      formData.append('collabType', result.collabType);
+      formData.append('formats', JSON.stringify(result.formats));
 
-    if (profileImage instanceof File) {
-      formData.append('profileImage', profileImage);
-    }
-    
-    try {
-      await fetch(`${API_BASE_URL}/api/influencers/calculate`, {
-        method: "POST",
-        body: formData
-      });
-    } catch (err) {
-      console.error("Failed to save influencer data:", err);
+      if (profileImage instanceof File) {
+        formData.append('profileImage', profileImage);
+      }
+      
+      try {
+        await fetch(`${API_BASE_URL}/api/influencers/calculate`, {
+          method: "POST",
+          body: formData
+        });
+      } catch (err) {
+        console.error("Failed to save influencer data:", err);
+      }
     }
 
     onResult(result);
@@ -554,20 +612,20 @@ function CalculatorForm({ onResult }) {
         </div>
       </div>
 
-      {/* Platform Handle */}
+      {/* Platform Link */}
       <div className="flex flex-col gap-2">
         <TextField
           id="handle"
-          label="Platform Handle"
+          label="Platform Link"
           icon={AtSign}
           value={handle}
           onChange={setHandle}
-          placeholder={platform === "instagram" ? "@yourhandle" : "youtube.com/@channel"}
-          hint={`Your ${platform === "instagram" ? "Instagram username" : "YouTube channel link"}`}
+          placeholder={platform === "instagram" ? "https://instagram.com/yourhandle" : "https://youtube.com/@channel"}
+          hint={`Paste your full ${platform === "instagram" ? "Instagram" : "YouTube"} profile link`}
         />
         <FileField
           id="profileImage"
-          label="Profile Image (Optional)"
+          label="Profile Image"
           icon={LinkIcon}
           onChange={setProfileImage}
           hint="Upload a square photo to show in the creator directory"
@@ -617,6 +675,20 @@ function CalculatorForm({ onResult }) {
           />
           {errors.category && <p className="text-xs text-red-400 pl-1 mt-1">{errors.category}</p>}
         </div>
+      </div>
+
+      {/* Consent Checkbox */}
+      <div className="flex items-start gap-3 px-2">
+        <input
+          type="checkbox"
+          id="consent"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-1 w-4 h-4 rounded border-white/20 bg-white/5 text-violet-500 focus:ring-violet-500 focus:ring-offset-gray-900 cursor-pointer"
+        />
+        <label htmlFor="consent" className="text-sm text-white/70 cursor-pointer leading-relaxed">
+          Register my profile on THRM's Creator Directory so brands can connect with me directly.
+        </label>
       </div>
 
       {/* Submit */}
@@ -746,7 +818,7 @@ export default function InfluencerCalculatorPage() {
                 <Calculator className="w-5 h-5 text-violet-400" />
               </div>
               <div>
-                <h2 className="text-lg font-black text-white">Rate Calculator</h2>
+                <h2 className="text-lg font-black text-white">THRM Rate Calculator</h2>
                 <p className="text-xs text-white/40">Fill in all fields for the most accurate result</p>
               </div>
             </div>

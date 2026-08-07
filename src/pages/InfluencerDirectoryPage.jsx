@@ -9,6 +9,8 @@ import {
   Star,
   SlidersHorizontal,
   ChevronDown,
+  X,
+  Sparkles,
 } from "lucide-react";
 
 const CATEGORIES = [
@@ -29,7 +31,32 @@ function formatFollowers(n) {
   return String(n);
 }
 
-function InfluencerCard({ inf, index }) {
+function extractUsername(link) {
+  if (!link) return "";
+  let str = link.trim();
+  if (str.startsWith('@') && !str.includes('/')) return str.split('?')[0];
+  
+  try {
+    if (!str.startsWith('http')) {
+      if (str.includes('.com')) str = 'https://' + str;
+      else {
+        str = str.split('?')[0];
+        return str.startsWith('@') ? str : '@' + str;
+      }
+    }
+    const url = new URL(str);
+    const paths = url.pathname.split('/').filter(Boolean);
+    if (paths.length > 0) {
+      const last = paths[paths.length - 1];
+      return last.startsWith('@') ? last : '@' + last;
+    }
+  } catch (e) {}
+  
+  str = str.split('?')[0];
+  return str.startsWith('@') ? str : '@' + str;
+}
+
+function InfluencerCard({ inf, index, onClick }) {
   const igData = inf.instagram;
   const ytData = inf.youtube;
   const primaryData = igData || ytData;
@@ -44,10 +71,11 @@ function InfluencerCard({ inf, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.5 }}
-      className="group relative rounded-3xl bg-gradient-to-b from-white/[0.06] to-white/[0.01] border border-white/10 overflow-hidden hover:border-white/25 hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 flex flex-col"
+      onClick={onClick}
+      className="group relative cursor-pointer rounded-3xl bg-gradient-to-b from-white/[0.06] to-white/[0.01] border border-white/10 overflow-hidden hover:border-white/25 hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 flex flex-col"
     >
       {/* Card header */}
-      <div className="relative h-44 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-square w-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)] z-0" />
 
         {/* Full Header Image (if custom uploaded) */}
@@ -65,7 +93,7 @@ function InfluencerCard({ inf, index }) {
                    e.currentTarget.nextElementSibling.nextElementSibling.style.display = "block"; // show fallback
                 }
               }}
-              className="absolute inset-0 w-full h-full object-cover z-0 group-hover:scale-105 transition-transform duration-700"
+              className="absolute inset-0 w-full h-full object-cover object-center z-0 group-hover:scale-105 transition-transform duration-700"
             />
             {/* Gradient overlay to ensure badges stay readable */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-black/20 to-black/40 z-0 pointer-events-none" />
@@ -108,7 +136,7 @@ function InfluencerCard({ inf, index }) {
       <div className="p-6 flex flex-col flex-grow gap-5">
         <div>
           <h3 className="text-xl font-black text-white mb-0.5 truncate">{inf.name}</h3>
-          <p className="text-white/40 text-sm font-medium truncate">{primaryData.handle}</p>
+          <p className="text-white/40 text-sm font-medium truncate">{extractUsername(primaryData.handle)}</p>
         </div>
 
         <div className="space-y-3">
@@ -149,6 +177,118 @@ function InfluencerCard({ inf, index }) {
   );
 }
 
+function InfluencerModal({ inf, onClose }) {
+  const igData = inf.instagram;
+  const ytData = inf.youtube;
+  const primaryData = igData || ytData;
+  if (!primaryData) return null;
+
+  const fallbackAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(inf.name)}&background=1a1a2e&color=ffffff&size=128&bold=true&format=png`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-10 bg-black/80 backdrop-blur-md"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2.5rem] bg-gradient-to-br from-[#0a0a1a] to-[#02040a] border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.8)]"
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-6 right-6 p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-all z-50"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Modal Content */}
+        <div className="p-8 md:p-12">
+          {/* Header / Avatar */}
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-10">
+            <div className="w-32 h-32 md:w-40 md:h-40 shrink-0 rounded-3xl overflow-hidden border border-white/20 relative shadow-2xl">
+              <img
+                src={inf.profileImage || fallbackAvatarUrl}
+                alt={inf.name}
+                className="w-full h-full object-cover object-center"
+                onError={(e) => { e.currentTarget.src = fallbackAvatarUrl; }}
+              />
+            </div>
+            <div className="text-center md:text-left flex-grow pt-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+                <span className="text-xs font-bold tracking-widest uppercase text-violet-400">Creator Profile</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-2">{inf.name}</h2>
+              <p className="text-white/50 text-lg font-medium">{extractUsername(primaryData.handle)}</p>
+            </div>
+          </div>
+
+          {/* Platform Data Sections */}
+          <div className="space-y-10">
+            {[igData && { ...igData, platformName: "Instagram", icon: Camera }, ytData && { ...ytData, platformName: "YouTube", icon: Video }]
+              .filter(Boolean)
+              .map((data, idx) => (
+                <div key={idx} className="space-y-6">
+                  <div className="flex items-center gap-3 border-b border-white/10 pb-3">
+                    <data.icon className="w-6 h-6 text-white" />
+                    <h3 className="text-xl font-bold text-white">{data.platformName} Details</h3>
+                  </div>
+
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Summary */}
+                    <div className="rounded-3xl bg-white/[0.03] border border-white/10 p-7 flex flex-col gap-6">
+                      <div className="space-y-3">
+                        {[
+                          { k: "Followers", v: formatFollowers(data.followers) },
+                          { k: "Category", v: CATEGORY_LABELS[data.category] || data.category },
+                          { k: "Creator Type", v: data.creatorType },
+                          { k: "Follower Tier", v: data.tierLabel },
+                        ].map(({ k, v }) => (
+                          <div key={k} className="flex items-center justify-between border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                            <span className="text-sm text-white/50 font-medium">{k}</span>
+                            <span className="text-sm font-bold text-white">{v}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="rounded-2xl bg-white/[0.03] border border-white/10 p-4">
+                        <p className="text-xs text-white/40 uppercase tracking-widest font-semibold mb-2">Collab Type</p>
+                        <p className="text-sm font-bold text-white">{data.collabType}</p>
+                      </div>
+                    </div>
+
+                    {/* Pricing / Formats */}
+                    <div className="rounded-3xl bg-white/[0.03] border border-white/10 p-7">
+                      <p className="text-xs text-white/40 uppercase tracking-widest font-semibold mb-5">Estimated Pricing</p>
+                      <div className="space-y-0">
+                        <div className="flex justify-between pb-2 border-b border-white/10">
+                          <span className="text-xs font-bold uppercase tracking-widest text-white/30">Format</span>
+                          <span className="text-xs font-bold uppercase tracking-widest text-white/30">Price Range</span>
+                        </div>
+                        {(data.formats || []).map((f, i) => (
+                          <div key={i} className="flex justify-between items-center py-3.5 border-b border-white/5 last:border-0">
+                            <span className="text-sm text-white/70 font-medium">{f.format}</span>
+                            <span className="text-sm font-bold text-white">{f.range}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function InfluencerDirectoryPage() {
   const [influencers, setInfluencers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -157,6 +297,7 @@ export default function InfluencerDirectoryPage() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedInfluencer, setSelectedInfluencer] = useState(null);
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
@@ -372,7 +513,7 @@ export default function InfluencerDirectoryPage() {
         ) : filtered.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filtered.map((inf, i) => (
-              <InfluencerCard key={inf._id} inf={inf} index={i} />
+              <InfluencerCard key={inf._id} inf={inf} index={i} onClick={() => setSelectedInfluencer(inf)} />
             ))}
           </div>
         ) : (
@@ -389,6 +530,13 @@ export default function InfluencerDirectoryPage() {
           </motion.div>
         )}
       </section>
+
+      {/* Modal Overlay */}
+      <AnimatePresence>
+        {selectedInfluencer && (
+          <InfluencerModal inf={selectedInfluencer} onClose={() => setSelectedInfluencer(null)} />
+        )}
+      </AnimatePresence>
     </main>
   );
 }
