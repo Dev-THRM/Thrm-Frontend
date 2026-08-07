@@ -53,8 +53,9 @@ export default function ContactPage() {
   const handleChange = (e) => {
     const {id, value} = e.target;
     if(id === "phone") {
-      const phoneval = value.replace(/\D/g,"").slice(0,10);
-      setFormData({...formData, [id]: phoneval});
+      let clean = value.replace(/\D/g, "");
+      if (clean.length > 10 && clean.startsWith("91")) clean = clean.slice(2);
+      setFormData({...formData, [id]: clean.slice(0, 10)});
       return;
     };
     setFormData({...formData, [id]: value});

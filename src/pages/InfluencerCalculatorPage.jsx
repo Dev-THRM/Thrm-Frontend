@@ -22,35 +22,36 @@ import {
   Download,
 } from "lucide-react";
 import { toPng } from "html-to-image";
+import logo from "../assets/logo.png";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PRICING TABLES
 // ─────────────────────────────────────────────────────────────────────────────
 
 const INSTAGRAM_PRICING = [
-  { label: "0–1K",     type: "Growth Phase",    story: [0,0],           post: null,               reel: null              },
-  { label: "1K–5K",   type: "Nano Creator",     story: [200,500],       post: [500,1200],         reel: [1000,2000]       },
-  { label: "5K–10K",  type: "Growing Nano",     story: [500,800],       post: [1000,2000],        reel: [2000,4000]       },
-  { label: "10K–25K", type: "Micro",            story: [800,1500],      post: [2000,4000],        reel: [4000,8000]       },
-  { label: "25K–50K", type: "Mid Micro",        story: [1500,3000],     post: [4000,8000],        reel: [8000,15000]      },
-  { label: "50K–100K",type: "Upper Micro",      story: [3000,6000],     post: [8000,15000],       reel: [15000,30000]     },
-  { label: "100K–250K",type:"Macro",            story: [6000,10000],    post: [15000,30000],      reel: [30000,60000]     },
-  { label: "250K–500K",type:"Mid Macro",        story: [10000,20000],   post: [30000,60000],      reel: [60000,120000]    },
-  { label: "500K–1M", type: "Mega Creator",     story: [20000,40000],   post: [60000,120000],     reel: [120000,250000]   },
-  { label: "1M+",     type: "Premium Creator",  story: null,            post: null,               reel: null              },
+  { label: "0–1K",     type: "Growth Phase",    story: [0,0],           post: null,               reel: null,              adRights: [500,1000] },
+  { label: "1K–5K",   type: "Nano Creator",     story: [200,500],       post: [500,1200],         reel: [1000,2000],       adRights: [2000,3000] },
+  { label: "5K–10K",  type: "Growing Nano",     story: [500,800],       post: [1000,2000],        reel: [2000,4000],       adRights: [4000,7000] },
+  { label: "10K–25K", type: "Micro",            story: [800,1500],      post: [2000,4000],        reel: [4000,8000],       adRights: [8000,14000] },
+  { label: "25K–50K", type: "Mid Micro",        story: [1500,3000],     post: [4000,8000],        reel: [8000,15000],      adRights: [15000,19000] },
+  { label: "50K–100K",type: "Upper Micro",      story: [3000,6000],     post: [8000,15000],       reel: [15000,30000],     adRights: [20000,25000] },
+  { label: "100K–250K",type:"Macro",            story: [6000,10000],    post: [15000,30000],      reel: [30000,60000],     adRights: [28000,35000] },
+  { label: "250K–500K",type:"Mid Macro",        story: [10000,20000],   post: [30000,60000],      reel: [60000,120000],    adRights: [38000,45000] },
+  { label: "500K–1M", type: "Mega Creator",     story: [20000,40000],   post: [60000,120000],     reel: [120000,250000],   adRights: [50000,75000] },
+  { label: "1M+",     type: "Premium Creator",  story: null,            post: null,               reel: null,              adRights: null },
 ];
 
 const YOUTUBE_PRICING = [
-  { label: "0–1K",     type: "Growth Phase",    shorts: null,           video: null               },
-  { label: "1K–5K",   type: "Nano Creator",     shorts: [800,2000],     video: [2000,5000]        },
-  { label: "5K–10K",  type: "Growing Nano",     shorts: [2000,4000],    video: [4000,8000]        },
-  { label: "10K–25K", type: "Micro",            shorts: [4000,8000],    video: [8000,15000]       },
-  { label: "25K–50K", type: "Mid Micro",        shorts: [8000,15000],   video: [15000,30000]      },
-  { label: "50K–100K",type: "Upper Micro",      shorts: [15000,30000],  video: [30000,60000]      },
-  { label: "100K–250K",type:"Macro",            shorts: [30000,60000],  video: [60000,120000]     },
-  { label: "250K–500K",type:"Mid Macro",        shorts: [60000,120000], video: [120000,250000]    },
-  { label: "500K–1M", type: "Mega Creator",     shorts: [120000,250000],video: [250000,500000]    },
-  { label: "1M+",     type: "Premium Creator",  shorts: null,           video: null               },
+  { label: "0–1K",     type: "Growth Phase",    shorts: null,           video: null,               adRights: [500,1000] },
+  { label: "1K–5K",   type: "Nano Creator",     shorts: [800,2000],     video: [2000,5000],        adRights: [2000,3000] },
+  { label: "5K–10K",  type: "Growing Nano",     shorts: [2000,4000],    video: [4000,8000],        adRights: [4000,7000] },
+  { label: "10K–25K", type: "Micro",            shorts: [4000,8000],    video: [8000,15000],       adRights: [8000,14000] },
+  { label: "25K–50K", type: "Mid Micro",        shorts: [8000,15000],   video: [15000,30000],      adRights: [15000,19000] },
+  { label: "50K–100K",type: "Upper Micro",      shorts: [15000,30000],  video: [30000,60000],      adRights: [20000,25000] },
+  { label: "100K–250K",type:"Macro",            shorts: [30000,60000],  video: [60000,120000],     adRights: [28000,35000] },
+  { label: "250K–500K",type:"Mid Macro",        shorts: [60000,120000], video: [120000,250000],    adRights: [38000,45000] },
+  { label: "500K–1M", type: "Mega Creator",     shorts: [120000,250000],video: [250000,500000],    adRights: [50000,75000] },
+  { label: "1M+",     type: "Premium Creator",  shorts: null,           video: null,               adRights: null },
 ];
 
 const TIER_BOUNDARIES = [1000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
@@ -166,6 +167,7 @@ function calculate({ platform, followers, name, mobile, handle, category, profil
         { format: "Post / Carousel",    range: "Barter Only" },
         { format: "Reel",               range: "Barter Only" },
         { format: "Brand Package",      range: "Barter Only" },
+        { format: "Ad Rights (30 Days)", range: formatRange(applyMultipliers(tier.adRights, 1.0)) },
       ];
     } else if (tierIndex >= 9) {
       formats = [
@@ -173,11 +175,13 @@ function calculate({ platform, followers, name, mobile, handle, category, profil
         { format: "Post / Carousel",    range: "Custom Pricing" },
         { format: "Reel",               range: "Custom Pricing" },
         { format: "Brand Package",      range: "Custom Pricing" },
+        { format: "Ad Rights (30 Days)", range: "Custom Pricing" },
       ];
     } else {
       const story = applyMultipliers(tier.story, 1.0);
       const post  = applyMultipliers(tier.post,  1.0);
       const reel  = applyMultipliers(tier.reel,  1.0);
+      const adRights = applyMultipliers(tier.adRights, 1.0);
       const pkg   = post && reel
         ? [Math.round((post[0] + reel[0] + (story?.[0] || 0)) * 0.85), Math.round((post[1] + reel[1] + (story?.[1] || 0)) * 0.85)]
         : null;
@@ -187,6 +191,7 @@ function calculate({ platform, followers, name, mobile, handle, category, profil
         { format: "Post / Carousel",    range: formatRange(post)  },
         { format: "Reel",               range: formatRange(reel)  },
         { format: "Brand Package (Story + Post + Reel)", range: formatRange(pkg) },
+        { format: "Ad Rights (30 Days)", range: formatRange(adRights) },
       ];
     }
   } else {
@@ -197,19 +202,23 @@ function calculate({ platform, followers, name, mobile, handle, category, profil
       formats = [
         { format: "YouTube Shorts",     range: "Barter Only" },
         { format: "Dedicated Video",    range: "Barter Only" },
+        { format: "Ad Rights (30 Days)", range: formatRange(applyMultipliers(tier.adRights, 1.0)) },
       ];
     } else if (tierIndex >= 9) {
       formats = [
         { format: "YouTube Shorts",     range: "Custom Pricing" },
         { format: "Dedicated Video",    range: "Custom Pricing" },
+        { format: "Ad Rights (30 Days)", range: "Custom Pricing" },
       ];
     } else {
       const shorts = applyMultipliers(tier.shorts, 1.0);
       const video  = applyMultipliers(tier.video,  1.0);
+      const adRights = applyMultipliers(tier.adRights, 1.0);
 
       formats = [
         { format: "YouTube Shorts",     range: formatRange(shorts) },
         { format: "Dedicated Video",    range: formatRange(video)  },
+        { format: "Ad Rights (30 Days)", range: formatRange(adRights) },
       ];
     }
   }
@@ -368,7 +377,7 @@ function ResultCard({ result, onReset }) {
             <span className="text-xs font-bold tracking-widest uppercase text-violet-400">Your Creator Profile</span>
           </motion.div>
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-            Here's What You're Worth
+            Here Are Your Commercials
           </h2>
         </div>
         <div className="flex items-center gap-3 self-start md:self-auto">
@@ -503,7 +512,11 @@ function CalculatorForm({ onResult }) {
   function validate() {
     const e = {};
     if (!name.trim()) e.name = "Enter your name";
-    if (!mobile.trim()) e.mobile = "Enter your mobile number";
+    if (!mobile.trim()) {
+      e.mobile = "Enter your mobile number";
+    } else if (mobile.replace(/\D/g, "").length !== 10) {
+      e.mobile = "Enter a valid 10-digit number";
+    }
     if (!handle.trim()) e.handle = "Enter your platform link";
     if (!followers || Number(followers) <= 0) e.followers = "Enter a valid follower count";
     if (!category) e.category = "Select a content category";
@@ -576,9 +589,14 @@ function CalculatorForm({ onResult }) {
             label="Mobile Number"
             icon={Phone}
             value={mobile}
-            onChange={setMobile}
+            onChange={(val) => {
+              let clean = val.replace(/\D/g, '');
+              if (clean.length > 10 && clean.startsWith("91")) clean = clean.slice(2);
+              setMobile(clean.slice(0, 10));
+            }}
             placeholder="e.g. 9876543210"
             type="tel"
+            hint="Enter the same number anytime to update your stats in the directory"
           />
           {errors.mobile && <p className="text-xs text-red-400 pl-1 mt-1">{errors.mobile}</p>}
         </div>
@@ -698,7 +716,7 @@ function CalculatorForm({ onResult }) {
         className="group flex items-center justify-center gap-3 w-full rounded-2xl bg-white px-8 py-5 font-bold text-black text-base transition-all hover:bg-gray-100 shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
       >
         <Calculator className="w-5 h-5" />
-        Calculate My Worth
+        Calculate My Commercials
         <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
       </motion.button>
     </motion.form>
@@ -753,7 +771,7 @@ export default function InfluencerCalculatorPage() {
           </div>
 
           <h1 className="text-[clamp(2.8rem,6vw,5rem)] font-black tracking-tighter leading-[1.05] mb-6">
-            Know Your Worth.{" "}
+            Know Your Commercials.{" "}
             <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-violet-300 to-blue-400">
               Charge What You Deserve.
@@ -789,7 +807,7 @@ export default function InfluencerCalculatorPage() {
             {[
               { step: "01", title: "Enter Your Stats", desc: "Platform, followers, avg likes, comments, content category & location." },
               { step: "02", title: "We Calculate",     desc: "Our formula applies your engagement rate against industry-standard base rates per follower tier." },
-              { step: "03", title: "Know Your Worth",  desc: "Get a full pricing breakdown per content format with a confidence score." },
+              { step: "03", title: "Know Your Commercials",  desc: "Get a full pricing breakdown per content format with a confidence score." },
             ].map(({ step, title, desc }) => (
               <div key={step} className="flex flex-col items-center gap-3">
                 <span className="text-4xl font-black text-white/10">{step}</span>
@@ -812,14 +830,17 @@ export default function InfluencerCalculatorPage() {
             viewport={{ once: true }}
             className="rounded-[2.5rem] bg-gradient-to-br from-white/[0.05] to-white/[0.01] border border-white/10 backdrop-blur-xl p-8 md:p-12 shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
           >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/15 border border-violet-500/20">
-                <Calculator className="w-5 h-5 text-violet-400" />
+            <div className="flex items-start md:items-center justify-between mb-8 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/15 border border-violet-500/20">
+                  <Calculator className="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <h2 className="text-base md:text-lg font-black text-white leading-tight">THRM Influencer Commercial Calculator</h2>
+                  <p className="text-xs text-white/40 mt-1 md:mt-0">Fill in all fields for the most accurate result</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-lg font-black text-white">THRM Rate Calculator</h2>
-                <p className="text-xs text-white/40">Fill in all fields for the most accurate result</p>
-              </div>
+              <img src={logo} alt="THRM" className="h-14 md:h-16 w-auto object-contain opacity-90 hidden sm:block" />
             </div>
 
             <AnimatePresence mode="wait">
@@ -836,7 +857,7 @@ export default function InfluencerCalculatorPage() {
       </section>
 
       {/* ──────── ENGAGEMENT RATE GUIDE ──────── */}
-      <section className="relative z-10 py-20 px-6 lg:px-14 border-t border-white/5 bg-black/20">
+      {/* <section className="relative z-10 py-20 px-6 lg:px-14 border-t border-white/5 bg-black/20">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-2xl lg:text-4xl font-black tracking-tight mb-3">Understanding Engagement Rate</h2>
@@ -867,7 +888,7 @@ export default function InfluencerCalculatorPage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ──────── CTA BAND ──────── */}
       <section className="relative z-10 py-20 px-6 lg:px-14">

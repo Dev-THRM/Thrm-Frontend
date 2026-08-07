@@ -53,10 +53,20 @@ const navData = [
       { name: "Our Branding", path: "/about/branding", icon: PenBox },
     ]
   },
+  {
+    name: "Influencer Marketing",
+    path: "#",
+    isMegaMenu: false,
+    menuWidth: "w-[300px]",
+    subItems: [
+      { name: "For Brands", path: "/influencers", icon: Users, desc: "Discover top creators." },
+      { name: "For Influencers", path: "/influencer-calculator", icon: Calculator, desc: "Calculate your market value." }
+    ]
+  },
   { name: "Blogs", path: "/blogs" },
   { name: "Founder's Forum", path: "/founders" },
   { name: "Careers", path: "/careers" },
-  // { name: "Contact", path: "/contact" },
+  { name: "Contact", path: "/contact", isMobileOnly: true },
 ];
 
 export default function Navbar() {
@@ -125,6 +135,7 @@ export default function Navbar() {
               </div>)}
 
               {navData.map((item) => {
+                if (item.isMobileOnly) return null;
                 const isActive = currentPath === item.path || currentPath.startsWith(item.path + "/");
 
                 return (
