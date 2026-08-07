@@ -27,6 +27,8 @@ import SocialMediaPage from "./pages/SocialMediaPage.jsx";
 import SeoPage from "./pages/SeoPage.jsx";
 import WebDevPage from "./pages/WebDevPage.jsx";
 import InfluencerPage from "./pages/InfluencerPage.jsx";
+import InfluencerCalculatorPage from "./pages/InfluencerCalculatorPage.jsx";
+import InfluencerDirectoryPage from "./pages/InfluencerDirectoryPage.jsx";
 import BrandingPage from "./pages/BrandingPage.jsx";
 import ContentPage from "./pages/ContentPage.jsx";
 import OurBrandingPage from "./pages/OurBrandingPage.jsx";
@@ -80,6 +82,8 @@ export default function App() {
           <Route path="/services/seo" element={<SeoPage />} />
           <Route path="/services/web" element={<WebDevPage />} />
           <Route path="/services/influencer" element={<InfluencerPage />} />
+          <Route path="/influencer-calculator" element={<InfluencerCalculatorPage />} />
+          <Route path="/influencers" element={<InfluencerDirectoryPage />} />
           <Route path="/services/branding" element={<BrandingPage />} />
           <Route path="/services/content" element={<ContentPage />} />
 

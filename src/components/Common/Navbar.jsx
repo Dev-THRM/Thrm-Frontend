@@ -14,7 +14,8 @@ import {
   Briefcase,
   Users,
   Trophy,
-  PenBox
+  PenBox,
+  Calculator
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/logo.png"
@@ -29,7 +30,7 @@ const navData = [
     name: "Services",
     path: "/services",
     isMegaMenu: true,
-    menuWidth: "w-[750px]",
+    menuWidth: "w-[800px]",
     subItems: [
       { name: "Social Media Marketing", path: "/services/social", desc: "Using Social Platforms To Promote Brands, Engage Users, And Drive Sales.", icon: Share2 },
       { name: "SEO", path: "/services/seo", desc: "Optimizing Websites To Rank Higher On Search Engines And Increase Organic Traffic.", icon: Search },
@@ -37,6 +38,7 @@ const navData = [
       { name: "Influencer Marketing", path: "/services/influencer", desc: "Partnering With Influencers To Promote Brands And Reach Target Audiences.", icon: Star },
       { name: "Branding", path: "/services/branding", desc: "Building A Unique Identity, Reputation, And Emotional Connection With Customers.", icon: Target },
       { name: "Content Marketing", path: "/services/content", desc: "Creating And Sharing Valuable Content To Attract And Engage Audiences.", icon: PenTool },
+      { name: "Rate Calculator", path: "/influencer-calculator", desc: "Find Out How Much You Should Charge Brands As An Influencer — Instantly.", icon: Calculator },
     ]
   },
   {
@@ -51,10 +53,20 @@ const navData = [
       { name: "Our Branding", path: "/about/branding", icon: PenBox },
     ]
   },
+  {
+    name: "Influencer Marketing",
+    path: "#",
+    isMegaMenu: false,
+    menuWidth: "w-[300px]",
+    subItems: [
+      { name: "For Brands", path: "/influencers", icon: Users, desc: "Discover top creators." },
+      { name: "For Influencers", path: "/influencer-calculator", icon: Calculator, desc: "Calculate your market value." }
+    ]
+  },
   { name: "Blogs", path: "/blogs" },
   { name: "Founder's Forum", path: "/founders" },
   { name: "Careers", path: "/careers" },
-  // { name: "Contact", path: "/contact" },
+  { name: "Contact", path: "/contact", isMobileOnly: true },
 ];
 
 export default function Navbar() {
@@ -123,6 +135,7 @@ export default function Navbar() {
               </div>)}
 
               {navData.map((item) => {
+                if (item.isMobileOnly) return null;
                 const isActive = currentPath === item.path || currentPath.startsWith(item.path + "/");
 
                 return (
