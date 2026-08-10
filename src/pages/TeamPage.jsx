@@ -5,7 +5,7 @@ import Gunjan from "../assets/TeamImages/Founder.jpeg";
 import Mahek from "../assets/TeamImages/mahek.jpg";
 import Sunny from "../assets/TeamImages/sunny.png";
 import Omkar from "../assets/TeamImages/omkar.JPG";
-import Kaustubh from "../assets/TeamImages/kaustubh.jpg";
+// import Kaustubh from "../assets/TeamImages/kaustubh.jpg";
 import Sagar from "../assets/TeamImages/Sagar.JPG";
 import Hanisha from "../assets/TeamImages/hanisha.JPG";
 import Manmeet from "../assets/TeamImages/manmeet.JPG";
@@ -61,19 +61,19 @@ const teamMembers = [
   },
   {
     id: 6,
-    name: "Ms. Mahek Bhagwani",
-    designation: "Deputy Director Social Department",
-    description:
-      "Mahek Bhagwani, our Digital Marketing Associate at THRM Digital Marketing Agency, is known for her strategic thinking and creative flair. She plays an integral role in planning and executing campaigns that enhance brand awareness and engagement across digital platforms. With a strong understanding of social media trends, content strategy, and audience behavior, Mahek ensures that every campaign resonates with its target audience. Her curiosity and commitment to staying updated with the latest marketing techniques make her a valuable contributor to THRM’s growing success. Focused, driven, and passionate about delivering results, Mahek helps THRM craft digital experiences that not only attract attention but also build meaningful brand connections.",
-    image: Mahek,
-  },
-  {
-    id: 7,
     name: "Ms. Diya Valecha",
     designation: "Deputy Director Content Department",
     description:
       "Diya Valecha, our Deputy Director of the Content Team at THRM Digital Marketing Agency, plays a pivotal role in shaping compelling content that helps brands connect with their audiences. With a keen eye for detail and a passion for creative storytelling, she supports the planning, development, and execution of high-quality content across websites, social media platforms, blogs, and digital marketing campaigns. Working closely with the Content Manager, Diya helps coordinate content strategies, maintain editorial standards, and ensure every piece of content aligns with client objectives and brand identity. Her ability to combine creativity with strategic thinking enables her to craft engaging, impactful content that builds brand authority and drives meaningful audience engagement. Dedicated to consistency, collaboration, and continuous innovation, Diya contributes significantly to the success of THRM's content initiatives, helping transform ideas into powerful stories that leave a lasting impression.",
     image: Diya,
+  },
+    {
+    id: 7,
+    name: "Mr. Vedant Patil",
+    designation: "Brand Outreach Executive",
+    description:
+      "Vedant Patil, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. He is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Vedant effectively understands client requirements and connects them with services that best support their business goals. His proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Vedant contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
+    image: Vedant, // Vedant,
   },
   {
     id: 8,
@@ -85,14 +85,6 @@ const teamMembers = [
   },
   {
     id: 9,
-    name: "Mr. Kaustubh Tambade",
-    designation: "Creative Director",
-    description:
-      "Kaustubh Tambade, our Creative Director at THRM Digital Marketing Agency, is responsible for transforming ideas into compelling visual stories. He plays a key role in planning and executing shoots based on content strategies developed by the content team, ensuring that every project aligns with the client's objectives and brand identity. With a strong eye for detail, creativity, and production planning, Kaustubh oversees the entire creative process from concept development to on-site execution. His ability to coordinate teams, manage shoot schedules, and bring creative concepts to life helps deliver engaging content that captures audience attention. Passionate about innovation and visual excellence, Kaustubh consistently ensures that every campaign reflects the highest standards of quality and creativity, contributing significantly to THRM's success and reputation.",
-    image: Kaustubh,
-  },
-  {
-    id: 10,
     name: "Mr. Sagar Bhuwad",
     designation: "Creative Designer",
     description:
@@ -101,7 +93,7 @@ const teamMembers = [
   },
 
   {
-    id: 11,
+    id: 10,
     name: "Ms. Hanisha Murjani",
     designation: "Social Media Manager",
     description:
@@ -109,24 +101,15 @@ const teamMembers = [
     image: Hanisha, // Hanisha,
   },
   {
-    id: 12,
+    id: 11,
     name: "Ms. Manmeet Kaur",
     designation: "Brand Outreach Executive",
     description:
       "Manmeet Kaur, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. She is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Manmeet effectively understands client requirements and connects them with services that best support their business goals. Her proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Manmeet contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
     image: Manmeet, // Manmeet,
   },
-
   {
-    id: 13,
-    name: "Mr. Vedant Patil",
-    designation: "Brand Outreach Executive",
-    description:
-      "Vedant Patil, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. He is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Vedant effectively understands client requirements and connects them with services that best support their business goals. His proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Vedant contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
-    image: Vedant, // Vedant,
-  },
-  {
-    id: 14,
+    id: 12,
     name: "Mr. Sahil Bijlani",
     designation: "Full Stack Developer",
     description: "Sahil Bijlani is a passionate and results-driven Full Stack Developer with a strong foundation in software engineering and modern web technologies. He specializes in building scalable, secure, and user-centric web applications, with hands-on experience across both frontend and backend development. His technical expertise includes React.js, Next.js, Node.js, Express.js, JavaScript, Java, PHP, MySQL, PostgreSQL, HTML, CSS, Bootstrap, and RESTful APIs, enabling him to deliver end-to-end solutions from design to deployment. Through internships and real-world projects, Sahil has developed applications involving authentication, database management, API integration, and responsive user interfaces. He enjoys solving complex problems, writing clean and maintainable code, and building applications that are both efficient and intuitive. His projects demonstrate a strong understanding of software architecture, database design, and modern development practices.",
