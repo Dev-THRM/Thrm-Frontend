@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Users, ArrowRight, Compass } from "lucide-react";
 import Gunjan from "../assets/TeamImages/Founder.jpeg";
-import Mahek from "../assets/TeamImages/mahek.jpg";
 import Sunny from "../assets/TeamImages/sunny.png";
 import Omkar from "../assets/TeamImages/omkar.JPG";
 // import Kaustubh from "../assets/TeamImages/kaustubh.jpg";
@@ -15,6 +14,8 @@ import Sneha from "../assets/TeamImages/sneha.JPG"
 import Manilal from "../assets/TeamImages/manilal.jpeg"
 import Sahil from "../assets/TeamImages/sahil.jpg"
 import Diya from "../assets/TeamImages/diya.jpg"
+import Prapti from "../assets/TeamImages/prapti.png"
+import Kalpana from "../assets/TeamImages/kalpana.jpg"
 
 // --- TEAM DATA (All descriptions restored) ---
 const teamMembers = [
@@ -57,7 +58,7 @@ const teamMembers = [
     designation: "Deputy Director Creative Department",
     description:
       "Omkar, our Creative Video Editor at THRM Digital Marketing Agency, is the creative mind who turns ideas into cinematic experiences. With a sharp eye for detail and a natural flair for storytelling, he transforms raw footage into compelling visual narratives that engage audiences and strengthen brand identity. His expertise lies in blending crisp editing, smooth transitions, and impactful sound design to create videos that don’t just inform, but inspire. From dynamic social media reels to high-end promotional campaigns, Omkar ensures each project reflects both creativity and strategy. His strong command over editing tools, along with his ability to align visuals with brand messaging, makes him a key driver of THRM’s content success. Beyond technical skill, Omkar brings passion, patience, and originality to every frame—turning ordinary visuals into extraordinary stories that leave a lasting impression.",
-    image: Omkar, // Omkar,
+    image: Omkar, 
   },
   {
     id: 6,
@@ -67,16 +68,24 @@ const teamMembers = [
       "Diya Valecha, our Deputy Director of the Content Team at THRM Digital Marketing Agency, plays a pivotal role in shaping compelling content that helps brands connect with their audiences. With a keen eye for detail and a passion for creative storytelling, she supports the planning, development, and execution of high-quality content across websites, social media platforms, blogs, and digital marketing campaigns. Working closely with the Content Manager, Diya helps coordinate content strategies, maintain editorial standards, and ensure every piece of content aligns with client objectives and brand identity. Her ability to combine creativity with strategic thinking enables her to craft engaging, impactful content that builds brand authority and drives meaningful audience engagement. Dedicated to consistency, collaboration, and continuous innovation, Diya contributes significantly to the success of THRM's content initiatives, helping transform ideas into powerful stories that leave a lasting impression.",
     image: Diya,
   },
-    {
+  {
     id: 7,
     name: "Mr. Vedant Patil",
-    designation: "Brand Outreach Executive",
+    designation: "Content Creator",
     description:
-      "Vedant Patil, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. He is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Vedant effectively understands client requirements and connects them with services that best support their business goals. His proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Vedant contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
-    image: Vedant, // Vedant,
+      "Vedant Patil, a Content Creator at THRM Digital Marketing Agency, plays an important role in developing engaging and impactful content that helps brands communicate effectively with their audiences. With a creative mindset and a strong understanding of digital content, he contributes to the ideation, creation, and execution of content across social media, websites, blogs, and digital marketing campaigns. Vedant works closely with the content and marketing teams to develop ideas that align with client objectives, brand identity, and current digital trends. His ability to combine creativity, research, and clear communication enables him to create content that is both informative and engaging. Dedicated to delivering high-quality work and exploring new creative approaches, Vedant contributes to THRM’s content initiatives by transforming ideas into meaningful content that captures attention and strengthens brand presence.",
+    image: Vedant, 
   },
   {
     id: 8,
+    name: "Ms. Prapti Jagtap",
+    designation: "Content Creator",
+    description:
+      "Prapti Jagtap, a Content Creator and Model at THRM Digital Marketing Agency, brings creativity, confidence, and a strong visual sense to the content created for both THRM and its clients. She contributes to developing engaging social media content, helping create ideas, concepts, and on-camera content that connect brands with their audiences. Her experience in modeling adds a strong understanding of presentation, styling, expressions, and visual storytelling, allowing her to bring a distinctive presence to brand content. Prapti works closely with the creative team to plan and produce content that reflects each brand’s identity while staying relevant to current social media trends. Her creativity, adaptability, and confidence in front of the camera enable her to create authentic and engaging content that captures attention and strengthens the online presence of both THRM and its clients.",
+    image: Prapti, 
+  },
+  {
+    id: 9,
     name: "Ms. Sneha Dewani",
     designation: "Senior Full Stack Developer",
     description:
@@ -84,36 +93,43 @@ const teamMembers = [
     image: Sneha,
   },
   {
-    id: 9,
-    name: "Mr. Sagar Bhuwad",
-    designation: "Creative Designer",
-    description:
-      "Sagar Bhuwad, our Creative Designer at THRM Digital Marketing Agency, is responsible for crafting visually engaging designs that strengthen brand identity and communication. As a skilled graphic designer, he creates compelling creatives for digital marketing campaigns, social media platforms, advertisements, and branding materials. With a strong understanding of design principles, color theory, and visual storytelling, Sagar transforms ideas into impactful designs that capture attention and leave a lasting impression. His creativity, attention to detail, and commitment to excellence help ensure that every visual asset aligns with client objectives and maintains the highest standards of quality. Through his innovative approach and passion for design, Sagar plays a key role in enhancing the visual presence and success of THRM's clients.",
-    image: Sagar, // Sagar,
-  },
-
-  {
     id: 10,
-    name: "Ms. Hanisha Murjani",
-    designation: "Social Media Manager",
-    description:
-      "Hanisha Murjani, our Social Media Manager at THRM Digital Marketing Agency, plays a vital role in building and maintaining a strong digital presence for our clients. She is responsible for managing social media accounts across various platforms, ensuring consistent brand communication and audience engagement. With a deep understanding of social media trends, content planning, and community management, Hanisha develops strategies that help clients grow their online reach and strengthen their connection with their target audience. Her proactive approach to monitoring performance, responding to audience interactions, and optimizing content ensures that every social media campaign delivers meaningful results. Dedicated, creative, and detail-oriented, Hanisha contributes significantly to enhancing brand visibility and driving client success in the digital space.",
-    image: Hanisha, // Hanisha,
-  },
-  {
-    id: 11,
-    name: "Ms. Manmeet Kaur",
-    designation: "Brand Outreach Executive",
-    description:
-      "Manmeet Kaur, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. She is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Manmeet effectively understands client requirements and connects them with services that best support their business goals. Her proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Manmeet contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
-    image: Manmeet, // Manmeet,
-  },
-  {
-    id: 12,
     name: "Mr. Sahil Bijlani",
     designation: "Full Stack Developer",
     description: "Sahil Bijlani is a passionate and results-driven Full Stack Developer with a strong foundation in software engineering and modern web technologies. He specializes in building scalable, secure, and user-centric web applications, with hands-on experience across both frontend and backend development. His technical expertise includes React.js, Next.js, Node.js, Express.js, JavaScript, Java, PHP, MySQL, PostgreSQL, HTML, CSS, Bootstrap, and RESTful APIs, enabling him to deliver end-to-end solutions from design to deployment. Through internships and real-world projects, Sahil has developed applications involving authentication, database management, API integration, and responsive user interfaces. He enjoys solving complex problems, writing clean and maintainable code, and building applications that are both efficient and intuitive. His projects demonstrate a strong understanding of software architecture, database design, and modern development practices.",
     image: Sahil
+  },
+  {
+    id: 11,
+    name: "Mr. Sagar Bhuwad",
+    designation: "Creative Designer Manager",
+    description:
+      "Sagar Bhuwad, our Creative Designer at THRM Digital Marketing Agency, is responsible for crafting visually engaging designs that strengthen brand identity and communication. As a skilled graphic designer, he creates compelling creatives for digital marketing campaigns, social media platforms, advertisements, and branding materials. With a strong understanding of design principles, color theory, and visual storytelling, Sagar transforms ideas into impactful designs that capture attention and leave a lasting impression. His creativity, attention to detail, and commitment to excellence help ensure that every visual asset aligns with client objectives and maintains the highest standards of quality. Through his innovative approach and passion for design, Sagar plays a key role in enhancing the visual presence and success of THRM's clients.",
+    image: Sagar, 
+  },
+  {
+    id: 12,
+    name: "Ms. Hanisha Murjani",
+    designation: "Social Media Manager",
+    description:
+      "Hanisha Murjani, our Social Media Manager at THRM Digital Marketing Agency, plays a vital role in building and maintaining a strong digital presence for our clients. She is responsible for managing social media accounts across various platforms, ensuring consistent brand communication and audience engagement. With a deep understanding of social media trends, content planning, and community management, Hanisha develops strategies that help clients grow their online reach and strengthen their connection with their target audience. Her proactive approach to monitoring performance, responding to audience interactions, and optimizing content ensures that every social media campaign delivers meaningful results. Dedicated, creative, and detail-oriented, Hanisha contributes significantly to enhancing brand visibility and driving client success in the digital space.",
+    image: Hanisha, 
+  },
+  {
+    id: 13,
+    name: "Ms. Kalpana Singh",
+    designation: "Social Media Manager",
+    description:
+      "Kalpana Singh, our Social Media Manager at THRM Digital Marketing Agency, plays an important role in developing and managing social media strategies that strengthen our clients’ online presence. She oversees social media accounts across various platforms, ensuring consistent communication, engaging content, and meaningful audience interaction. With a strong understanding of social media trends, content planning, and audience behavior, Kalpana works closely with the creative team to develop strategies that align with each client’s brand identity and goals. Her ability to coordinate content, monitor social media performance, and adapt strategies based on audience engagement helps improve brand visibility and build stronger digital communities. Creative, organized, and proactive, Kalpana contributes to the success of THRM’s social media initiatives by helping brands connect with their audiences and establish a consistent and impactful online presence.",
+    image: Kalpana, 
+  },
+  {
+    id: 14,
+    name: "Ms. Manmeet Kaur",
+    designation: "Brand Outreach Executive",
+    description:
+      "Manmeet Kaur, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. She is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Manmeet effectively understands client requirements and connects them with services that best support their business goals. Her proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Manmeet contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
+    image: Manmeet, 
   }
 ];
 
