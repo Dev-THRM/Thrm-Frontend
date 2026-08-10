@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { Mic2, ArrowRight, Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, getImageUrl } from "../config";
 
 // ── GLOBE SECTION ─────────────────────────────────────────────────────────────
 //
@@ -73,7 +73,7 @@ function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFon
           {/* Photo */}
           <div className="relative overflow-hidden" style={{ height: cardH - infoH }}>
             <img
-              src={founder.imageUrl}
+              src={getImageUrl(founder.imageUrl)}
               alt={founder.name}
               loading="lazy"
               className="w-full h-full object-cover object-top brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
@@ -125,7 +125,7 @@ function MobileGlobeCard({ founder, delay }) {
           </div>
           {/* Photo */}
           <img
-            src={founder.imageUrl}
+            src={getImageUrl(founder.imageUrl)}
             alt={founder.name}
             loading="lazy"
             className="w-full h-full object-cover object-top brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
@@ -393,7 +393,7 @@ function FounderCard({ founder, index }) {
           {/* Photo */}
           <div className="relative aspect-[5/5] w-full overflow-hidden bg-white/5">
             <img
-              src={founder.imageUrl}
+              src={getImageUrl(founder.imageUrl)}
               alt={founder.name}
               loading="lazy"
               className="w-full h-full object-cover object-top brightness-90 transition-all duration-700 group-hover:scale-105 group-hover:brightness-100"

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { PenTool, ArrowRight, Calendar } from "lucide-react";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, getImageUrl } from "../config";
 
 export default function BlogsPage() {
   const [blogs, setBlogs] = useState([]);
@@ -62,7 +62,7 @@ export default function BlogsPage() {
                 className="group flex flex-col bg-white/[0.02] border border-white/10 rounded-[2rem] overflow-hidden hover:bg-white/[0.05] transition-all duration-300"
               >
                 <Link to={`/blogs/${blog._id}`} className="aspect-[16/10] overflow-hidden relative block">
-                  <img src={blog.imageUrl} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={getImageUrl(blog.imageUrl)} alt={blog.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </Link>
                 <div className="p-8 flex flex-col flex-1">
                   <div className="flex items-center gap-2 text-white/40 text-xs font-bold uppercase tracking-widest mb-4">

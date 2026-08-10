@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowLeft, Calendar, User } from "lucide-react";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, getImageUrl } from "../config";
 
 export default function SingleBlogPage() {
   const { id } = useParams();
@@ -97,7 +97,7 @@ export default function SingleBlogPage() {
         <div className="aspect-[16/9] rounded-[2rem] overflow-hidden mb-16 border border-white/10 shadow-2xl relative group">
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 pointer-events-none" />
           <img 
-            src={blog.imageUrl} 
+            src={getImageUrl(blog.imageUrl)} 
             alt={blog.title} 
             className="w-full h-full object-cover filter brightness-90 transition-transform duration-700 group-hover:scale-105" 
           />

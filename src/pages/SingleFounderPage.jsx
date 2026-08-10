@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "framer-motion";
 import { ArrowLeft, ArrowRight, Mic2, Quote, ExternalLink, Play } from "lucide-react";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, getImageUrl } from "../config";
 
 // ── Inline brand SVGs ────────────────────────────────────────────────────────
 const InstagramIcon = ({ className }) => (
@@ -234,7 +234,7 @@ export default function SingleFounderPage() {
           >
             <div className="relative aspect-[3/4] w-full max-w-[480px] mx-auto overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 shadow-2xl">
               <img
-                src={founder.imageUrl}
+                src={getImageUrl(founder.imageUrl)}
                 alt={founder.name}
                 className="w-full h-full object-cover object-top"
               />
