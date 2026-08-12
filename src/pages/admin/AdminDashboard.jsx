@@ -16,7 +16,8 @@ import {
   ChevronDown,
   MapPin,
   Clock,
-  PenIcon
+  PenIcon,
+  Users
 } from "lucide-react";
 import { useAuth } from "../../context/RouteContext.jsx"; // Assuming this is the correct path from earlier
 import { API_BASE_URL } from "../../config";
@@ -135,6 +136,24 @@ export const AdminDashboard = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // ------------------ influencers ------------------
+  const [pendingInfluencers, setPendingInfluencers] = useState(0);
+
+  useEffect(() => {
+    const fetchPendingInfluencers = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/influencers/pending`, {
+          credentials: "include"
+        });
+        const result = await response.json();
+        if (result.success) setPendingInfluencers(result.influencers?.length || 0);
+      } catch (err) {
+        console.error("Error fetching pending influencers:", err);
+      }
+    };
+    fetchPendingInfluencers();
+  }, []);
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -436,6 +455,17 @@ export const AdminDashboard = () => {
               className="flex items-center gap-2 bg-white/5 border border-white/20 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition-all"
             >
               <Plus className="w-5 h-5" /> Add Career Opening
+            </Link>
+            <Link
+              to="/admin/influencers"
+              className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-400 px-6 py-3 rounded-xl font-bold hover:bg-amber-500/20 transition-all relative"
+            >
+              <Users className="w-5 h-5" /> Influencer Approvals
+              {pendingInfluencers > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-black w-6 h-6 flex items-center justify-center rounded-full shadow-[0_0_10px_rgba(239,68,68,0.5)]">
+                  {pendingInfluencers}
+                </span>
+              )}
             </Link>
           </div>
         </div>

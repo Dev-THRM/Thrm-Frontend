@@ -19,6 +19,7 @@ import AdminBlogs from "./pages/admin/AdminBlogs.jsx";
 import AdminFounders from "./pages/admin/AdminFounders.jsx";
 import AdminEditFounder from "./pages/admin/AdminEditFounder.jsx";
 import AdminCareers from "./pages/admin/AdminCareers.jsx";
+import { AdminInfluencers } from "./pages/admin/AdminInfluencers.jsx";
 import BlogsPage from "./pages/BlogsPage.jsx";
 import CareersPage from "./pages/CareersPage.jsx";
 import SingleBlogPage from "./pages/SingleBlogPage.jsx";
@@ -99,6 +100,7 @@ export default function App() {
             <Route path="/admin/founders" element={<AdminFounders />} />
             <Route path="/admin/founders/edit/:id" element={<AdminEditFounder />} />
             <Route path="/admin/careers" element={<AdminCareers />} />
+            <Route path="/admin/influencers" element={<AdminInfluencers />} />
           </Route>
 
           {/* 404 Catch-All */}
