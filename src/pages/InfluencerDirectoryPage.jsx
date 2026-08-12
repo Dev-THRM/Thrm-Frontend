@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, getImageUrl } from "../config";
 import {
   Users,
   Search,
@@ -85,7 +85,7 @@ function InfluencerCard({ inf, index, onClick }) {
         {inf.profileImage && (
           <>
             <img
-              src={inf.profileImage}
+              src={getImageUrl(inf.profileImage)}
               alt={inf.name}
               onError={(e) => {
                 e.currentTarget.onerror = null;
@@ -284,7 +284,7 @@ Description: ${formData.description}
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-10">
             <div className="w-32 h-32 md:w-40 md:h-40 shrink-0 rounded-3xl overflow-hidden border border-white/20 relative shadow-2xl">
               <img
-                src={inf.profileImage || fallbackAvatarUrl}
+                src={inf.profileImage ? getImageUrl(inf.profileImage) : fallbackAvatarUrl}
                 alt={inf.name}
                 className="w-full h-full object-cover object-center"
                 onError={(e) => { e.currentTarget.src = fallbackAvatarUrl; }}
@@ -445,7 +445,7 @@ export default function InfluencerDirectoryPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activePlatform, setActivePlatform] = useState("all");
   const [activeCategory, setActiveCategory] = useState("all");
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("oldest");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedInfluencer, setSelectedInfluencer] = useState(null);
 
@@ -488,6 +488,7 @@ export default function InfluencerDirectoryPage() {
       return matchSearch && matchPlatform && matchCategory;
     })
     .sort((a, b) => {
+      if (sortBy === "oldest") return new Date(a.createdAt) - new Date(b.createdAt);
       if (sortBy === "newest") return new Date(b.createdAt) - new Date(a.createdAt);
       const aF = Math.max(a.instagram?.followers || 0, a.youtube?.followers || 0);
       const bF = Math.max(b.instagram?.followers || 0, b.youtube?.followers || 0);
@@ -584,6 +585,7 @@ export default function InfluencerDirectoryPage() {
                 onChange={(e) => setSortBy(e.target.value)}
                 className="appearance-none bg-white/5 border border-white/10 rounded-2xl pl-5 pr-10 py-3 text-white text-sm font-semibold focus:outline-none cursor-pointer"
               >
+                <option value="oldest" className="bg-[#0b1020]">First Registered</option>
                 <option value="newest" className="bg-[#0b1020]">Newest First</option>
                 <option value="followers_desc" className="bg-[#0b1020]">Most Followers</option>
                 <option value="followers_asc" className="bg-[#0b1020]">Least Followers</option>
