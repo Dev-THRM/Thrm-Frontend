@@ -19,30 +19,30 @@ import { API_BASE_URL, getImageUrl } from "../config";
 function getCardSize(count) {
   if (count <= 4) return { cardW: 240, cardH: 320, globeD: 430, gap: 28, infoH: 64, badgeFontSize: "0.65rem", nameFontSize: "0.82rem", titleFontSize: "0.65rem" };
   if (count <= 6) return { cardW: 200, cardH: 266, globeD: 415, gap: 24, infoH: 56, badgeFontSize: "0.6rem",  nameFontSize: "0.74rem", titleFontSize: "0.6rem"  };
-  return           { cardW: 170, cardH: 226, globeD: 400, gap: 20, infoH: 50, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
+  if (count <= 8) return { cardW: 175, cardH: 230, globeD: 390, gap: 20, infoH: 50, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
+  return           { cardW: 165, cardH: 220, globeD: 360, gap: 18, infoH: 48, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
 }
 
-// How the cards are distributed for up to 8 founders:
-//   slots[i] = { zone: "top"|"left"|"right"|"bottom", slot: 0|1 }
-// For a given count we pick the first `count` entries.
-// Layout stays consistent regardless of how many founders are added:
-//   1-2 founders  → top only
-//   3-4 founders  → top + sides
-//   5-6 founders  → top + sides + bottom
-//   7-8 founders  → top + sides (2 each) + bottom
+// Distribution for 10 founders in 3-2-2-3 format around the globe:
+//   TOP    : 3 cards (slots 0, 1, 2)
+//   LEFT   : 2 cards (slots 3, 4)
+//   RIGHT  : 2 cards (slots 5, 6)
+//   BOTTOM : 3 cards (slots 7, 8, 9)
 const SLOT_MAP = [
-  { zone: "top",    slot: 0 },   // founder 0
-  { zone: "top",    slot: 1 },   // founder 1
-  { zone: "left",   slot: 0 },   // founder 2
-  { zone: "right",  slot: 0 },   // founder 3
-  { zone: "bottom", slot: 0 },   // founder 4
-  { zone: "bottom", slot: 1 },   // founder 5
-  { zone: "left",   slot: 1 },   // founder 6
-  { zone: "right",  slot: 1 },   // founder 7
+  { zone: "top",    slot: 0 },   // founder 0 (EP 01)
+  { zone: "top",    slot: 1 },   // founder 1 (EP 02)
+  { zone: "top",    slot: 2 },   // founder 2 (EP 03)
+  { zone: "left",   slot: 0 },   // founder 3 (EP 04)
+  { zone: "left",   slot: 1 },   // founder 4 (EP 05)
+  { zone: "right",  slot: 0 },   // founder 5 (EP 06)
+  { zone: "right",  slot: 1 },   // founder 6 (EP 07: Dr. Santosh Vhatkar)
+  { zone: "bottom", slot: 0 },   // founder 7 (EP 08: Dr. Rohan Badgujar)
+  { zone: "bottom", slot: 1 },   // founder 8 (EP 09: Dr. Asmita More-Bahirao)
+  { zone: "bottom", slot: 2 },   // founder 9 (EP 10: Dr. K Vasudeva Rao)
 ];
 
-// Skeleton always shows 6 cards using the first 6 slots
-const SKELETON_SLOTS = SLOT_MAP.slice(0, 6);
+// Skeleton shows 10 cards using all 10 slots
+const SKELETON_SLOTS = SLOT_MAP.slice(0, 10);
 
 // ── Mini founder card used inside GlobeSection ─────────────────────────────
 function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize }) {
@@ -76,6 +76,10 @@ function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFon
               src={getImageUrl(founder.imageUrl)}
               alt={founder.name}
               loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = `${API_BASE_URL}/uploads/thrm_founders/${founder.slug}.jpg`;
+              }}
               className="w-full h-full object-cover object-top brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/15 to-transparent" />
@@ -128,6 +132,10 @@ function MobileGlobeCard({ founder, delay }) {
             src={getImageUrl(founder.imageUrl)}
             alt={founder.name}
             loading="lazy"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = `${API_BASE_URL}/uploads/thrm_founders/${founder.slug}.jpg`;
+            }}
             className="w-full h-full object-cover object-top brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/15 to-transparent" />
@@ -429,21 +437,118 @@ function FounderCard({ founder, index }) {
   );
 }
 
+const DEFAULT_FOUNDERS = [
+  {
+    _id: "f1",
+    slug: "prasad-rane",
+    name: "Prasad Rane",
+    title: "Founder",
+    company: "Spabulous",
+    episode: 1,
+    imageUrl: "/images/founders/prasad-rane.jpeg"
+  },
+  {
+    _id: "f2",
+    slug: "yash-sanjay-bhavsar",
+    name: "Yash Sanjay Bhavsar",
+    title: "Founder",
+    company: "Kymps Perfume",
+    episode: 2,
+    imageUrl: "/images/founders/yash-sanjay-bhavsar.jpeg"
+  },
+  {
+    _id: "f3",
+    slug: "lakshya-pamnani",
+    name: "Lakshya Pamnani",
+    title: "Founder",
+    company: "Drona",
+    episode: 3,
+    imageUrl: "/images/founders/lakshay-pamnani.jpeg"
+  },
+  {
+    _id: "f4",
+    slug: "akshay-manoj-rahul",
+    name: "Akshay, Manoj, Rahul",
+    title: "Co-Founders",
+    company: "Fika Cafe",
+    episode: 4,
+    imageUrl: "/images/founders/akshay-manoj-rahul.jpg"
+  },
+  {
+    _id: "f5",
+    slug: "urvashi-chainani",
+    name: "Urvashi Chainani",
+    title: "Founder",
+    company: "Choc N Chuckle",
+    episode: 5,
+    imageUrl: "/images/founders/urvashi-chainani.jpg"
+  },
+  {
+    _id: "f6",
+    slug: "preeti-patil",
+    name: "Preeti Patil",
+    title: "Founder",
+    company: "Bookmark Cafe",
+    episode: 6,
+    imageUrl: "/images/founders/preeti-patil.png"
+  },
+  {
+    _id: "f7",
+    slug: "dr-santosh-vhatkar",
+    name: "Dr. Santosh Vhatkar",
+    title: "Director & Head of Critical Care",
+    company: "Anantam Hospital",
+    episode: 7,
+    imageUrl: "/images/founders/dr-santosh-vhatkar.jpg",
+    instaUrl: "https://www.instagram.com/reel/DUQixTgDRo6/?igsh=MW1yYjZrczE0Mjh1MA=="
+  },
+  {
+    _id: "f8",
+    slug: "dr-rohan-badgujar",
+    name: "Dr. Rohan Badgujar",
+    title: "Director & Head of Surgical Department",
+    company: "Anantam Hospital",
+    episode: 8,
+    imageUrl: "/images/founders/dr-rohan-badgujar.jpg",
+    instaUrl: "https://www.instagram.com/reel/DUTBeE6DRi5/?igsh=MWgyYmZ5cnM1ZDJvcg=="
+  },
+  {
+    _id: "f9",
+    slug: "dr-asmita-more-bahirao",
+    name: "Dr. Asmita More-Bahirao",
+    title: "Director & Head of Obstetrics & Gynaecology",
+    company: "Anantam Hospital",
+    episode: 9,
+    imageUrl: "/images/founders/dr-asmita-more-bahirao.jpg",
+    instaUrl: "https://www.instagram.com/reel/DUlyvc5DvcL/?igsh=Z242NXdud2ZhNmU0"
+  },
+  {
+    _id: "f10",
+    slug: "dr-k-vasudeva-rao",
+    name: "Dr. K Vasudeva Rao",
+    title: "Director & Head of Centre of Excellence",
+    company: "Anantam Hospital",
+    episode: 10,
+    imageUrl: "/images/founders/dr-k-vasudeva-rao.jpg",
+    instaUrl: "https://www.instagram.com/reel/DUKdPiMCCVh/?igsh=cTl0dWxqOW12Y3U1"
+  }
+];
+
 // ── PAGE ──────────────────────────────────────────────────────────────────────
 export default function FoundersPage() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
-  const [founders, setFounders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [founders, setFounders] = useState(DEFAULT_FOUNDERS);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchFounders = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/api/founders`);
         const result = await response.json();
-        if (result.success) {
+        if (result.success && Array.isArray(result.data) && result.data.length > 0) {
           setFounders(result.data);
         }
       } catch (error) {
