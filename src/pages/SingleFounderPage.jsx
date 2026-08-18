@@ -236,7 +236,7 @@ export default function SingleFounderPage() {
                 alt={founder.name}
                 decoding="async"
                 fetchPriority="high"
-                className="w-full h-full object-cover object-top"
+                className="w-full h-full object-cover object-top contrast-[1.03] saturate-[1.04]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#02040a]/40 via-transparent to-transparent" />
             </div>
