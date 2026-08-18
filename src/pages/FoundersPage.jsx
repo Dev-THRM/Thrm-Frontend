@@ -51,9 +51,9 @@ function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFon
       initial={{ opacity: 0, scale: 0.6, y: 10 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.55, delay, type: "spring", stiffness: 180, damping: 20 }}
+      transition={{ duration: 0.45, delay, type: "spring", stiffness: 180, damping: 20 }}
       className="group shrink-0"
-      style={{ width: cardW }}
+      style={{ width: cardW, willChange: "transform", transform: "translateZ(0)" }}
     >
       <Link to={`/founders/${founder.slug}`}>
         <div
@@ -76,6 +76,7 @@ function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFon
               src={getImageUrl(founder.imageUrl)}
               alt={founder.name}
               loading="lazy"
+              decoding="async"
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = `${API_BASE_URL}/uploads/thrm_founders/${founder.slug}.jpg`;
@@ -115,8 +116,9 @@ function MobileGlobeCard({ founder, delay }) {
       initial={{ opacity: 0, scale: 0.85, y: 10 }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay, type: "spring", stiffness: 180, damping: 22 }}
+      transition={{ duration: 0.4, delay, type: "spring", stiffness: 180, damping: 22 }}
       className="group"
+      style={{ willChange: "transform", transform: "translateZ(0)" }}
     >
       <Link to={`/founders/${founder.slug}`}>
         <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-sm transition-all duration-300 group-hover:border-white/35 group-hover:bg-white/[0.08] aspect-[3/4]">
@@ -132,6 +134,7 @@ function MobileGlobeCard({ founder, delay }) {
             src={getImageUrl(founder.imageUrl)}
             alt={founder.name}
             loading="lazy"
+            decoding="async"
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = `${API_BASE_URL}/uploads/thrm_founders/${founder.slug}.jpg`;
@@ -181,17 +184,22 @@ function GlobeSection({ founders, loading }) {
     );
   };
 
-  // Video refs: force .play() for iOS Safari (bypasses Low Power Mode block)
+  // Video refs: lazy play when in viewport to prevent network stall and scroll stutter
   const videoRef = useRef(null);      // mobile globe
   const videoRefDesktop = useRef(null); // desktop globe
 
   useEffect(() => {
     const refs = [videoRef.current, videoRefDesktop.current].filter(Boolean);
     const observers = refs.map((video) => {
-      video.play().catch(() => {});
       const observer = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) video.play().catch(() => {}); },
-        { threshold: 0.3 }
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        },
+        { threshold: 0.1 }
       );
       observer.observe(video);
       return observer;
@@ -205,13 +213,13 @@ function GlobeSection({ founders, loading }) {
   );
 
   return (
-    <section className="relative z-10 py-16 lg:py-24 overflow-hidden">
+    <section className="relative z-10 py-16 lg:py-24 overflow-hidden" style={{ willChange: "transform", transform: "translateZ(0)" }}>
       {/* Heading */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.5 }}
         className="text-center mb-12 px-6"
       >
         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[0.65rem] font-bold tracking-[0.25em] uppercase text-white/50 mb-4">
@@ -231,38 +239,38 @@ function GlobeSection({ founders, loading }) {
             item.skeleton ? (
               <SkeletonCard key={item.i} isMobile />
             ) : (
-              <MobileGlobeCard key={item.founder._id} founder={item.founder} delay={0.05 + item.i * 0.05} />
+              <MobileGlobeCard key={item.founder._id} founder={item.founder} delay={0.03 + item.i * 0.03} />
             )
           )}
         </div>
 
         {/* Globe — below cards */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.75 }}
+          initial={{ opacity: 0, scale: 0.85 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
           className="relative rounded-full overflow-hidden shrink-0"
           style={{
             width: 280,
             height: 280,
-            // poster as CSS fallback — shows instantly even if video is blocked
             backgroundImage: "url('/images/globe-poster.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18), 0 0 220px rgba(255,255,255,0.08)",
+              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18)",
+            willChange: "transform",
+            transform: "translateZ(0)"
           }}
         >
           <video
             ref={videoRef}
             src="/videos/globe.mp4"
             poster="/images/globe-poster.jpg"
-            autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="none"
             className="w-full h-full object-cover rounded-full"
             style={{ display: "block" }}
           />
@@ -278,7 +286,7 @@ function GlobeSection({ founders, loading }) {
             {byZone.top.map((item) =>
               item.skeleton
                 ? <SkeletonCard key={item.i} {...cardProps} />
-                : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+                : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.05 + item.i * 0.05} {...cardProps} />
             )}
           </div>
         )}
@@ -304,7 +312,7 @@ function GlobeSection({ founders, loading }) {
                 {byZone.left.map((item) =>
                   item.skeleton
                     ? <SkeletonCard key={item.i} {...cardProps} />
-                    : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+                    : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.05 + item.i * 0.05} {...cardProps} />
                 )}
               </div>
               <ConnectorLine direction="h" />
@@ -313,24 +321,29 @@ function GlobeSection({ founders, loading }) {
 
           {/* GLOBE */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.75 }}
+            initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative rounded-full overflow-hidden shrink-0"
             style={{
               width: globeD,
               height: globeD,
+              backgroundImage: "url('/images/globe-poster.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
               boxShadow:
-                "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18), 0 0 220px rgba(255,255,255,0.08)",
+                "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18)",
+              willChange: "transform",
+              transform: "translateZ(0)"
             }}
           >
             <video
               ref={videoRefDesktop}
               src="/videos/globe.mp4"
               poster="/images/globe-poster.jpg"
-              autoPlay loop muted playsInline
-              preload="metadata"
+              loop muted playsInline
+              preload="none"
               className="w-full h-full object-cover rounded-full"
             />
           </motion.div>
@@ -343,7 +356,7 @@ function GlobeSection({ founders, loading }) {
                 {byZone.right.map((item) =>
                   item.skeleton
                     ? <SkeletonCard key={item.i} {...cardProps} />
-                    : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+                    : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.05 + item.i * 0.05} {...cardProps} />
                 )}
               </div>
             </div>
@@ -367,7 +380,7 @@ function GlobeSection({ founders, loading }) {
             {byZone.bottom.map((item) =>
               item.skeleton
                 ? <SkeletonCard key={item.i} {...cardProps} />
-                : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.1 + item.i * 0.07} {...cardProps} />
+                : <GlobeCard key={item.founder._id} founder={item.founder} delay={0.05 + item.i * 0.05} {...cardProps} />
             )}
           </div>
         )}
@@ -569,45 +582,45 @@ export default function FoundersPage() {
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-600 to-white transform origin-left z-50"
       />
 
-      {/* Ambient Background - lightweight */}
-      <div className="fixed inset-0 pointer-events-none z-0" style={{willChange: 'transform'}}>
-        <div className="absolute top-[5%] left-[-5%] w-[55%] h-[55%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)'}} />
-        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)'}} />
+      {/* Ambient Background - lightweight & GPU accelerated */}
+      <div className="fixed inset-0 pointer-events-none z-0" style={{ contain: "strict", transform: "translate3d(0,0,0)" }}>
+        <div className="absolute top-[5%] left-[-5%] w-[55%] h-[55%] rounded-full opacity-40" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)'}} />
+        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full opacity-30" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)'}} />
       </div>
 
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative z-10 pt-40 pb-24 lg:pt-52 lg:pb-36 px-6 lg:px-14 max-w-[1400px] mx-auto text-center">
+      <section className="relative z-10 pt-36 pb-20 lg:pt-48 lg:pb-28 px-6 lg:px-14 max-w-[1400px] mx-auto text-center">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 1, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.4 }}
           className="flex flex-col items-center"
         >
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
             <Mic2 className="w-4 h-4 text-white" />
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
               Founders Series
             </span>
           </div>
 
-          <h1 className="text-[clamp(3rem,7vw,6rem)] font-black tracking-tighter leading-[1.02] mb-8 max-w-5xl">
+          <h1 className="text-[clamp(2.8rem,7vw,5.5rem)] font-black tracking-tighter leading-[1.02] mb-6 max-w-5xl text-white">
             Conversations with{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-300 to-gray-500">
               Founders.
             </span>
           </h1>
 
-          <p className="text-lg lg:text-xl text-white/55 leading-relaxed max-w-2xl mb-14">
+          <p className="text-base lg:text-xl text-white/60 leading-relaxed max-w-2xl mb-10">
             Raw, unfiltered interviews with the builders, visionaries, and risk-takers
             who are rewriting the rules of business. No scripts. No filters. Just the real story.
           </p>
 
           {/* Stats Strip */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 1, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.4, delay: 0.15 }}
             className="flex flex-wrap justify-center gap-px rounded-2xl overflow-hidden border border-white/10"
           >
             {[
@@ -617,7 +630,7 @@ export default function FoundersPage() {
             ].map((stat, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center px-10 py-5 bg-white/[0.02] backdrop-blur-sm"
+                className="flex flex-col items-center px-8 lg:px-10 py-4 lg:py-5 bg-white/[0.03]"
               >
                 <span className="text-2xl font-black text-white">{stat.value}</span>
                 <span className="text-[0.7rem] tracking-[0.2em] uppercase text-white/40 mt-1">

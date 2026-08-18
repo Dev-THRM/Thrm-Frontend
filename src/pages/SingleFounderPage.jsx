@@ -186,19 +186,19 @@ export default function SingleFounderPage() {
 
           {/* — Left: Text — */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 1, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.4 }}
           >
             {/* Episode Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
               <Mic2 className="w-4 h-4 text-white" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
                 EP {String(founder.episode).padStart(2, '0')} · Founders Series
               </span>
             </div>
 
-            <h1 className="text-[clamp(2.8rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.05] mb-3">
+            <h1 className="text-[clamp(2.8rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.05] mb-3 text-white">
               {founder.name}
             </h1>
             <p className="text-lg text-white/50 font-medium mb-8">
@@ -213,8 +213,6 @@ export default function SingleFounderPage() {
               <SocialHandles social={founder.social} />
             </div>
 
-
-
             {/* Pull Quote */}
             <div className="relative pl-6 border-l-2 border-white/20">
               <Quote className="absolute -top-2 -left-1 w-4 h-4 text-white/20" />
@@ -227,15 +225,17 @@ export default function SingleFounderPage() {
 
           {/* — Right: Photo — */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{ opacity: 1, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
             className="relative"
           >
             <div className="relative aspect-[3/4] w-full max-w-[480px] mx-auto overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 shadow-2xl">
               <img
                 src={getImageUrl(founder.imageUrl)}
                 alt={founder.name}
+                decoding="async"
+                fetchPriority="high"
                 className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#02040a]/40 via-transparent to-transparent" />
