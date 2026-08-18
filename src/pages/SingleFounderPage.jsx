@@ -275,24 +275,24 @@ export default function SingleFounderPage() {
       </section>
 
       {/* ═══════════════ INSTAGRAM VIDEO SECTION ═══════════════ */}
-      <section className="relative z-10 py-24 lg:py-32 px-6 lg:px-14 max-w-[1400px] mx-auto">
+      <section className="relative z-10 py-10 lg:py-14 px-6 lg:px-14 max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14"
+          className="mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6">
-            <InstagramIcon className="w-4 h-4 text-white" />
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4">
+            <InstagramIcon className="w-3.5 h-3.5 text-white" />
+            <span className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
               Watch the Interview
             </span>
           </div>
-          <h2 className="text-3xl lg:text-5xl font-black tracking-tight mb-4">
+          <h2 className="text-2xl lg:text-4xl font-black tracking-tight mb-2">
             The Full Conversation.
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl">
+          <p className="text-white/50 text-base max-w-2xl">
             Catch our exclusive interview with {founder.name.split(" ")[0]} — originally posted on our Instagram. Watch the full reel below or head straight to Instagram.
           </p>
         </motion.div>
@@ -302,14 +302,14 @@ export default function SingleFounderPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="grid lg:grid-cols-[1fr_auto] gap-10 items-start"
+          className="grid lg:grid-cols-[1fr_auto] gap-8 items-start"
         >
           {/* Video / Instagram Embed */}
           <div className="w-full max-w-[800px] mx-auto lg:mx-0">
             {embedUrl ? (
               <div className="flex flex-col items-center lg:items-start">
-                {/* Clean video container cropping top header, bottom footer, and side margins completely */}
-                <div className="relative w-full max-w-[360px] sm:max-w-[390px] aspect-[9/15] overflow-hidden rounded-[2.5rem] border border-white/10 bg-black shadow-2xl">
+                {/* Compact video container fitting completely within screen height */}
+                <div className="relative w-full max-w-[270px] sm:max-w-[295px] aspect-[9/15] overflow-hidden rounded-[2rem] border border-white/10 bg-black shadow-2xl">
                   <iframe
                     src={embedUrl}
                     title={`Interview with ${founder.name}`}
@@ -318,7 +318,7 @@ export default function SingleFounderPage() {
                       width: "140%",
                       height: "145%",
                       left: "-20%",
-                      top: "-66px",
+                      top: "-50px",
                       border: "none"
                     }}
                     scrolling="no"
