@@ -186,19 +186,19 @@ export default function SingleFounderPage() {
 
           {/* — Left: Text — */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 1, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.4 }}
           >
             {/* Episode Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
               <Mic2 className="w-4 h-4 text-white" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
                 EP {String(founder.episode).padStart(2, '0')} · Founders Series
               </span>
             </div>
 
-            <h1 className="text-[clamp(2.8rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.05] mb-3">
+            <h1 className="text-[clamp(2.8rem,5vw,4.5rem)] font-black tracking-tighter leading-[1.05] mb-3 text-white">
               {founder.name}
             </h1>
             <p className="text-lg text-white/50 font-medium mb-8">
@@ -213,8 +213,6 @@ export default function SingleFounderPage() {
               <SocialHandles social={founder.social} />
             </div>
 
-
-
             {/* Pull Quote */}
             <div className="relative pl-6 border-l-2 border-white/20">
               <Quote className="absolute -top-2 -left-1 w-4 h-4 text-white/20" />
@@ -227,16 +225,18 @@ export default function SingleFounderPage() {
 
           {/* — Right: Photo — */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{ opacity: 1, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
             className="relative"
           >
             <div className="relative aspect-[3/4] w-full max-w-[480px] mx-auto overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 shadow-2xl">
               <img
                 src={getImageUrl(founder.imageUrl)}
                 alt={founder.name}
-                className="w-full h-full object-cover object-top"
+                decoding="async"
+                fetchPriority="high"
+                className="w-full h-full object-cover object-top contrast-[1.03] saturate-[1.04]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#02040a]/40 via-transparent to-transparent" />
             </div>
@@ -275,24 +275,24 @@ export default function SingleFounderPage() {
       </section>
 
       {/* ═══════════════ INSTAGRAM VIDEO SECTION ═══════════════ */}
-      <section className="relative z-10 py-24 lg:py-32 px-6 lg:px-14 max-w-[1400px] mx-auto">
+      <section className="relative z-10 py-10 lg:py-14 px-6 lg:px-14 max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mb-14"
+          className="mb-8"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6">
-            <InstagramIcon className="w-4 h-4 text-white" />
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4">
+            <InstagramIcon className="w-3.5 h-3.5 text-white" />
+            <span className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
               Watch the Interview
             </span>
           </div>
-          <h2 className="text-3xl lg:text-5xl font-black tracking-tight mb-4">
+          <h2 className="text-2xl lg:text-4xl font-black tracking-tight mb-2">
             The Full Conversation.
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl">
+          <p className="text-white/50 text-base max-w-2xl">
             Catch our exclusive interview with {founder.name.split(" ")[0]} — originally posted on our Instagram. Watch the full reel below or head straight to Instagram.
           </p>
         </motion.div>
@@ -302,26 +302,42 @@ export default function SingleFounderPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="grid lg:grid-cols-[1fr_auto] gap-10 items-start"
+          className="grid lg:grid-cols-[1fr_auto] gap-8 items-start"
         >
-          {/* Instagram Embed */}
-          <div className="w-full max-w-[420px] mx-auto lg:mx-0">
+          {/* Video / Instagram Embed */}
+          <div className="w-full max-w-[800px] mx-auto lg:mx-0">
             {embedUrl ? (
-              <div className="flex flex-col">
-
-                {/* Cropped iframe container with scale to hide white margins */}
-                <div className="relative w-full aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-black shadow-2xl">
+              <div className="flex flex-col items-center lg:items-start">
+                {/* Compact video container fitting completely within screen height */}
+                <div className="relative w-full max-w-[270px] sm:max-w-[295px] aspect-[9/15] overflow-hidden rounded-[2rem] border border-white/10 bg-black shadow-2xl">
                   <iframe
                     src={embedUrl}
                     title={`Interview with ${founder.name}`}
-                    className="absolute w-full h-full left-0 top-[-60px] origin-top-center scale-[1.35]"
-                    style={{ border: "none", display: "block", transformOrigin: "50% 0%" }}
+                    className="absolute border-0"
+                    style={{
+                      width: "140%",
+                      height: "145%",
+                      left: "-20%",
+                      top: "-50px",
+                      border: "none"
+                    }}
                     scrolling="no"
                     allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                     allowFullScreen
                     loading="lazy"
                   />
                 </div>
+              </div>
+            ) : founder.videoUrl ? (
+              <div className="relative w-full aspect-video rounded-[2.5rem] overflow-hidden border border-white/10 bg-black shadow-2xl group">
+                <video
+                  src={founder.videoUrl}
+                  poster={getImageUrl(founder.imageUrl)}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full object-cover"
+                />
               </div>
             ) : (
               /* Fallback card if embed fails */
@@ -337,7 +353,7 @@ export default function SingleFounderPage() {
                     </p>
                   </div>
                   <a
-                    href={founder.instaUrl}
+                    href={founder.instaUrl || "https://www.instagram.com/thrm.digitalmarketing_agency/"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white font-bold text-sm transition-all hover:shadow-[0_0_30px_rgba(253,29,29,0.3)] hover:scale-105"
