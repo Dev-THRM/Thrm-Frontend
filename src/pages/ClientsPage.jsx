@@ -39,10 +39,6 @@ const CAROUSEL_STYLE = `
 `;
 
 function ClientCard({ client }) {
-  const [hasError, setHasError] = useState(false);
-
-  if (hasError) return null;
-
   const inner = (
     <div
       className="client-card"
@@ -75,7 +71,6 @@ function ClientCard({ client }) {
       <img
         src={client.logoUrl}
         alt={`${client.name} logo`}
-        onError={() => setHasError(true)}
         style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
       />
     </div>
@@ -141,42 +136,8 @@ function CarouselRow({ clients, direction = "left" }) {
   );
 }
 
-const staticClients = [
-  { _id: 1, name: "Dadar Darbar", logoUrl: "/clients/Dadar Darbar.jpg" },
-  { _id: 2, name: "QTK", logoUrl: "/clients/QTK.jpg" },
-  { _id: 3, name: "Shield", logoUrl: "/clients/Shield.png" },
-  { _id: 4, name: "Solitarie", logoUrl: "/clients/Solitarie.png" },
-  { _id: 5, name: "Advocate", logoUrl: "/clients/advocate.png" },
-  { _id: 6, name: "Amrut", logoUrl: "/clients/amrut.png" },
-  { _id: 7, name: "Anantam", logoUrl: "/clients/anantam.png" },
-  { _id: 8, name: "Bioaltus", logoUrl: "/clients/bioaltus.jpg" },
-  { _id: 9, name: "Bloom", logoUrl: "/clients/bloom.jpg" },
-  { _id: 10, name: "Brambles", logoUrl: "/clients/brambles.png" },
-  { _id: 11, name: "City", logoUrl: "/clients/city.png" },
-  { _id: 12, name: "Double Dollar", logoUrl: "/clients/double-dollar.png" },
-  { _id: 13, name: "DRD Insurance", logoUrl: "/clients/drdinsurance.jpeg" },
-  { _id: 14, name: "Elevate", logoUrl: "/clients/elevate.png" },
-  { _id: 15, name: "Eravio", logoUrl: "/clients/eravio.png" },
-  { _id: 16, name: "Fashion Creation By Pallavi", logoUrl: "/clients/fashioncreationbypallavi.png" },
-  { _id: 17, name: "Green", logoUrl: "/clients/green.jpeg" },
-  { _id: 18, name: "Kathiawadi", logoUrl: "/clients/kathiawadi.jpg" },
-  { _id: 19, name: "Kwality", logoUrl: "/clients/kwality.jpeg" },
-  { _id: 20, name: "Lalit", logoUrl: "/clients/lalit_logo.png" },
-  { _id: 21, name: "LIL", logoUrl: "/clients/lil.jpg" },
-  { _id: 22, name: "Namaskar", logoUrl: "/clients/namaskar.jpeg" },
-  { _id: 23, name: "Nitara", logoUrl: "/clients/nitara.png" },
-  { _id: 24, name: "Pet", logoUrl: "/clients/pet.png" },
-  { _id: 25, name: "Rahat", logoUrl: "/clients/rahat.jpeg" },
-  { _id: 26, name: "RC", logoUrl: "/clients/rc.webp" },
-  { _id: 27, name: "Revive", logoUrl: "/clients/revive.png" },
-  { _id: 28, name: "Sacchi", logoUrl: "/clients/sacchi.jpeg" },
-  { _id: 29, name: "Social Soda", logoUrl: "/clients/social-soda.png" },
-  { _id: 30, name: "Windmill", logoUrl: "/clients/windmill.jpg" },
-  { _id: 31, name: "Zenvis", logoUrl: "/clients/zenvis-logo.jpeg" }
-];
-
 export default function ClientsPage() {
-  const [clients, setClients] = useState(staticClients);
+  const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -186,12 +147,13 @@ export default function ClientsPage() {
         const response = await fetch(`${API_BASE_URL}/api/clients`);
         const result = await response.json();
         if (result.success && Array.isArray(result.data)) {
-          // Combine static clients with newly added backend clients
-          setClients([...staticClients, ...result.data]);
+          setClients(result.data);
+        } else {
+          setError("Failed to load clients.");
         }
       } catch (err) {
         console.error("Fetch error:", err);
-        // We do not set error state here because we still want to show the static clients
+        setError("Unable to connect to the server.");
       } finally {
         setLoading(false);
       }
