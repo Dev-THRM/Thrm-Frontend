@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, getImageUrl } from "../config";
 
 
 // Inject keyframes once
@@ -69,7 +69,7 @@ function ClientCard({ client }) {
       }}
     >
       <img
-        src={client.logoUrl}
+        src={getImageUrl(client.logoUrl)}
         alt={`${client.name} logo`}
         style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
       />
