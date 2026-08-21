@@ -39,6 +39,10 @@ const CAROUSEL_STYLE = `
 `;
 
 function ClientCard({ client }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) return null;
+
   const inner = (
     <div
       className="client-card"
@@ -71,6 +75,7 @@ function ClientCard({ client }) {
       <img
         src={client.logoUrl}
         alt={`${client.name} logo`}
+        onError={() => setHasError(true)}
         style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
       />
     </div>
