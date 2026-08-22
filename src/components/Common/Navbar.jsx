@@ -16,7 +16,8 @@ import {
   Trophy,
   PenBox,
   Calculator,
-  ExternalLink
+  FileText,
+  MessageSquare
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/logo.png"
@@ -52,8 +53,8 @@ const navData = [
       { name: "Our Team", path: "/about/team", icon: Users },
       { name: "Our Awards", path: "/about/awards", icon: Trophy },
       { name: "Our Branding", path: "/about/branding", icon: PenBox },
-      { name: "THRM Content", path: "https://thrmdigitalmarketingcontent.in/", icon: ExternalLink },
-      { name: "THRM Review", path: "https://thrmdigitalmarketingreview.in/", icon: ExternalLink },
+      { name: "THRM Content", path: "https://thrmdigitalmarketingcontent.in/", icon: FileText },
+      { name: "THRM Review", path: "https://thrmdigitalmarketingreview.in/", icon: MessageSquare },
     ]
   },
   {
