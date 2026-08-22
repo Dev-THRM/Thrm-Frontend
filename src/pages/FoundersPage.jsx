@@ -168,7 +168,7 @@ function GlobeSection({ founders, loading }) {
         className="pointer-events-none"
         style={{
           width: isH ? gap : 1,
-          height: isH ? 1 : gap,
+          height: isH ? gap : 1,
           background: "linear-gradient(to right, rgba(255,255,255,0.08), rgba(255,255,255,0.22), rgba(255,255,255,0.08))",
           flexShrink: 0,
         }}
@@ -198,9 +198,7 @@ function GlobeSection({ founders, loading }) {
     return () => observers.forEach((o) => o.disconnect());
   }, []);
 
-  const allItems = slots.map((s, i) =>
-    loading ? { skeleton: true, i } : { founder: founders[i], i }
-  );
+  const displayFounders = loading ? slots.map((s, i) => ({ skeleton: true, i })) : founders.map((f, i) => ({ founder: f, i }));
 
   return (
     <section className="relative z-10 py-16 lg:py-24 overflow-hidden" style={{ willChange: "transform", transform: "translateZ(0)" }}>
@@ -219,54 +217,95 @@ function GlobeSection({ founders, loading }) {
         </h2>
       </motion.div>
 
-      {/* MOBILE LAYOUT */}
-      <div className="lg:hidden flex flex-col items-center gap-8 px-4">
-        <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
-          {allItems.map((item) =>
-            item.skeleton ? (
-              <SkeletonCard key={item.i} isMobile />
-            ) : (
-              <MobileGlobeCard key={item.founder._id} founder={item.founder} delay={0.03 + item.i * 0.03} />
-            )
-          )}
-        </div>
+      {/* MOBILE ORBITAL GLOBE LAYOUT */}
+      <div className="lg:hidden flex justify-center items-center px-4 py-8 overflow-hidden">
+        <div className="relative w-[340px] h-[340px] sm:w-[380px] sm:h-[380px] flex items-center justify-center">
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative rounded-full overflow-hidden shrink-0"
-          style={{
-            width: 280,
-            height: 280,
-            backgroundImage: "url('/images/globe-poster.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18)",
-            willChange: "transform",
-            transform: "translateZ(0)"
-          }}
-        >
-          <video
-            ref={videoRef}
-            src="/videos/globe.mp4"
-            poster="/images/globe-poster.jpg"
-            loop
-            muted
-            playsInline
-            preload="none"
-            className="w-full h-full object-cover rounded-full"
-            style={{ display: "block" }}
-          />
-        </motion.div>
+          {/* Outer Orbital Rings */}
+          <div className="absolute inset-0 rounded-full border border-white/15 pointer-events-none" />
+          <div className="absolute inset-6 rounded-full border border-white/10 border-dashed pointer-events-none" />
+          <div className="absolute inset-14 rounded-full border border-white/5 pointer-events-none" />
+
+          {/* Central Globe Video */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative w-[140px] h-[140px] sm:w-[160px] sm:h-[160px] rounded-full overflow-hidden z-10"
+            style={{
+              backgroundImage: "url('/images/globe-poster.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              boxShadow: "0 0 0 1px rgba(255,255,255,0.2), 0 0 30px rgba(255,255,255,0.25)",
+            }}
+          >
+            <video
+              ref={videoRef}
+              src="/videos/globe.mp4"
+              poster="/images/globe-poster.jpg"
+              loop
+              muted
+              playsInline
+              preload="none"
+              className="w-full h-full object-cover rounded-full"
+            />
+          </motion.div>
+
+          {/* Orbiting Founder Avatars */}
+          {displayFounders.map((item, index) => {
+            const total = displayFounders.length;
+            const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+            const radius = 135; // Radius matching mobile orbital design
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+
+            if (item.skeleton) {
+              return (
+                <div
+                  key={index}
+                  className="absolute w-10 h-10 rounded-full bg-white/10 animate-pulse border border-white/20"
+                  style={{ transform: `translate(${x}px, ${y}px)` }}
+                />
+              );
+            }
+
+            return (
+              <motion.div
+                key={item.founder._id}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.04 }}
+                className="absolute z-20"
+                style={{ transform: `translate(${x}px, ${y}px)` }}
+              >
+                <Link to={`/founders/${item.founder.slug}`} className="group relative block">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-white/30 group-hover:border-white transition-all shadow-lg bg-black">
+                    <img
+                      src={getImageUrl(item.founder.imageUrl)}
+                      alt={item.founder.name}
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `${API_BASE_URL}/uploads/thrm_founders/${item.founder.slug}.jpg`;
+                      }}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  {/* Tooltip on tap/hover */}
+                  <div className="absolute left-1/2 -bottom-6 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/90 border border-white/20 rounded px-1.5 py-0.5 whitespace-nowrap pointer-events-none z-30">
+                    <p className="text-[0.55rem] font-bold text-white">{item.founder.name}</p>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
 
       {/* DESKTOP LAYOUT */}
       <div className="hidden lg:flex flex-col items-center gap-0 select-none px-4">
-
-        {/* TOP ROW */}
         {byZone.top.length > 0 && (
           <div className="flex items-end justify-center" style={{ gap: gap }}>
             {byZone.top.map((item) =>
@@ -277,7 +316,6 @@ function GlobeSection({ founders, loading }) {
           </div>
         )}
 
-        {/* Connector lines — top */}
         {byZone.top.length > 0 && (
           <div className="flex items-center justify-center" style={{ gap: gap }}>
             {byZone.top.map((item) => (
@@ -288,10 +326,7 @@ function GlobeSection({ founders, loading }) {
           </div>
         )}
 
-        {/* MIDDLE ROW */}
         <div className="flex items-center justify-center">
-
-          {/* LEFT CARDS */}
           {byZone.left.length > 0 && (
             <div className="flex items-center">
               <div className="flex flex-col" style={{ gap: gap }}>
@@ -305,7 +340,6 @@ function GlobeSection({ founders, loading }) {
             </div>
           )}
 
-          {/* GLOBE */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -334,7 +368,6 @@ function GlobeSection({ founders, loading }) {
             />
           </motion.div>
 
-          {/* RIGHT CARDS */}
           {byZone.right.length > 0 && (
             <div className="flex items-center">
               <ConnectorLine direction="h" />
@@ -349,7 +382,6 @@ function GlobeSection({ founders, loading }) {
           )}
         </div>
 
-        {/* Connector lines — bottom */}
         {byZone.bottom.length > 0 && (
           <div className="flex items-center justify-center" style={{ gap: gap }}>
             {byZone.bottom.map((item) => (
@@ -360,7 +392,6 @@ function GlobeSection({ founders, loading }) {
           </div>
         )}
 
-        {/* BOTTOM ROW */}
         {byZone.bottom.length > 0 && (
           <div className="flex items-start justify-center" style={{ gap: gap }}>
             {byZone.bottom.map((item) =>
@@ -370,7 +401,6 @@ function GlobeSection({ founders, loading }) {
             )}
           </div>
         )}
-
       </div>
     </section>
   );
