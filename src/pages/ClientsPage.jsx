@@ -1,7 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Briefcase } from "lucide-react";
-import { API_BASE_URL } from "../config";
+import { API_BASE_URL, getImageUrl } from "../config";
 
 
 // Inject keyframes once
@@ -69,7 +69,7 @@ function ClientCard({ client }) {
       }}
     >
       <img
-        src={client.logoUrl}
+        src={getImageUrl(client.logoUrl)}
         alt={`${client.name} logo`}
         style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
       />
@@ -146,7 +146,7 @@ export default function ClientsPage() {
       try {
         const response = await fetch(`${API_BASE_URL}/api/clients`);
         const result = await response.json();
-        if (result.success) {
+        if (result.success && Array.isArray(result.data)) {
           setClients(result.data);
         } else {
           setError("Failed to load clients.");

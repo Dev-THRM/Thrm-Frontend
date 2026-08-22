@@ -20,7 +20,7 @@ import {
   Users
 } from "lucide-react";
 import { useAuth } from "../../context/RouteContext.jsx"; // Assuming this is the correct path from earlier
-import { API_BASE_URL } from "../../config";
+import { API_BASE_URL, getImageUrl } from "../../config";
 
 // === FIX 1: Import ReactQuill and its CSS ===
 import ReactQuill from "react-quill-new";
@@ -526,7 +526,7 @@ export const AdminDashboard = () => {
                         title={`Visit ${client.name}'s website`}
                       >
                         <img
-                          src={client.logoUrl}
+                          src={getImageUrl(client.logoUrl)}
                           alt={client.name}
                           className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                         />
@@ -536,7 +536,7 @@ export const AdminDashboard = () => {
                       </a>
                     ) : (
                       <img
-                        src={client.logoUrl}
+                        src={getImageUrl(client.logoUrl)}
                         alt={client.name}
                         className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 transition-all duration-500"
                       />
@@ -617,7 +617,7 @@ export const AdminDashboard = () => {
                 >
                   <Link to={`/blogs/${blog._id}`} className="aspect-[16/10] overflow-hidden relative block">
                     <img
-                      src={blog.imageUrl}
+                      src={getImageUrl(blog.imageUrl)}
                       alt={blog.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
                     />
@@ -709,7 +709,7 @@ export const AdminDashboard = () => {
                 >
                   <div className="aspect-[5/5] overflow-hidden relative bg-white/5">
                     <img
-                      src={founder.imageUrl}
+                      src={getImageUrl(founder.imageUrl)}
                       alt={founder.name}
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
                     />
