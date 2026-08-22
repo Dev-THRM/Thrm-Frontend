@@ -5,46 +5,44 @@ import { Link } from "react-router-dom";
 import { API_BASE_URL, getImageUrl } from "../config";
 
 // ── GLOBE SECTION ─────────────────────────────────────────────────────────────
-//
-// Fixed positional layout — cards are placed in explicit zones:
-//   TOP    : 2 cards side-by-side above the globe
-//   SIDES  : 1-2 cards on each side (left / right) of the globe
-//   BOTTOM : 2 cards side-by-side below the globe
-//
-// The globe sits in the center of a wide container.
-// Cards overflow the globe vertically so the whole group feels connected.
 
-// ── Dynamic sizing: bigger cards when fewer founders, scales down as more are added
-// Breakpoints: 1-4 founders → large, 5-6 → medium, 7-8 → compact
 function getCardSize(count) {
   if (count <= 4) return { cardW: 240, cardH: 320, globeD: 430, gap: 28, infoH: 64, badgeFontSize: "0.65rem", nameFontSize: "0.82rem", titleFontSize: "0.65rem" };
-  if (count <= 6) return { cardW: 200, cardH: 266, globeD: 415, gap: 24, infoH: 56, badgeFontSize: "0.6rem",  nameFontSize: "0.74rem", titleFontSize: "0.6rem"  };
+  if (count <= 6) return { cardW: 200, cardH: 266, globeD: 415, gap: 24, infoH: 56, badgeFontSize: "0.6rem", nameFontSize: "0.74rem", titleFontSize: "0.6rem" };
   if (count <= 8) return { cardW: 175, cardH: 230, globeD: 390, gap: 20, infoH: 50, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
-  return           { cardW: 165, cardH: 220, globeD: 360, gap: 18, infoH: 48, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
+  return { cardW: 165, cardH: 220, globeD: 360, gap: 18, infoH: 48, badgeFontSize: "0.55rem", nameFontSize: "0.66rem", titleFontSize: "0.55rem" };
 }
 
-// Distribution for 10 founders in 3-2-2-3 format around the globe:
-//   TOP    : 3 cards (slots 0, 1, 2)
-//   LEFT   : 2 cards (slots 3, 4)
-//   RIGHT  : 2 cards (slots 5, 6)
-//   BOTTOM : 3 cards (slots 7, 8, 9)
-const SLOT_MAP = [
-  { zone: "top",    slot: 0 },   // founder 0 (EP 01)
-  { zone: "top",    slot: 1 },   // founder 1 (EP 02)
-  { zone: "top",    slot: 2 },   // founder 2 (EP 03)
-  { zone: "left",   slot: 0 },   // founder 3 (EP 04)
-  { zone: "left",   slot: 1 },   // founder 4 (EP 05)
-  { zone: "right",  slot: 0 },   // founder 5 (EP 06)
-  { zone: "right",  slot: 1 },   // founder 6 (EP 07: Dr. Santosh Vhatkar)
-  { zone: "bottom", slot: 0 },   // founder 7 (EP 08: Dr. Rohan Badgujar)
-  { zone: "bottom", slot: 1 },   // founder 8 (EP 09: Dr. Asmita More-Bahirao)
-  { zone: "bottom", slot: 2 },   // founder 9 (EP 10: Dr. K Vasudeva Rao)
-];
+// Dynamic slot mapping function supporting 4-2-2-3 (11 founders) and 4-2-2-4 (12 founders)
+function getSlotMap(count) {
+  if (count === 11) {
+    // 4-2-2-3 layout
+    return [
+      { zone: "top", slot: 0 }, { zone: "top", slot: 1 }, { zone: "top", slot: 2 }, { zone: "top", slot: 3 },
+      { zone: "left", slot: 0 }, { zone: "left", slot: 1 },
+      { zone: "right", slot: 0 }, { zone: "right", slot: 1 },
+      { zone: "bottom", slot: 0 }, { zone: "bottom", slot: 1 }, { zone: "bottom", slot: 2 }
+    ];
+  } else if (count >= 12) {
+    // 4-2-2-4 layout
+    return [
+      { zone: "top", slot: 0 }, { zone: "top", slot: 1 }, { zone: "top", slot: 2 }, { zone: "top", slot: 3 },
+      { zone: "left", slot: 0 }, { zone: "left", slot: 1 },
+      { zone: "right", slot: 0 }, { zone: "right", slot: 1 },
+      { zone: "bottom", slot: 0 }, { zone: "bottom", slot: 1 }, { zone: "bottom", slot: 2 }, { zone: "bottom", slot: 3 }
+    ];
+  }
 
-// Skeleton shows 10 cards using all 10 slots
-const SKELETON_SLOTS = SLOT_MAP.slice(0, 10);
+  // Default 3-2-2-3 layout for 10 or fewer founders
+  return [
+    { zone: "top", slot: 0 }, { zone: "top", slot: 1 }, { zone: "top", slot: 2 },
+    { zone: "left", slot: 0 }, { zone: "left", slot: 1 },
+    { zone: "right", slot: 0 }, { zone: "right", slot: 1 },
+    { zone: "bottom", slot: 0 }, { zone: "bottom", slot: 1 }, { zone: "bottom", slot: 2 }
+  ];
+}
 
-// ── Mini founder card used inside GlobeSection ─────────────────────────────
+// ── Mini founder card ─────────────────────────────────────────────────────────
 function GlobeCard({ founder, delay, cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize }) {
   return (
     <motion.div
@@ -109,7 +107,6 @@ function SkeletonCard({ cardW, cardH, isMobile = false }) {
   );
 }
 
-// Compact card for the mobile 2-col grid
 function MobileGlobeCard({ founder, delay }) {
   return (
     <motion.div
@@ -122,14 +119,12 @@ function MobileGlobeCard({ founder, delay }) {
     >
       <Link to={`/founders/${founder.slug}`}>
         <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-white/[0.04] backdrop-blur-sm transition-all duration-300 group-hover:border-white/35 group-hover:bg-white/[0.08] aspect-[3/4]">
-          {/* Episode badge */}
           <div className="absolute top-2 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10">
             <Mic2 className="w-2 h-2 text-white/60 shrink-0" />
             <span className="text-[0.55rem] font-bold tracking-widest uppercase text-white/60 whitespace-nowrap">
               EP {String(founder.episode).padStart(2, "0")}
             </span>
           </div>
-          {/* Photo */}
           <img
             src={getImageUrl(founder.imageUrl)}
             alt={founder.name}
@@ -142,7 +137,6 @@ function MobileGlobeCard({ founder, delay }) {
             className="w-full h-full object-cover object-top brightness-85 group-hover:brightness-105 group-hover:scale-105 transition-all duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/15 to-transparent" />
-          {/* Info bar */}
           <div className="px-2.5 py-2 bg-[#02040a]/85 absolute bottom-0 left-0 right-0">
             <p className="text-[0.72rem] font-bold text-white leading-tight truncate">{founder.name}</p>
             <p className="text-[0.6rem] text-white/45 truncate mt-0.5">{founder.company}</p>
@@ -154,21 +148,19 @@ function MobileGlobeCard({ founder, delay }) {
 }
 
 function GlobeSection({ founders, loading }) {
-  const count = loading ? 6 : founders.length;
+  const count = loading ? 11 : founders.length;
   const { cardW, cardH, globeD, gap, infoH, badgeFontSize, nameFontSize, titleFontSize } = getCardSize(count);
 
-  const slots = loading ? SKELETON_SLOTS : SLOT_MAP.slice(0, Math.min(founders.length, SLOT_MAP.length));
+  const slotMap = getSlotMap(count);
+  const slots = loading ? slotMap : slotMap.slice(0, Math.min(founders.length, slotMap.length));
 
-  // Group items by zone
   const byZone = { top: [], left: [], right: [], bottom: [] };
   slots.forEach((s, i) => {
     byZone[s.zone].push(loading ? { skeleton: true, i } : { founder: founders[i], i });
   });
 
-  // Shared card props
   const cardProps = { cardW, cardH, infoH, badgeFontSize, nameFontSize, titleFontSize };
 
-  // Connector line component
   const ConnectorLine = ({ direction }) => {
     const isH = direction === "h";
     return (
@@ -184,37 +176,33 @@ function GlobeSection({ founders, loading }) {
     );
   };
 
-  // Video refs: lazy play when in viewport to prevent network stall and scroll stutter
-  const videoRef = useRef(null);      // mobile globe
-  const videoRefDesktop = useRef(null); // desktop globe
+  const videoRefDesktop = useRef(null);
 
   useEffect(() => {
-    const refs = [videoRef.current, videoRefDesktop.current].filter(Boolean);
-    const observers = refs.map((video) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            video.play().catch(() => {});
-          } else {
-            video.pause();
-          }
-        },
-        { threshold: 0.1 }
-      );
-      observer.observe(video);
-      return observer;
-    });
-    return () => observers.forEach((o) => o.disconnect());
+    const video = videoRefDesktop.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => { });
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
   }, []);
 
-  // Flat list of all items for the mobile 2-col grid
   const allItems = slots.map((s, i) =>
     loading ? { skeleton: true, i } : { founder: founders[i], i }
   );
 
   return (
     <section className="relative z-10 py-16 lg:py-24 overflow-hidden" style={{ willChange: "transform", transform: "translateZ(0)" }}>
-      {/* Heading */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -230,10 +218,8 @@ function GlobeSection({ founders, loading }) {
         </h2>
       </motion.div>
 
-      {/* ── MOBILE LAYOUT (< lg) ── cards first, globe below */}
+      {/* MOBILE LAYOUT (Globe removed) */}
       <div className="lg:hidden flex flex-col items-center gap-8 px-4">
-
-        {/* Founder cards — 2-col grid */}
         <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
           {allItems.map((item) =>
             item.skeleton ? (
@@ -243,41 +229,9 @@ function GlobeSection({ founders, loading }) {
             )
           )}
         </div>
-
-        {/* Globe — below cards */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative rounded-full overflow-hidden shrink-0"
-          style={{
-            width: 280,
-            height: 280,
-            backgroundImage: "url('/images/globe-poster.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18)",
-            willChange: "transform",
-            transform: "translateZ(0)"
-          }}
-        >
-          <video
-            ref={videoRef}
-            src="/videos/globe.mp4"
-            poster="/images/globe-poster.jpg"
-            loop
-            muted
-            playsInline
-            preload="none"
-            className="w-full h-full object-cover rounded-full"
-            style={{ display: "block" }}
-          />
-        </motion.div>
       </div>
 
-      {/* ── DESKTOP LAYOUT (≥ lg) ── original positional layout */}
+      {/* DESKTOP LAYOUT */}
       <div className="hidden lg:flex flex-col items-center gap-0 select-none px-4">
 
         {/* TOP ROW */}
@@ -302,7 +256,7 @@ function GlobeSection({ founders, loading }) {
           </div>
         )}
 
-        {/* MIDDLE ROW: left cards + globe + right cards */}
+        {/* MIDDLE ROW */}
         <div className="flex items-center justify-center">
 
           {/* LEFT CARDS */}
@@ -319,7 +273,7 @@ function GlobeSection({ founders, loading }) {
             </div>
           )}
 
-          {/* GLOBE */}
+          {/* GLOBE (DESKTOP ONLY) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -390,65 +344,7 @@ function GlobeSection({ founders, loading }) {
   );
 }
 
-// ── FOUNDER CARD ──────────────────────────────────────────────────────────────
-
-
-function FounderCard({ founder, index }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: (index % 4) * 0.05 }}
-    >
-      <Link to={`/founders/${founder.slug}`} className="block group">
-        <div className="relative overflow-hidden rounded-3xl bg-white/[0.02] border border-white/10 transition-all duration-500 hover:border-white/25 hover:bg-white/[0.04] hover:shadow-[0_0_60px_rgba(255,255,255,0.04)]">
-          {/* Episode Badge */}
-          <div className="absolute top-5 left-5 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
-            <Mic2 className="w-3 h-3 text-white/70" />
-            <span className="text-[0.65rem] font-bold tracking-[0.2em] uppercase text-white/70">
-              EP {String(founder.episode).padStart(2, '0')}
-            </span>
-          </div>
-
-          {/* Photo */}
-          <div className="relative aspect-[5/5] w-full overflow-hidden bg-white/5">
-            <img
-              src={getImageUrl(founder.imageUrl)}
-              alt={founder.name}
-              loading="lazy"
-              className="w-full h-full object-cover object-top brightness-90 transition-all duration-700 group-hover:scale-105 group-hover:brightness-100"
-            />
-            {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/30 to-transparent" />
-
-            {/* Play button on hover */}
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center">
-                <Play className="w-6 h-6 text-white fill-white ml-1" />
-              </div>
-            </div>
-          </div>
-
-          {/* Info */}
-          <div className="p-6">
-
-
-            <h2 className="text-xl font-bold text-white mb-1">{founder.name}</h2>
-            <p className="text-sm text-white/50 mb-4">{founder.title} - {founder.company}</p>
-
-
-
-            <div className="flex items-center gap-2 text-white/40 group-hover:text-white transition-colors duration-300">
-              <span className="text-xs font-bold tracking-widest uppercase">Watch Interview</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </div>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
+// ── DEFAULT DATA ─────────────────────────────────────────────────────────────
 
 const DEFAULT_FOUNDERS = [
   {
@@ -544,10 +440,21 @@ const DEFAULT_FOUNDERS = [
     episode: 10,
     imageUrl: "/images/founders/dr-k-vasudeva-rao.jpg",
     instaUrl: "https://www.instagram.com/reel/DUKdPiMCCVh/?igsh=cTl0dWxqOW12Y3U1"
+  },
+  {
+    _id: "f11",
+    slug: "astha-shah",
+    name: "Astha Shah",
+    title: "Founder",
+    company: "Lil Pitaara",
+    episode: 11,
+    imageUrl: "/images/founders/astha-shah.jpeg",
+    instaUrl: "https://www.instagram.com/reel/DXOfyLkta51/?igsi=cDdxbHdzcGh3MnVu"
   }
 ];
 
 // ── PAGE ──────────────────────────────────────────────────────────────────────
+
 export default function FoundersPage() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll();
@@ -575,20 +482,16 @@ export default function FoundersPage() {
 
   return (
     <main ref={containerRef} className="bg-[#02040a] text-white min-h-screen relative overflow-hidden">
-
-      {/* Scroll Progress Bar */}
       <motion.div
         style={{ scaleX }}
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-gray-600 to-white transform origin-left z-50"
       />
 
-      {/* Ambient Background - lightweight & GPU accelerated */}
       <div className="fixed inset-0 pointer-events-none z-0" style={{ contain: "strict", transform: "translate3d(0,0,0)" }}>
-        <div className="absolute top-[5%] left-[-5%] w-[55%] h-[55%] rounded-full opacity-40" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)'}} />
-        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full opacity-30" style={{background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)'}} />
+        <div className="absolute top-[5%] left-[-5%] w-[55%] h-[55%] rounded-full opacity-40" style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)' }} />
+        <div className="absolute bottom-[10%] right-[-10%] w-[50%] h-[50%] rounded-full opacity-30" style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)' }} />
       </div>
 
-      {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative z-10 pt-36 pb-20 lg:pt-48 lg:pb-28 px-6 lg:px-14 max-w-[1400px] mx-auto text-center">
         <motion.div
           initial={{ opacity: 1, y: 15 }}
@@ -596,7 +499,6 @@ export default function FoundersPage() {
           transition={{ duration: 0.4 }}
           className="flex flex-col items-center"
         >
-          {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
             <Mic2 className="w-4 h-4 text-white" />
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-[#B0B0B0]">
@@ -616,7 +518,6 @@ export default function FoundersPage() {
             who are rewriting the rules of business. No scripts. No filters. Just the real story.
           </p>
 
-          {/* Stats Strip */}
           <motion.div
             initial={{ opacity: 1, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -642,40 +543,7 @@ export default function FoundersPage() {
         </motion.div>
       </section>
 
-      {/* ═══════════════ GLOBE + FOUNDERS ═══════════════ */}
       <GlobeSection founders={founders} loading={loading} />
-
-      {/* ═══════════════ GRID ═══════════════ 
-      <section className="relative z-10 px-6 lg:px-14 pb-40 max-w-[1400px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-14"
-        >
-          <h2 className="text-2xl lg:text-3xl font-black tracking-tight mb-2">
-            All Interviews
-          </h2>
-          <p className="text-white/40 text-sm">Click a card to watch the full interview.</p>
-        </motion.div>
-
-        {loading ? (
-          <div className="flex justify-center items-center h-30">
-            <div className="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin" />
-          </div>
-        ) : founders.length === 0 ? (
-          <div className="text-center text-white/50 p-8">No founder episodes found.</div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {founders.map((founder, i) => (
-              <FounderCard key={founder._id} founder={founder} index={i} />
-            ))}
-          </div>
-        )}
-      </section>
-      */}
-      
     </main>
   );
 }
