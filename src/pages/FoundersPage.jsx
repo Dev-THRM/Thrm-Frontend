@@ -176,26 +176,25 @@ function GlobeSection({ founders, loading }) {
     );
   };
 
-  const videoRef = useRef(null);
   const videoRefDesktop = useRef(null);
 
   useEffect(() => {
-    const refs = [videoRef.current, videoRefDesktop.current].filter(Boolean);
-    const observers = refs.map((video) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            video.play().catch(() => { });
-          } else {
-            video.pause();
-          }
-        },
-        { threshold: 0.1 }
-      );
-      observer.observe(video);
-      return observer;
-    });
-    return () => observers.forEach((o) => o.disconnect());
+    const video = videoRefDesktop.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => { });
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
   }, []);
 
   const allItems = slots.map((s, i) =>
@@ -219,7 +218,7 @@ function GlobeSection({ founders, loading }) {
         </h2>
       </motion.div>
 
-      {/* MOBILE LAYOUT */}
+      {/* MOBILE LAYOUT (Globe removed) */}
       <div className="lg:hidden flex flex-col items-center gap-8 px-4">
         <div className="grid grid-cols-2 gap-3 w-full max-w-sm">
           {allItems.map((item) =>
@@ -230,37 +229,6 @@ function GlobeSection({ founders, loading }) {
             )
           )}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative rounded-full overflow-hidden shrink-0"
-          style={{
-            width: 280,
-            height: 280,
-            backgroundImage: "url('/images/globe-poster.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            boxShadow:
-              "0 0 0 1px rgba(255,255,255,0.18), 0 0 40px rgba(255,255,255,0.35), 0 0 100px rgba(255,255,255,0.18)",
-            willChange: "transform",
-            transform: "translateZ(0)"
-          }}
-        >
-          <video
-            ref={videoRef}
-            src="/videos/globe.mp4"
-            poster="/images/globe-poster.jpg"
-            loop
-            muted
-            playsInline
-            preload="none"
-            className="w-full h-full object-cover rounded-full"
-            style={{ display: "block" }}
-          />
-        </motion.div>
       </div>
 
       {/* DESKTOP LAYOUT */}
@@ -305,7 +273,7 @@ function GlobeSection({ founders, loading }) {
             </div>
           )}
 
-          {/* GLOBE */}
+          {/* GLOBE (DESKTOP ONLY) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
