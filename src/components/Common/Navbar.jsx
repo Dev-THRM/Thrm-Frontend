@@ -15,7 +15,8 @@ import {
   Users,
   Trophy,
   PenBox,
-  Calculator
+  Calculator,
+  ExternalLink
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/logo.png"
@@ -51,6 +52,8 @@ const navData = [
       { name: "Our Team", path: "/about/team", icon: Users },
       { name: "Our Awards", path: "/about/awards", icon: Trophy },
       { name: "Our Branding", path: "/about/branding", icon: PenBox },
+      { name: "THRM Content", path: "https://thrmdigitalmarketingcontent.in/", icon: ExternalLink },
+      { name: "THRM Review", path: "https://thrmdigitalmarketingreview.in/", icon: ExternalLink },
     ]
   },
   {
@@ -186,6 +189,37 @@ export default function Navbar() {
 
                                 {item.subItems.map((subItem) => {
                                   const SubIcon = subItem.icon;
+                                  const isExternal = subItem.path.startsWith("http");
+
+                                  if (isExternal) {
+                                    return (
+                                      <a
+                                        key={subItem.name}
+                                        href={subItem.path}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={() => setHoveredNav(null)}
+                                        className={`group flex ${
+                                          subItem.desc ? "items-start" : "items-center"
+                                        } gap-2 p-1 rounded-xl hover:bg-white/5 transition-colors`}
+                                      >
+                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/5 text-white/70 transition-all group-hover:scale-110 group-hover:bg-white group-hover:text-black">
+                                          <SubIcon className="h-4 w-4" />
+                                        </div>
+                                        <div>
+                                          <h4 className="text-sm font-bold text-white transition-colors mb-1">
+                                            {subItem.name}
+                                          </h4>
+                                          {subItem.desc && (
+                                            <p className="text-xs text-white/50 leading-relaxed font-medium">
+                                              {subItem.desc}
+                                            </p>
+                                          )}
+                                        </div>
+                                      </a>
+                                    );
+                                  }
+
                                   return (
                                     <Link
                                       key={subItem.name}
@@ -329,17 +363,37 @@ export default function Navbar() {
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden flex flex-col gap-4 pt-4 pl-4"
                           >
-                            {item.subItems.map(sub => (
-                              <Link
-                                key={sub.name}
-                                to={sub.path}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="flex items-center gap-3 text-white/60 hover:text-white font-medium"
-                              >
-                                <sub.icon className="w-4 h-4" />
-                                {sub.name}
-                              </Link>
-                            ))}
+                            {item.subItems.map(sub => {
+                              const isExternal = sub.path.startsWith("http");
+
+                              if (isExternal) {
+                                return (
+                                  <a
+                                    key={sub.name}
+                                    href={sub.path}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="flex items-center gap-3 text-white/60 hover:text-white font-medium"
+                                  >
+                                    <sub.icon className="w-4 h-4" />
+                                    {sub.name}
+                                  </a>
+                                );
+                              }
+
+                              return (
+                                <Link
+                                  key={sub.name}
+                                  to={sub.path}
+                                  onClick={() => setIsMobileMenuOpen(false)}
+                                  className="flex items-center gap-3 text-white/60 hover:text-white font-medium"
+                                >
+                                  <sub.icon className="w-4 h-4" />
+                                  {sub.name}
+                                </Link>
+                              );
+                            })}
                           </motion.div>
                         )}
                       </AnimatePresence>
