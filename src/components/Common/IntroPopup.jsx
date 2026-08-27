@@ -8,16 +8,12 @@ export default function IntroPopup({ isPreloading }) {
 
   useEffect(() => {
     if (!isPreloading && !hasMounted) {
-      const hasShown = sessionStorage.getItem("thrmIntroShown");
-      if (!hasShown) {
-        // Wait a short moment after preloader finishes to show it smoothly
-        const timer = setTimeout(() => {
-          setIsOpen(true);
-          sessionStorage.setItem("thrmIntroShown", "true");
-        }, 500);
-        return () => clearTimeout(timer);
-      }
+      // Show every time the website loads (App mounts)
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 500);
       setHasMounted(true);
+      return () => clearTimeout(timer);
     }
   }, [isPreloading, hasMounted]);
 
