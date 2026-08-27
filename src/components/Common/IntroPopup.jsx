@@ -40,12 +40,12 @@ export default function IntroPopup({ isPreloading }) {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0, transition: { duration: 0.3 } }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-4xl max-h-full flex items-center justify-center"
+            className="relative max-w-[95vw] max-h-[85vh] mx-auto"
           >
             {/* Close Button */}
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute -top-4 -right-4 md:-top-6 md:-right-6 z-10 p-2 text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-md"
+              className="absolute -top-4 -right-4 md:-top-5 md:-right-5 z-10 p-2 text-white bg-white/10 hover:bg-white/20 rounded-full transition-colors backdrop-blur-md"
               aria-label="Close popup"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -60,7 +60,7 @@ export default function IntroPopup({ isPreloading }) {
               playsInline
               controls={false}
               onEnded={() => setIsOpen(false)}
-              className="w-full h-auto max-h-[85vh] rounded-2xl shadow-[0_0_50px_rgba(255,255,255,0.1)] object-contain"
+              className="w-auto h-auto max-w-full max-h-[85vh] rounded-2xl shadow-[0_0_50px_rgba(255,255,255,0.1)] object-contain"
             />
           </motion.div>
         </motion.div>
