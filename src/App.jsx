@@ -39,6 +39,7 @@ import ContactPage from "./pages/ContactPage.jsx";
 import { AdminDashboard } from "./pages/admin/AdminDashboard.jsx";
 import AdminLogin from "./pages/admin/AdminLogin.jsx";
 import Preloader from "./components/Common/Preloader.jsx";
+import IntroPopup from "./components/Common/IntroPopup.jsx";
 
 import TaraChatbot from "./components/Home/TaraChatbot.jsx";
 import FloatingButtons from "./components/Common/FloatingButtons.jsx";
@@ -59,6 +60,8 @@ export default function App() {
       <AnimatePresence>
         {isPreloading && <Preloader />}
       </AnimatePresence>
+
+      <IntroPopup isPreloading={isPreloading} />
 
       <ScrollToTop />
       <Navbar />
