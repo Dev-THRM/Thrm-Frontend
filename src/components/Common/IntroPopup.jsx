@@ -4,18 +4,16 @@ import thrmAnimation from "../../assets/thrm_animation.mp4";
 
 export default function IntroPopup({ isPreloading }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    if (!isPreloading && !hasMounted) {
+    if (!isPreloading) {
       // Show every time the website loads (App mounts)
       const timer = setTimeout(() => {
         setIsOpen(true);
       }, 500);
-      setHasMounted(true);
       return () => clearTimeout(timer);
     }
-  }, [isPreloading, hasMounted]);
+  }, [isPreloading]);
 
   // For testing purposes during development, you can uncomment this to force show it
   // useEffect(() => {
