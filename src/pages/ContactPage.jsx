@@ -109,6 +109,11 @@ export default function ContactPage() {
           });
         }
 
+        // Trigger OpenAI Pixel Conversion Event
+        if (typeof window !== "undefined" && typeof window.oaiq === "function") {
+          oaiq("measure", "lead_created", { type: "customer_action" });
+        }
+
         navigate("/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you");
       } else {
         setStatus({ type: "error", message: "Something went wrong. Please try again." });
