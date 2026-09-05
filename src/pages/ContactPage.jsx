@@ -109,10 +109,17 @@ export default function ContactPage() {
           });
         }
 
-        // Trigger OpenAI Pixel Conversion Event
+        // Trigger OpenAI Pixel Conversion Event (browser-side)
         if (typeof window !== "undefined" && typeof window.oaiq === "function") {
           oaiq("measure", "lead_created", { type: "customer_action" });
         }
+
+        // Trigger OpenAI Pixel Conversion Event (server-side — fire and forget)
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/conversion/lead`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ source_url: window.location.href })
+        }).catch((err) => console.warn('Server-side conversion failed:', err));
 
         navigate("/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you");
       } else {
