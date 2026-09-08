@@ -7,7 +7,7 @@ import Omkar from "../assets/TeamImages/omkar.JPG";
 // import Kaustubh from "../assets/TeamImages/kaustubh.jpg";
 import Sagar from "../assets/TeamImages/Sagar.JPG";
 import Hanisha from "../assets/TeamImages/hanisha.JPG";
-import Manmeet from "../assets/TeamImages/manmeet.JPG";
+// import Manmeet from "../assets/TeamImages/manmeet.JPG";
 import Vedant from "../assets/TeamImages/vedant.JPG"
 import Mitali from "../assets/TeamImages/mitali.JPG";
 import Sneha from "../assets/TeamImages/sneha.JPG"
@@ -123,14 +123,14 @@ const teamMembers = [
       "Kalpana Singh, our Social Media Manager at THRM Digital Marketing Agency, plays an important role in developing and managing social media strategies that strengthen our clients’ online presence. She oversees social media accounts across various platforms, ensuring consistent communication, engaging content, and meaningful audience interaction. With a strong understanding of social media trends, content planning, and audience behavior, Kalpana works closely with the creative team to develop strategies that align with each client’s brand identity and goals. Her ability to coordinate content, monitor social media performance, and adapt strategies based on audience engagement helps improve brand visibility and build stronger digital communities. Creative, organized, and proactive, Kalpana contributes to the success of THRM’s social media initiatives by helping brands connect with their audiences and establish a consistent and impactful online presence.",
     image: Kalpana, 
   },
-  {
-    id: 14,
-    name: "Ms. Manmeet Kaur",
-    designation: "Brand Outreach Executive",
-    description:
-      "Manmeet Kaur, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. She is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Manmeet effectively understands client requirements and connects them with services that best support their business goals. Her proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Manmeet contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
-    image: Manmeet, 
-  }
+  // {
+  //   id: 14,
+  //   name: "Ms. Manmeet Kaur",
+  //   designation: "Brand Outreach Executive",
+  //   description:
+  //     "Manmeet Kaur, our Brand Outreach Executive at THRM Digital Marketing Agency, plays a key role in driving business growth through strategic sales and client acquisition efforts. She is responsible for identifying potential clients, generating qualified leads, and building strong relationships with businesses seeking digital marketing solutions. With excellent communication and negotiation skills, Manmeet effectively understands client requirements and connects them with services that best support their business goals. Her proactive approach to outreach, follow-ups, and relationship management helps create new business opportunities while strengthening client trust. Dedicated, goal-oriented, and customer-focused, Manmeet contributes significantly to THRM's continued growth by expanding its client base and ensuring a positive experience throughout the sales journey.",
+  //   image: Manmeet, 
+  // }
 ];
 
 export default function TeamPage() {
