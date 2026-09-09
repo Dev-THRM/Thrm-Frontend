@@ -75,10 +75,10 @@ function InfluencerCard({ inf, index, onClick }) {
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.5 }}
       onClick={onClick}
-      className="group relative cursor-pointer rounded-3xl bg-gradient-to-b from-white/[0.06] to-white/[0.01] border border-white/10 overflow-hidden hover:border-white/25 hover:shadow-[0_0_40px_rgba(255,255,255,0.05)] transition-all duration-300 flex flex-col"
+      className="group relative cursor-pointer rounded-3xl bg-gradient-to-b from-white/[0.06] to-white/[0.01] border border-white/10 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.5)] hover:border-white/30 hover:shadow-[0_8px_40px_rgba(0,0,0,0.7),0_0_30px_rgba(255,255,255,0.06)] transition-all duration-300 flex flex-col"
     >
       {/* Card header */}
-      <div className="relative aspect-square w-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center overflow-hidden">
+      <div className="relative h-44 w-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)] z-0" />
 
         {/* Full Header Image (if custom uploaded) */}
@@ -107,7 +107,7 @@ function InfluencerCard({ inf, index, onClick }) {
         <img
           src={fallbackAvatarUrl}
           alt={inf.name}
-          className="w-20 h-20 rounded-full object-cover border-2 border-white/20 z-10 relative"
+          className="w-14 h-14 rounded-full object-cover border-2 border-white/20 z-10 relative"
           style={{ display: inf.profileImage ? "none" : "block" }}
         />
 
@@ -136,7 +136,7 @@ function InfluencerCard({ inf, index, onClick }) {
       </div>
 
       {/* Card body */}
-      <div className="p-4 sm:p-6 flex flex-col flex-grow gap-4 sm:gap-5">
+      <div className="p-3 sm:p-5 flex flex-col flex-grow gap-3 sm:gap-4">
         <div>
           <h3 className="text-base sm:text-xl font-black text-white mb-0.5 truncate">{inf.name}</h3>
           <p className="text-white/40 text-[10px] sm:text-sm font-medium truncate">{extractUsername(primaryData.handle)}</p>
@@ -657,13 +657,13 @@ export default function InfluencerDirectoryPage() {
       {/* ═══ GRID ═══ */}
       <section className="relative z-10 px-6 lg:px-14 max-w-[1400px] mx-auto pb-32">
         {isLoading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-10">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="rounded-3xl bg-white/[0.03] border border-white/5 h-72 animate-pulse" />
+              <div key={i} className="rounded-3xl bg-white/[0.03] border border-white/5 h-56 animate-pulse" />
             ))}
           </div>
         ) : filtered.length > 0 ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-10">
             {filtered.map((inf, i) => (
               <InfluencerCard key={inf._id} inf={inf} index={i} onClick={() => setSelectedInfluencer(inf)} />
             ))}
