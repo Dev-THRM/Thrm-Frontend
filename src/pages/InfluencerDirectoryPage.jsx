@@ -658,13 +658,13 @@ export default function InfluencerDirectoryPage() {
       {/* ═══ GRID ═══ */}
       <section className="relative z-10 px-6 lg:px-14 max-w-[1400px] mx-auto pb-32">
         {isLoading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-10">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 sm:gap-x-10 gap-y-10 sm:gap-y-14">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="rounded-3xl bg-white/[0.03] border border-white/5 h-56 animate-pulse" />
             ))}
           </div>
         ) : filtered.length > 0 ? (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-10">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 sm:gap-x-10 gap-y-10 sm:gap-y-14">
             {filtered.map((inf, i) => (
               <InfluencerCard key={inf._id} inf={inf} index={i} onClick={() => setSelectedInfluencer(inf)} />
             ))}
