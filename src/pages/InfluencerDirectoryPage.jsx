@@ -78,7 +78,7 @@ function InfluencerCard({ inf, index, onClick }) {
       className="group relative cursor-pointer rounded-3xl bg-gradient-to-b from-white/[0.06] to-white/[0.01] border border-white/10 overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.5)] hover:border-white/30 hover:shadow-[0_8px_40px_rgba(0,0,0,0.7),0_0_30px_rgba(255,255,255,0.06)] transition-all duration-300 flex flex-col"
     >
       {/* Card header */}
-      <div className="relative h-44 w-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center overflow-hidden">
+      <div className="relative h-56 w-full bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.08),transparent_70%)] z-0" />
 
         {/* Full Header Image (if custom uploaded) */}
@@ -96,7 +96,7 @@ function InfluencerCard({ inf, index, onClick }) {
                    e.currentTarget.nextElementSibling.nextElementSibling.style.display = "block"; // show fallback
                 }
               }}
-              className="absolute inset-0 w-full h-full object-cover object-center z-0 group-hover:scale-105 transition-transform duration-700"
+              className="absolute inset-0 w-full h-full object-cover object-top z-0 group-hover:scale-105 transition-transform duration-700"
             />
             {/* Gradient overlay to ensure badges stay readable */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-black/20 to-black/40 z-0 pointer-events-none" />
@@ -136,44 +136,44 @@ function InfluencerCard({ inf, index, onClick }) {
       </div>
 
       {/* Card body */}
-      <div className="p-3 sm:p-5 flex flex-col flex-grow gap-3 sm:gap-4">
+      <div className="p-2.5 sm:p-4 flex flex-col flex-grow gap-2 sm:gap-3">
         <div>
-          <h3 className="text-base sm:text-xl font-black text-white mb-0.5 truncate">{inf.name}</h3>
-          <p className="text-white/40 text-[10px] sm:text-sm font-medium truncate">{extractUsername(primaryData.handle)}</p>
+          <h3 className="text-sm sm:text-base font-black text-white mb-0 truncate">{inf.name}</h3>
+          <p className="text-white/40 text-[9px] sm:text-xs font-medium truncate">{extractUsername(primaryData.handle)}</p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-1.5">
           {igData && (
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 sm:gap-2 text-white/50 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
-                <Camera className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1 sm:gap-1.5 text-white/50 text-[9px] sm:text-[11px] font-semibold uppercase tracking-wider">
+                <Camera className="w-3 h-3" />
                 <span className="hidden sm:inline">Instagram</span>
                 <span className="sm:hidden">IG</span>
               </div>
-              <div className="text-right flex flex-col sm:block">
-                <span className="font-black text-white text-sm sm:text-base">{formatFollowers(igData.followers)}</span>
-                <span className="text-white/40 text-[9px] sm:text-xs sm:ml-1 uppercase sm:lowercase">followers</span>
+              <div className="flex items-baseline gap-0.5">
+                <span className="font-black text-white text-xs sm:text-sm">{formatFollowers(igData.followers)}</span>
+                <span className="text-white/40 text-[8px] sm:text-[10px]">followers</span>
               </div>
             </div>
           )}
           {ytData && (
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5 sm:gap-2 text-white/50 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
-                <Video className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1 sm:gap-1.5 text-white/50 text-[9px] sm:text-[11px] font-semibold uppercase tracking-wider">
+                <Video className="w-3 h-3" />
                 <span className="hidden sm:inline">YouTube</span>
                 <span className="sm:hidden">YT</span>
               </div>
-              <div className="text-right flex flex-col sm:block">
-                <span className="font-black text-white text-sm sm:text-base">{formatFollowers(ytData.followers)}</span>
-                <span className="text-white/40 text-[9px] sm:text-xs sm:ml-1 uppercase sm:lowercase">subs</span>
+              <div className="flex items-baseline gap-0.5">
+                <span className="font-black text-white text-xs sm:text-sm">{formatFollowers(ytData.followers)}</span>
+                <span className="text-white/40 text-[8px] sm:text-[10px]">subs</span>
               </div>
             </div>
           )}
         </div>
 
-        <div className="mt-auto pt-3 sm:pt-4 border-t border-white/5 flex items-center justify-between">
-          <span className="text-white/50 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">Tier</span>
-          <span className="text-[10px] sm:text-xs font-bold text-white px-2 py-1 sm:px-3 sm:py-1 bg-white/5 border border-white/10 rounded-full capitalize truncate max-w-[120px] text-right">
+        <div className="mt-auto pt-2 border-t border-white/5 flex items-center justify-between">
+          <span className="text-white/50 text-[8px] sm:text-[10px] font-semibold uppercase tracking-wider">Tier</span>
+          <span className="text-[8px] sm:text-[10px] font-bold text-white px-2 py-0.5 bg-white/5 border border-white/10 rounded-full capitalize truncate max-w-[110px] text-right">
             {primaryData.creatorType}
           </span>
         </div>
