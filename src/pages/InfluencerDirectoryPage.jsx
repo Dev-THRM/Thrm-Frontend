@@ -96,7 +96,8 @@ function InfluencerCard({ inf, index, onClick }) {
                    e.currentTarget.nextElementSibling.nextElementSibling.style.display = "block"; // show fallback
                 }
               }}
-              className="absolute inset-0 w-full h-full object-cover object-top z-0 group-hover:scale-105 transition-transform duration-700"
+              className="absolute inset-0 w-full h-full object-cover z-0 group-hover:scale-105 transition-transform duration-700"
+              style={{ objectPosition: "center 25%" }}
             />
             {/* Gradient overlay to ensure badges stay readable */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-black/20 to-black/40 z-0 pointer-events-none" />
