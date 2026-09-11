@@ -17,7 +17,7 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
-  const videoSrc = isMobile ? "/videos/mobile-banner.mp4" : "/videos/banner.mp4";
+  const videoSrc = isMobile ? "/videos/ganesh-mobile.mp4" : "/videos/ganesh-desktop.mp4";
   const fallbackImage = isMobile
     ? "/home/mobile-banner.png"
     : "/home/desktop-banner.png";
