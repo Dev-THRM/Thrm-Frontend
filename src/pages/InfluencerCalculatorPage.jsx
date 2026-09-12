@@ -531,32 +531,31 @@ function CalculatorForm({ onResult }) {
     
     const result = calculate({ platform, followers, name, mobile, handle, category, profileImage });
     
-    if (consent) {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('mobile', mobile);
-      formData.append('platform', platform);
-      formData.append('handle', handle);
-      formData.append('followers', followers);
-      formData.append('category', category);
-      formData.append('er', result.er || 0);
-      formData.append('creatorType', result.creatorType);
-      formData.append('tierLabel', result.tierLabel);
-      formData.append('collabType', result.collabType);
-      formData.append('formats', JSON.stringify(result.formats));
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('mobile', mobile);
+    formData.append('platform', platform);
+    formData.append('handle', handle);
+    formData.append('followers', followers);
+    formData.append('category', category);
+    formData.append('er', result.er || 0);
+    formData.append('creatorType', result.creatorType);
+    formData.append('tierLabel', result.tierLabel);
+    formData.append('collabType', result.collabType);
+    formData.append('formats', JSON.stringify(result.formats));
+    formData.append('consent', consent);
 
-      if (profileImage instanceof File) {
-        formData.append('profileImage', profileImage);
-      }
-      
-      try {
-        await fetch(`${API_BASE_URL}/api/influencers/calculate`, {
-          method: "POST",
-          body: formData
-        });
-      } catch (err) {
-        console.error("Failed to save influencer data:", err);
-      }
+    if (profileImage instanceof File) {
+      formData.append('profileImage', profileImage);
+    }
+    
+    try {
+      await fetch(`${API_BASE_URL}/api/influencers/calculate`, {
+        method: "POST",
+        body: formData
+      });
+    } catch (err) {
+      console.error("Failed to save influencer data:", err);
     }
 
     onResult(result);
