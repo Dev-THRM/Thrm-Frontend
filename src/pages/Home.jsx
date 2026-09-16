@@ -5,6 +5,7 @@ import StatsSection from "../components/Home/StatsSection.jsx";
 import ServiceSection from "../components/Home/ServicesSection.jsx";
 import FAQSection from "../components/Home/FAQSection.jsx";
 import PressCarousel from "../components/Home/PressCarousel.jsx";
+import PricingSection from "../components/Home/PricingSection.jsx";
 
 export default function Home() {
   return (
@@ -31,6 +32,7 @@ export default function Home() {
         <WorkSection />
         <StatsSection />
         <ServiceSection />
+        <PricingSection />
         <FAQSection />
         <PressCarousel />
       </div>

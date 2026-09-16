@@ -23,7 +23,6 @@ import { AdminInfluencers } from "./pages/admin/AdminInfluencers.jsx";
 import BlogsPage from "./pages/BlogsPage.jsx";
 import CareersPage from "./pages/CareersPage.jsx";
 import SingleBlogPage from "./pages/SingleBlogPage.jsx";
-
 import SocialMediaPage from "./pages/SocialMediaPage.jsx";
 import SeoPage from "./pages/SeoPage.jsx";
 import WebDevPage from "./pages/WebDevPage.jsx";
