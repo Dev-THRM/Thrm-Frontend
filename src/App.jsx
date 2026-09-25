@@ -42,6 +42,7 @@ import Preloader from "./components/Common/Preloader.jsx";
 import TaraChatbot from "./components/Home/TaraChatbot.jsx";
 import FloatingButtons from "./components/Common/FloatingButtons.jsx";
 import { TYP } from "./pages/ThankYouPage.jsx";
+import PricingPage from "./pages/PricingPage.jsx";
 
 export default function App() {
   const [isPreloading, setIsPreloading] = useState(true);
@@ -75,6 +76,7 @@ export default function App() {
           <Route path="/clients" element={<ClientsPage />} />
           <Route path="/blogs" element={<BlogsPage />} />
           <Route path="/blogs/:id" element={<SingleBlogPage />} />
+          <Route path="/pricing" element={<PricingPage />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/wenciuwenowmixwemi2012010010--0d-0sciskcsencnsk/Thank-you" element={<TYP />} />
 

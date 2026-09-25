@@ -68,6 +68,7 @@ const navData = [
     ]
   },
   { name: "Blogs", path: "/blogs" },
+  { name: "Pricing", path: "/pricing"},
   { name: "Founder's Forum", path: "/founders" },
   { name: "Careers", path: "/careers" },
   { name: "Contact", path: "/contact", isMobileOnly: true },
@@ -125,14 +126,14 @@ export default function Navbar() {
           </Link>
 
           {/* Wrapper for Navigation + Button - Pushed to the Right */}
-          <div className="hidden xl:flex items-center gap-10 h-full">
+          <div className="hidden xl:flex items-center gap-6 h-full">
 
             {/* Desktop Navigation */}
-            <nav className="flex items-stretch gap-8 h-full">
+            <nav className="flex items-stretch gap-5 h-full">
               {(isAuthenticated && role === "admin") && (<div className="relative flex gap-6 items-center h-full">
                 <Link
                   to="/admin/dashboard"
-                  className="relative flex items-center gap-1.5 text-[1.02rem] font-semibold tracking-wide transition-colors duration-300 py-8 text-blue-400/80 hover:text-blue-400"
+                  className="relative flex items-center gap-1.5 text-[0.95rem] font-semibold tracking-wide transition-colors duration-300 py-8 text-blue-400/80 hover:text-blue-400"
                 >
                   Admin Dashboard
                 </Link>
@@ -151,7 +152,7 @@ export default function Navbar() {
                   >
                     <Link
                       to={item.path}
-                      className={`relative flex items-center gap-1.5 text-[1.02rem] font-semibold tracking-wide transition-colors duration-300 py-8 ${isActive || hoveredNav === item.name ? "text-white" : "text-white/60 hover:text-white"
+                      className={`relative flex items-center gap-1.5 text-[0.95rem] font-semibold tracking-wide transition-colors duration-300 py-8 ${isActive || hoveredNav === item.name ? "text-white" : "text-white/60 hover:text-white"
                         }`}
                     >
                       {item.name}
@@ -263,7 +264,7 @@ export default function Navbar() {
                   <Link
                     onClick={() => logout()}
                     to="/"
-                    className="relative flex items-center gap-1.5 text-[1.02rem] font-semibold tracking-wide transition-colors duration-300 py-8 text-red-400/80 hover:text-red-400"
+                    className="relative flex items-center gap-1.5 text-[0.95rem] font-semibold tracking-wide transition-colors duration-300 py-8 text-red-400/80 hover:text-red-400"
                   >
                     Logout
                   </Link>
@@ -273,10 +274,10 @@ export default function Navbar() {
 
             {/* Desktop CTA Button */}
             <div>
-              <Link to="/contact" className="group flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2.5 text-[0.98rem] font-medium text-white backdrop-blur-md transition-all hover:border-white hover:bg-white/10">
+              <Link to="/contact" className="group flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-[0.9rem] font-medium text-white backdrop-blur-md transition-all hover:border-white hover:bg-white/10">
                 <span>Let&apos;s Talk</span>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition group-hover:scale-110">
-                  <ArrowRight className="h-4 w-4" />
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-black transition group-hover:scale-110">
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </span>
               </Link>
             </div>
