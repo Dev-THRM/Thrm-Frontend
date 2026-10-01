@@ -27,7 +27,6 @@ const digitalMarketingPlans = [
   {
     name: "GROWTH PACKAGE",
     price: "25,000",
-    popular: true,
     subtitle: "Social Media + Local SEO = Real Business Growth",
     description: "More Visibility. More Customers. More Growth. Everything you need to grow your brand on social media and locally - all in one powerful package.",
     features: [
@@ -49,6 +48,7 @@ const digitalMarketingPlans = [
   {
     name: "BUSINESS SCALE",
     price: "35,000",
+    popular: true,
     subtitle: "Content + Local SEO + Meta Ads = Business Growth",
     description: "More Platforms. More Visibility. Real Growth. A complete digital growth solution to scale your brand, get more customers and build a strong online presence.",
     features: [
@@ -438,82 +438,134 @@ export default function PricingPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className={`grid grid-cols-1 md:grid-cols-2 ${digitalMarketingPlans.length === 5 ? 'lg:grid-cols-6' : 'lg:grid-cols-4'} gap-5`}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
             >
-              {digitalMarketingPlans.map((plan, index) => (
-                <div 
-                  key={index} 
-                  className={`relative flex flex-col rounded-2xl p-6 backdrop-blur-md border ${
-                    plan.popular 
-                      ? "bg-white/10 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.15)] transform md:-translate-y-2" 
-                      : "bg-white/5 border-white/10"
-                  } hover:bg-white/10 hover:border-white/20 transition-all duration-300 group ${
-                    digitalMarketingPlans.length === 5 ? (index === 3 ? "lg:col-span-2 lg:col-start-2" : "lg:col-span-2") : ""
-                  }`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
-                      Most Popular
-                    </div>
-                  )}
-
-                  <div className="mb-4">
-                    <h3 className="text-lg font-bold uppercase text-white/90 mb-1.5">{plan.name}</h3>
-                    <div className="flex items-baseline gap-1 mb-1.5">
-                      {plan.isCustom ? (
-                        <span className="text-lg font-black">{plan.price}</span>
-                      ) : (
-                        <>
-                          <span className="text-2xl font-black">₹{plan.price}</span>
-                          <span className="text-white/50 text-xs">/ MONTH</span>
-                        </>
-                      )}
-                    </div>
-                    <p className="text-xs font-medium text-blue-400 mb-2">{plan.subtitle}</p>
-                    <p className="text-white/60 text-xs leading-snug">{plan.description}</p>
-                  </div>
-
-                  <div className="w-full h-px bg-white/10 mb-4" />
-
-                  <div className="flex-grow mb-5">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-white/80 mb-3">What You Get</h4>
-                    <ul className="space-y-2.5">
-                      {plan.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-2.5">
-                          <div className="mt-0.5 min-w-[14px] text-blue-400">
-                            <Check size={14} />
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold text-white/90">{feature.name}</p>
-                            <p className="text-[10px] text-white/50 mt-0.5 leading-tight">{feature.desc}</p>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="mt-auto">
-                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-white/50 mb-2 text-center">Platforms We Manage</h4>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {plan.platforms.map((Platform, idx) => (
-                        <div key={idx} className="w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 group-hover:text-white group-hover:bg-white/10 transition-colors" title={Platform.name}>
-                          <Platform.icon size={12} />
+              {digitalMarketingPlans.map((plan, index) => {
+                if (plan.isCustom) {
+                  return (
+                    <div 
+                      key={index}
+                      className="lg:col-span-4 relative flex flex-col lg:flex-row items-center justify-between rounded-3xl p-8 backdrop-blur-md border bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group gap-8"
+                    >
+                      <div className="lg:w-1/3 text-center lg:text-left">
+                        <h3 className="text-2xl font-black uppercase text-white mb-2">{plan.name}</h3>
+                        <div className="mb-4">
+                          <span className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">{plan.price}</span>
                         </div>
-                      ))}
+                        <p className="text-sm font-bold text-blue-400 mb-3">{plan.subtitle}</p>
+                        <p className="text-white/70 text-sm leading-relaxed">{plan.description}</p>
+                      </div>
+
+                      <div className="hidden lg:block w-px h-32 bg-white/10" />
+                      <div className="block lg:hidden w-full h-px bg-white/10" />
+
+                      <div className="lg:w-1/3">
+                        <h4 className="text-sm font-bold uppercase tracking-wider text-white/80 mb-4 lg:hidden text-center">What You Get</h4>
+                        <ul className="space-y-3">
+                          {plan.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <div className="mt-1 min-w-[16px] text-blue-400">
+                                <Check size={16} />
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-white/90">{feature.name}</p>
+                                <p className="text-xs text-white/50 mt-0.5 leading-tight">{feature.desc}</p>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="hidden lg:block w-px h-32 bg-white/10" />
+                      <div className="block lg:hidden w-full h-px bg-white/10" />
+
+                      <div className="lg:w-1/4 flex flex-col items-center">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-4 text-center">Platforms We Manage</h4>
+                        <div className="flex flex-wrap justify-center gap-3 mb-6">
+                          {plan.platforms.map((Platform, idx) => (
+                            <div key={idx} className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/80 group-hover:text-white group-hover:bg-white/10 transition-colors" title={Platform.name}>
+                              <Platform.icon size={16} />
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <button 
+                          onClick={() => handleWhatsAppRedirect(plan.name, "Digital Marketing")}
+                          className="w-full max-w-[200px] py-3.5 rounded-xl font-bold text-sm uppercase tracking-wide transition-all bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 shadow-lg shadow-blue-500/25">
+                          Discuss Now
+                        </button>
+                      </div>
                     </div>
+                  );
+                }
+
+                return (
+                  <div 
+                    key={index} 
+                    className={`relative flex flex-col rounded-2xl p-6 backdrop-blur-md border ${
+                      plan.popular 
+                        ? "bg-white/10 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.15)] transform md:-translate-y-2" 
+                        : "bg-white/5 border-white/10"
+                    } hover:bg-white/10 hover:border-white/20 transition-all duration-300 group`}
+                  >
+                    {plan.popular && (
+                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md">
+                        Most Popular
+                      </div>
+                    )}
+
+                    <div className="mb-4">
+                      <h3 className="text-lg font-bold uppercase text-white/90 mb-1.5">{plan.name}</h3>
+                      <div className="flex items-baseline gap-1 mb-1.5">
+                        <span className="text-2xl font-black">₹{plan.price}</span>
+                        <span className="text-white/50 text-xs">/ MONTH</span>
+                      </div>
+                      <p className="text-xs font-medium text-blue-400 mb-2">{plan.subtitle}</p>
+                      <p className="text-white/60 text-xs leading-snug">{plan.description}</p>
+                    </div>
+
+                    <div className="w-full h-px bg-white/10 mb-4" />
+
+                    <div className="flex-grow mb-5">
+                      <h4 className="text-xs font-bold uppercase tracking-wider text-white/80 mb-3">What You Get</h4>
+                      <ul className="space-y-2.5">
+                        {plan.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <div className="mt-0.5 min-w-[14px] text-blue-400">
+                              <Check size={14} />
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-white/90">{feature.name}</p>
+                              <p className="text-[10px] text-white/50 mt-0.5 leading-tight">{feature.desc}</p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-auto">
+                      <h4 className="text-[10px] font-bold uppercase tracking-wider text-white/50 mb-2 text-center">Platforms We Manage</h4>
+                      <div className="flex flex-wrap justify-center gap-2">
+                        {plan.platforms.map((Platform, idx) => (
+                          <div key={idx} className="w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70 group-hover:text-white group-hover:bg-white/10 transition-colors" title={Platform.name}>
+                            <Platform.icon size={12} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <button 
+                      onClick={() => handleWhatsAppRedirect(plan.name, "Digital Marketing")}
+                      className={`w-full mt-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wide transition-all ${
+                      plan.popular
+                        ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 shadow-md shadow-blue-500/20"
+                        : "bg-white/10 text-white hover:bg-white/20"
+                    }`}>
+                      Get Started
+                    </button>
                   </div>
-                  
-                  <button 
-                    onClick={() => handleWhatsAppRedirect(plan.name, "Digital Marketing")}
-                    className={`w-full mt-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-wide transition-all ${
-                    plan.popular
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:opacity-90 shadow-md shadow-blue-500/20"
-                      : "bg-white/10 text-white hover:bg-white/20"
-                  }`}>
-                    {plan.isCustom ? "Discuss Now" : "Get Started"}
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </motion.div>
           )}
 

@@ -50,7 +50,7 @@ const thrm1 = cl("v1782201226/thrm-1_ju13sr.mp4");
 const thrm2 = cl("v1782201208/thrm-2_f7te4i.mp4");
 const thrm3 = cl("v1782201325/thrm-3_mnc6ru.mp4");
 const thrm4 = cl("v1782201226/thrm-4_ysogs9.mp4");
-const thrm5 = cl("v1782201212/thrm-5_v34b15.mp4");
+// const thrm5 = cl("v1782201212/thrm-5_v34b15.mp4");
 const thrm6 = cl("v1782201212/thrm-6_uwok9e.mp4");
 
 // Import TVC'S
@@ -150,7 +150,7 @@ const CATEGORY_GROUPS = [
 
 const workData = {
   // THRM (same order)
-  "Behind The Brand": [thrm1, thrm2, thrm3, thrm4, thrm5, thrm6],
+  "Behind The Brand": [thrm1, thrm2, thrm3, thrm4, thrm6],
 
   // Restaurants (exact sequence from HTML)
   Restaurants: [

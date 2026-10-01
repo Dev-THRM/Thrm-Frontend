@@ -44,15 +44,15 @@ const teamMembers = [
       "Meet our Chief Happiness Officer (CHO), the calmest and most loved member of the team. Known for spending most of the day peacefully napping, our office cat has mastered the art of creating a relaxed and positive workplace. Whether quietly supervising from a cozy corner or greeting everyone with a gentle stretch, the CHO reminds us to slow down, recharge, and enjoy the little moments that make every workday better.",
     image: Manilal
   },
-   {
-    id: 4,
-    name: "Mr. Vedant Patil",
-    designation: "Admin & HR",
-    description:
-      "Vedant Patil, our Admin & HR professional at THRM Digital Marketing Agency, is the driving force behind smooth internal operations and a well-organized workplace. With strong organizational skills and a people-first approach, he manages the day-to-day administrative and HR activities that keep the team connected, productive, and supported. From coordinating recruitment and onboarding to maintaining employee records and handling attendance, documentation, and internal communication, Vedant ensures that every process runs efficiently. His ability to communicate effectively and coordinate across teams helps create a positive and professional work environment. Beyond managing processes, Vedant plays an important role in understanding employee needs, supporting team members, and ensuring that company policies and procedures are followed. His attention to detail, reliability, and approachable nature make him an essential part of THRM’s operations, helping build a workplace where both people and processes can grow together.",
-    image: Vedant, 
-  },
   {
+    id: 4,
+    name: "Ms. Sneha Dewani",
+    designation: "Senior Full Stack Developer",
+    description:
+      "Sneha Dewani is a passionate and driven Full Stack Developer with a strong foundation in modern web technologies and software development. With expertise in both frontend and backend development, she specializes in creating responsive, user-friendly, and scalable web applications that deliver exceptional user experiences. Her technical skill set includes React.js, JavaScript, PHP Laravel, MySQL, HTML, CSS, and Bootstrap, enabling her to develop robust solutions from concept to deployment.Having gained hands-on experience through professional internships and real-world projects, Sneha combines technical proficiency with a problem-solving mindset to build efficient and innovative digital products. She is committed to continuous learning, staying updated with emerging technologies, and applying best practices to every project she undertakes.Known for her dedication, adaptability, and collaborative approach, Sneha thrives in dynamic environments where creativity and technology intersect. Her ability to transform complex requirements into practical, high-quality solutions makes her a valuable contributor to any development team and a promising professional in the ever-evolving technology industry.",
+    image: Sneha,
+  },
+   {
     id: 5,
     name: "Mr. Omkar Jadhav",
     designation: "Deputy Director Creative Department",
@@ -62,26 +62,26 @@ const teamMembers = [
   },
    {
     id: 6,
+    name: "Mr. Vedant Patil",
+    designation: "Admin & HR",
+    description:
+      "Vedant Patil, our Admin & HR professional at THRM Digital Marketing Agency, is the driving force behind smooth internal operations and a well-organized workplace. With strong organizational skills and a people-first approach, he manages the day-to-day administrative and HR activities that keep the team connected, productive, and supported. From coordinating recruitment and onboarding to maintaining employee records and handling attendance, documentation, and internal communication, Vedant ensures that every process runs efficiently. His ability to communicate effectively and coordinate across teams helps create a positive and professional work environment. Beyond managing processes, Vedant plays an important role in understanding employee needs, supporting team members, and ensuring that company policies and procedures are followed. His attention to detail, reliability, and approachable nature make him an essential part of THRM’s operations, helping build a workplace where both people and processes can grow together.",
+    image: Vedant, 
+  },
+  {
+    id: 7,
+    name: "Mr. Sahil Bijlani",
+    designation: "Full Stack Developer",
+    description: "Sahil Bijlani is a passionate and results-driven Full Stack Developer with a strong foundation in software engineering and modern web technologies. He specializes in building scalable, secure, and user-centric web applications, with hands-on experience across both frontend and backend development. His technical expertise includes React.js, Next.js, Node.js, Express.js, JavaScript, Java, PHP, MySQL, PostgreSQL, HTML, CSS, Bootstrap, and RESTful APIs, enabling him to deliver end-to-end solutions from design to deployment. Through internships and real-world projects, Sahil has developed applications involving authentication, database management, API integration, and responsive user interfaces. He enjoys solving complex problems, writing clean and maintainable code, and building applications that are both efficient and intuitive. His projects demonstrate a strong understanding of software architecture, database design, and modern development practices.",
+    image: Sahil
+  },
+   {
+    id: 8,
     name: "Mr. Sagar Bhuwad",
     designation: "Creative Designer Manager",
     description:
       "Sagar Bhuwad, our Creative Designer at THRM Digital Marketing Agency, is responsible for crafting visually engaging designs that strengthen brand identity and communication. As a skilled graphic designer, he creates compelling creatives for digital marketing campaigns, social media platforms, advertisements, and branding materials. With a strong understanding of design principles, color theory, and visual storytelling, Sagar transforms ideas into impactful designs that capture attention and leave a lasting impression. His creativity, attention to detail, and commitment to excellence help ensure that every visual asset aligns with client objectives and maintains the highest standards of quality. Through his innovative approach and passion for design, Sagar plays a key role in enhancing the visual presence and success of THRM's clients.",
     image: Sagar, 
-  },
-   {
-    id: 7,
-    name: "Ms. Sneha Dewani",
-    designation: "Senior Full Stack Developer",
-    description:
-      "Sneha Dewani is a passionate and driven Full Stack Developer with a strong foundation in modern web technologies and software development. With expertise in both frontend and backend development, she specializes in creating responsive, user-friendly, and scalable web applications that deliver exceptional user experiences. Her technical skill set includes React.js, JavaScript, PHP Laravel, MySQL, HTML, CSS, and Bootstrap, enabling her to develop robust solutions from concept to deployment.Having gained hands-on experience through professional internships and real-world projects, Sneha combines technical proficiency with a problem-solving mindset to build efficient and innovative digital products. She is committed to continuous learning, staying updated with emerging technologies, and applying best practices to every project she undertakes.Known for her dedication, adaptability, and collaborative approach, Sneha thrives in dynamic environments where creativity and technology intersect. Her ability to transform complex requirements into practical, high-quality solutions makes her a valuable contributor to any development team and a promising professional in the ever-evolving technology industry.",
-    image: Sneha,
-  },
-  {
-    id: 8,
-    name: "Mr. Sahil Bijlani",
-    designation: "Full Stack Developer",
-    description: "Sahil Bijlani is a passionate and results-driven Full Stack Developer with a strong foundation in software engineering and modern web technologies. He specializes in building scalable, secure, and user-centric web applications, with hands-on experience across both frontend and backend development. His technical expertise includes React.js, Next.js, Node.js, Express.js, JavaScript, Java, PHP, MySQL, PostgreSQL, HTML, CSS, Bootstrap, and RESTful APIs, enabling him to deliver end-to-end solutions from design to deployment. Through internships and real-world projects, Sahil has developed applications involving authentication, database management, API integration, and responsive user interfaces. He enjoys solving complex problems, writing clean and maintainable code, and building applications that are both efficient and intuitive. His projects demonstrate a strong understanding of software architecture, database design, and modern development practices.",
-    image: Sahil
   },
   {
     id: 9,
