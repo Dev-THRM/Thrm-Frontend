@@ -124,6 +124,13 @@ const perfume3 = cl("v1782200617/perfume3_eeclji.mp4");
 const perfume4 = cl("v1782200607/perfume4_lo9cgd.mp4");
 const perfume5 = cl("v1782200610/perfume5_hbmwzm.mp4");
 
+// Import Fitness
+const fit1 = "/videos/fit1.mp4";
+const fit2 = "/videos/fit2.mp4";
+const fit3 = "/videos/fit3.mp4";
+const fit4 = "/videos/fit4.mp4";
+const fit5 = "/videos/fit5.mp4";
+
 // Grouped category structure for the dropdown filter UI
 const CATEGORY_GROUPS = [
   {
@@ -139,12 +146,20 @@ const CATEGORY_GROUPS = [
     items: ["Podcast", "UGC Content", "VFX Special", "TVC Shoots"],
   },
   {
+    label: "Hospital",
+    single: true,
+  },
+  {
     label: "Hospitality",
-    items: ["Resort", "Hospital", "Parks"],
+    items: ["Resort", "Parks"],
   },
   {
     label: "Fashion",
     items: ["Clothings", "Jewellery", "Perfume"],
+  },
+  {
+    label: "Fitness",
+    single: true,
   },
 ];
 
@@ -203,6 +218,9 @@ const workData = {
 
   // Perfume
   "Perfume": [perfume1, perfume2, perfume3, perfume4, perfume5],
+
+  // Fitness
+  "Fitness": [fit1, fit2, fit3, fit4, fit5],
 };
 
 const VideoCard = ({ videoUrl, eager = true }) => {
