@@ -96,13 +96,21 @@ const park4 = cl("v1782200038/park4_lwfdyp.mp4");
 const park5 = cl("v1782200043/park5_lktatx.mp4");
 const park6 = cl("v1782200066/park6_nkg417.mp4");
 
-// Import Clothes
-const cloth1 = cl("v1782197798/cloth1_fkjccc.mp4");
-const cloth3 = cl("v1782197673/cloth3_qstsbu.mp4");
-const cloth4 = cl("v1782197672/cloth4_gcz4vx.mp4");
-const cloth5 = cl("v1782197673/cloth5_rrasgu.mp4");
-const cloth6 = cl("v1782197674/cloth6_bqhqlc.mp4");
-const cloth7 = cl("v1782197673/cloth7_maaqn5.mp4");
+// Import Kids Clothes
+const kid1 = cl("v1782197798/cloth1_fkjccc.mp4");
+const kid2 = cl("v1782197673/cloth3_qstsbu.mp4");
+const kid3 = cl("v1782197672/cloth4_gcz4vx.mp4");
+const kid4 = "/videos/kid4.mp4";
+const kid5 = "/videos/kid5.mp4";
+const kid6 = "/videos/kid6.mp4";
+
+// Import Women Clothes
+const women1 = cl("v1782197673/cloth5_rrasgu.mp4");
+const women2 = cl("v1782197674/cloth6_bqhqlc.mp4");
+const women3 = "/videos/women4.mp4";
+const women4 = "/videos/women5.mp4";
+const women5 = "/videos/women6.mp4";
+const women6 = "/videos/women7.mp4";
 
 // Import Jewellery
 const jewl1 = cl("v1782199923/jewellery1_yuzfp9.mp4");
@@ -155,7 +163,7 @@ const CATEGORY_GROUPS = [
   },
   {
     label: "Fashion",
-    items: ["Clothings", "Jewellery", "Perfume"],
+    items: ["Women Clothing", "Kids Clothing", "Jewellery", "Perfume"],
   },
   {
     label: "Fitness",
@@ -207,8 +215,11 @@ const workData = {
   // Parks
   "Parks": [park1, park2, park3, park4, park5, park6],
 
-  // Clothings
-  "Clothings": [cloth1, cloth3, cloth4, cloth5, cloth6, cloth7],
+  // Women Clothing
+  "Women Clothing": [women1, women2, women3, women4, women5, women6],
+
+  // Kids Clothing
+  "Kids Clothing": [kid1, kid2, kid3, kid4, kid5, kid6],
 
   // Jewellery
   "Jewellery": [jewl1, jewl2, jewl3, jewl4],
