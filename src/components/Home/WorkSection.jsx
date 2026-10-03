@@ -281,6 +281,7 @@ const VideoCard = ({ videoUrl, eager = true }) => {
         src={thumbnailUrl}
         alt=""
         className="absolute inset-0 w-full h-full object-cover z-0"
+        onError={(e) => { e.target.style.display = 'none' }}
       />
 
       {isLoading && (
@@ -294,7 +295,6 @@ const VideoCard = ({ videoUrl, eager = true }) => {
         <video
           ref={videoRef}
           src={videoUrl}
-          poster={thumbnailUrl}
           muted
           loop
           playsInline
