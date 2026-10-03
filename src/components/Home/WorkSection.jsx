@@ -199,7 +199,7 @@ const workData = {
   "Podcast": [podcast1, podcast2, podcast3, podcast4, podcast5, podcast6],
 
   // Hospital
-  "Hospital": [hospital1, hospital2, hospital3, hospital4, hospital5, hospital6],
+  "Medical & Healthcare": [hospital1, hospital2, hospital3, hospital4, hospital5, hospital6],
 
   // Resort
   "Resort": [resort1, resort2, resort3, resort4],
