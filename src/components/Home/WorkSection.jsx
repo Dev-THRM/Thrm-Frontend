@@ -97,20 +97,20 @@ const park5 = cl("v1782200043/park5_lktatx.mp4");
 const park6 = cl("v1782200066/park6_nkg417.mp4");
 
 // Import Kids Clothes
-const kid1 = cl("v1782197798/cloth1_fkjccc.mp4");
-const kid2 = cl("v1782197673/cloth3_qstsbu.mp4");
-const kid3 = cl("v1782197672/cloth4_gcz4vx.mp4");
+const kid1 = "/videos/kid1.mp4";
+const kid2 = "/videos/kid2.mp4";
+const kid3 = "/videos/kid3.mp4";
 const kid4 = "/videos/kid4.mp4";
 const kid5 = "/videos/kid5.mp4";
 const kid6 = "/videos/kid6.mp4";
 
 // Import Women Clothes
-const women1 = cl("v1782197673/cloth5_rrasgu.mp4");
-const women2 = cl("v1782197674/cloth6_bqhqlc.mp4");
-const women3 = "/videos/women4.mp4";
-const women4 = "/videos/women5.mp4";
+const women1 = "/videos/women1.mp4";
+const women2 = "/videos/women2.mp4";
+const women3 = "/videos/women3.mp4";
+const women4 = "/videos/women4.mp4";
 const women5 = "/videos/women6.mp4";
-const women6 = "/videos/women7.mp4";
+const women6 = "/videos/women5.mp4";
 
 // Import Jewellery
 const jewl1 = cl("v1782199923/jewellery1_yuzfp9.mp4");
