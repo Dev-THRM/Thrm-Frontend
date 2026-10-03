@@ -219,7 +219,7 @@ const workData = {
   "Women Clothing": [women1, women2, women3, women4, women5, women6],
 
   // Kids Clothing
-  "Kids Clothing": [kid1, kid2, kid3, kid4, kid5, kid6],
+  "Kids Clothing": [kid1, kid2, kid4, kid5, kid6],
 
   // Jewellery
   "Jewellery": [jewl1, jewl2, jewl3, jewl4],
