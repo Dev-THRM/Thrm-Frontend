@@ -146,7 +146,7 @@ const CATEGORY_GROUPS = [
     items: ["Podcast", "UGC Content", "VFX Special", "TVC Shoots"],
   },
   {
-    label: "Hospital",
+    label: "Medical & Healthcare",
     single: true,
   },
   {
